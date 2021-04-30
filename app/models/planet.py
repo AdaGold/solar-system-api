@@ -5,3 +5,5 @@ class Planet(db.Model):
     name = db.Column(db.String)
     description = db.Column(db.String)
     color = db.Column(db.String)
+
+
