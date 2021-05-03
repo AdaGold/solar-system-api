@@ -52,7 +52,7 @@ def handle_planets():
     #         return make_response("planet does not exist")
     
 # endpoint for user to gather planet info based on actual planet id 
-@planet_bp.route("/<planet_id>", methods=["GET", "DELETE"])
+@planet_bp.route("/<planet_id>", methods=["GET", "DELETE","PUT"])
 def handle_planet(planet_id):
     planet = Planet.query.get(planet_id)
     # if the request method is GET, return planet id, name & description 
@@ -68,3 +68,12 @@ def handle_planet(planet_id):
         db.session.commit()
         return make_response(f"Planet #{planet.id} successfully deleted")
 
+    elif request.method == "PUT":
+        form_data = request.get_json()
+        #planet is referencing our planet id that was given by the user in http request
+        planet.name = form_data["name"]
+        planet.description = form_data["description"]
+
+        db.session.commit()
+
+        return make_response(f"Planet #{planet.name} successfully updated") 
