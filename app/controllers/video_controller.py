@@ -1,7 +1,9 @@
 from app import db
 from app.models.video import Video
-from app.models.video import Rental
+from app.models.rental import Rental
 import json
+from flask import make_response, jsonify
+
 
 class Video_Controller():
 
@@ -11,14 +13,15 @@ class Video_Controller():
         response = []
         for video in videos:
             json = cls.video_json(video)
-        return make_reponse(response, 200)
+            response.append(json)
+        return make_response(jsonify(response), 200)
 
     @classmethod
     def create(cls, data):
         errors = cls.validate_data(data)
         if errors:
             return make_response(errors, 400)
-        new_video = Video(name = data["name"], postal_code = data["postal_code"], phone = data["phone"], registered_at = datetime.now())
+        new_video = Video(title = data["title"], release_date = data["release_date"], inventory = data["total_inventory"])
         db.session.add(new_video)
         db.session.commit()
         json = cls.video_json(new_video)
@@ -26,7 +29,7 @@ class Video_Controller():
 
 
     @classmethod
-    def get_one(cls, id):
+    def get_one(cls, video_id):
         video = Video.query.get(video_id)
         if not video:
             error = {"errors":["Not Found"]}
@@ -35,7 +38,7 @@ class Video_Controller():
         return make_response(json, 200)
 
     @classmethod
-    def edit(cls, id, data):
+    def edit(cls, video_id, data):
         video = Video.query.get(video_id)
         if not video:
             error = {"errors":["Not Found"]}
@@ -43,21 +46,22 @@ class Video_Controller():
         errors = cls.validate_data(data)
         if errors:
             return make_response(errors, 400)
-        video.name = data["name"]
-        video.postal_code = data["postal_code"]
-        video.phone = data["phone"]
-        json = cls.video_json(new_video)
+        video.title = data["title"]
+        video.release_date = data["release_date"]
+        video.inventory = data["total_inventory"]
+        db.session.commit()
+        json = cls.video_json(video)
         return make_response(json, 200)
 
     @classmethod
-    def delete(cls, id):
+    def delete(cls, video_id):
         video = Video.query.get(video_id)
         if not video:
             error = {"errors":["Not Found"]}
             return make_response(error, 400)
         db.session.delete(video)
         db.session.commit()
-        result = {"details": f"Video {id} \"{video.name}\" successfully deleted"}
+        result = {"details": f"Video {video_id} \"{video.title}\" successfully deleted"}
         return make_response(result, 200)
 
     # CLASS HELPER METHODS
@@ -76,8 +80,8 @@ class Video_Controller():
     @classmethod
     def video_json(cls, video):
         json = video.to_json()
-        rentals = Rental.query.filter_by(video_id = video.video_id)
-        checked_out_count = len(rentals)
+        rentals = Rental.query.filter_by(video_id = video.video_id).count()
+        checked_out_count = rentals
         total_inventory = json["inventory"]
         json.pop("inventory")
         json["total_inventory"] = total_inventory
