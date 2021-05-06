@@ -1,6 +1,7 @@
 from app import db
 from app.models.video import Video
 from app.models.rental import Rental
+from app.models.customer import Customer
 import json
 from flask import make_response, jsonify
 
@@ -63,6 +64,24 @@ class Video_Controller():
         db.session.commit()
         result = {"details": f"Video {video_id} \"{video.title}\" successfully deleted"}
         return make_response(result, 200)
+
+    @classmethod
+    def list_rental_customers(cls, video_id):
+        db_results = db.session.query(Video, Rental, Customer)\
+            .join(Rental, Rental.video_id==Video.video_id)\
+            .join(Customer, Rental.customer_id==Customer.customer_id)\
+            .filter(Video.video_id == video_id).all()
+        result = []
+        for element in db_results:
+            customer = element[2]
+            rental = element[1]
+            #print(element[2])
+            json = customer.to_json()
+            #json.pop("inventory")
+            json["due_date"] = rental.due_date
+            result.append(json)
+
+        return make_response(jsonify(result), 200)
 
     # CLASS HELPER METHODS
     @classmethod

@@ -1,6 +1,7 @@
 from app import db
 from app.models.customer import Customer
 from app.models.rental import Rental
+from app.models.video import Video
 import json
 from flask import make_response, jsonify
 from datetime import datetime
@@ -87,3 +88,21 @@ class Customer_Controller():
         print(rentals)
         json["videos_checked_out_count"] = rentals
         return json   
+    
+    @classmethod
+    def list_rentals(cls, customer_id):
+        db_results = db.session.query(Video, Rental, Customer)\
+            .join(Rental, Rental.video_id==Video.video_id)\
+            .join(Customer, Rental.customer_id==Customer.customer_id)\
+            .filter(Customer.customer_id == customer_id).all()
+        result = []
+        for element in db_results:
+            video = element[0]
+            rental = element[1]
+            #print(element[2])
+            json = video.to_json()
+            json.pop("inventory")
+            json["due_date"] = rental.due_date
+            result.append(json)
+
+        return make_response(jsonify(result), 200)

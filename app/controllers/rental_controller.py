@@ -28,9 +28,7 @@ class Rental_Controller():
         db.session.commit()
 
         json = cls.rental_json(new_rental)
-        return make_response(json, 200)
-
-        
+        return make_response(json, 200)      
 
     @classmethod
     def check_in(cls, data):
@@ -45,24 +43,6 @@ class Rental_Controller():
         json = cls.rental_json(rental)
         json.pop("due_date")
         return make_response(json, 200)
-        
-    @classmethod
-    def list_rentals(cls, customer_id):
-        db_results = db.session.query(Video, Rental, Customer)\
-            .join(Rental, Rental.video_id==Video.video_id)\
-            .join(Customer, Rental.customer_id==Customer.customer_id)\
-            .filter(Customer.customer_id == customer_id).all()
-        result = []
-        for element in db_results:
-            video = element[0]
-            rental = element[1]
-            #print(element[2])
-            json = video.to_json()
-            json.pop("inventory")
-            json["due_date"] = rental.due_date
-            result.append(json)
-
-        return make_response(jsonify(result), 200)
 
     @classmethod
     def rental_json(cls, rental):

@@ -31,6 +31,9 @@ def single_customer(customer_id):
     elif request.method == "GET":
         return Customer_Controller.get_one(customer_id)
 
+@customer_bp.route("<customer_id>/rentals", methods=["GET"])
+def list_rentals(customer_id):
+    return Customer_Controller.list_rentals(customer_id)
 
 # Video CRUD Routes
 video_bp = Blueprint("video_bp", __name__, url_prefix="/videos")
@@ -50,6 +53,10 @@ def single_video(video_id):
     elif request.method == "GET":
         return Video_Controller.get_one(video_id)
 
+@video_bp.route("<video_id>/rentals", methods=["GET"])
+def list_rental_customers(video_id):
+    return Video_Controller.list_rental_customers(video_id)
+
 
 #Rental Custom Routes
 rental_bp = Blueprint("rental_bp", __name__, url_prefix="/rentals")
@@ -61,6 +68,4 @@ def check_out():
 def check_in():
     return Rental_Controller.check_in(request.get_json())
     
-@rental_bp.route("<customer_id>", methods=["GET"])
-def list_rentals(customer_id):
-    return Rental_Controller.list_rentals(customer_id)
+
