@@ -91,6 +91,8 @@ class Video_Controller():
             errors["title"] = "can't be blank"
         if "release_date" not in data:
             errors["release_date"] = "can't be blank"
+        if "total_inventory" not in data:
+            errors["total_inventory"] = "can't be blank"
         
         #TODO: add error checking for correct formatting :-)
         if errors:
