@@ -87,6 +87,11 @@ class Video_Controller():
     @classmethod
     def validate_data(cls, data):
         errors = {}
+
+        if not data:
+            errors["body"] = "can't be blank"
+            return errors
+
         if "title" not in data:
             errors["title"] = "can't be blank"
         if "release_date" not in data:

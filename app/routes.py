@@ -7,6 +7,7 @@ from app.controllers.video_controller import Video_Controller
 from app.controllers.rental_controller import Rental_Controller
 from app.api_description import api_description
 
+
 # Index Route
 index_bp = Blueprint("index_bp", __name__, url_prefix = "/")
 @index_bp.route("", methods=["GET"])

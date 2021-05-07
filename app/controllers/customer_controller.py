@@ -68,8 +68,12 @@ class Customer_Controller():
     # CLASS HELPER METHODS
     @classmethod
     def validate_data(cls, data):
-        print(data)
+        #print(data)
         errors = {}
+        if not data:
+            errors["body"] = "can't be blank"
+            return errors
+
         if "name" not in data:
             errors["name"] = "can't be blank"
         if "postal_code" not in data:

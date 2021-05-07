@@ -57,6 +57,11 @@ class Rental_Controller():
     @classmethod
     def validate_data(cls, data):
         errors = {}
+
+        if not data:
+            errors["body"] = "can't be blank"
+            return errors
+
         if "customer_id" not in data:
             errors["customer_id"] = "required"
         if "video_id" not in data:

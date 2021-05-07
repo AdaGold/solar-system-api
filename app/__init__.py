@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import os
@@ -43,5 +43,21 @@ def create_app(test_config=None):
     app.register_blueprint(rental_bp)
 
     # Register Blueprints here
+
+    @app.errorhandler(500)
+    def server_error(error):
+        print(error)
+        return make_response({"error":"The server has encountered an error."}, 500)
+
+    @app.errorhandler(405)
+    def method_error(error):
+        print(error)
+        return make_response({"error":"The method is not allowed for the requested URL"}, 405)
+
+    @app.errorhandler(404)
+    def not_found_error(error):
+        print(error)
+        return make_response({"error":"The requested URL was not found on the server"}, 404)
+
 
     return app
