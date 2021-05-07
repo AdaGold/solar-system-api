@@ -5,12 +5,13 @@ import requests
 from app.controllers.customer_controller import Customer_Controller
 from app.controllers.video_controller import Video_Controller
 from app.controllers.rental_controller import Rental_Controller
+from app.api_description import api_description
 
 # Index Route
 index_bp = Blueprint("index_bp", __name__, url_prefix = "/")
 @index_bp.route("", methods=["GET"])
 def index():
-    return make_response({"name":"Video Store API", "message":"Everything you need to run your retro video store."})
+    return make_response({"name":"Video Store API", "message":"Everything you need to run your retro video store.", "API Description":api_description}, 200)
 
 
 # Customer CRUD Routes
