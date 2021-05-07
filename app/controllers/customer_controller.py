@@ -26,7 +26,7 @@ class Customer_Controller():
         db.session.add(new_customer)
         db.session.commit()
         json = cls.customer_json(new_customer)
-        return make_response(json, 200)
+        return make_response(json, 201)
 
 
     @classmethod
