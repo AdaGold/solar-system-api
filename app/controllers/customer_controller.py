@@ -72,7 +72,7 @@ class Customer_Controller():
         errors = {}
         if not data:
             errors["body"] = "can't be blank"
-            return errors
+            return {"errors":errors}
 
         if "name" not in data:
             errors["name"] = "can't be blank"
