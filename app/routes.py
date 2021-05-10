@@ -29,7 +29,7 @@ def handle_planets():
 def handle_planet(id):
     planet = Planet.query.get(id)
     
-    if planet is None:
+    if planet == None:
       return make_response({"Message":"Planet not found"}, 404)
 
     if request.method == "GET":
