@@ -22,6 +22,11 @@ class Customer_Controller():
         errors = cls.validate_data(data)
         if errors:
             return make_response(errors, 400)
+        print(data)
+        print(type(data))
+        print(data["name"])
+        print(data["postal_code"])
+        print(data["phone"])
         new_customer = Customer(name = data["name"], postal_code = data["postal_code"], phone = data["phone"], registered_at = datetime.now())
         db.session.add(new_customer)
         db.session.commit()
