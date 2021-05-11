@@ -2,6 +2,7 @@ from app import db
 from app.models.planet import Planet
 from flask import request, Blueprint, make_response, jsonify
 planet_bp = Blueprint("planets", __name__, url_prefix="/planets")
+import os
 
 @planet_bp.route("", methods=["GET","POST"])
 def handle_planets():
