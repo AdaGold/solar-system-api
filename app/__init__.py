@@ -1,8 +1,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-import os
 from dotenv import load_dotenv
+import os
 
 
 db = SQLAlchemy()
@@ -22,11 +22,11 @@ def create_app(test_config=None):
         app.config['SQALCHEMY_TRACK_MODIFICATIONS'] = False
         app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
 
+    
+    from app.models.planet import Planet
     db.init_app(app)
     migrate.init_app(app,db)
-
-    from app.models.planet import Planet
-
+    
     from .routes import planet_bp
     app.register_blueprint(planet_bp)
 
