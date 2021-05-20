@@ -67,11 +67,11 @@ class Rental_Controller():
         if "video_id" not in data:
             errors["video_id"] = "required"
 
-        #try:
-        #    customer_id = int(data["customer_id"])
-        #    video_id = int(data["video_id"])
-        #except ValueError:
-        #    return {"errors":"Invalid Data Type"}
+        try:
+            customer_id = int(data["customer_id"])
+            video_id = int(data["video_id"])
+        except ValueError:
+            return {"errors":"Invalid Data Type"}
 
         if "customer_id" in data:
             customer = Customer.query.get(data["customer_id"])
