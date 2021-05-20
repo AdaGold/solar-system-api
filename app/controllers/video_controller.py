@@ -34,7 +34,7 @@ class Video_Controller():
         video = Video.query.get(video_id)
         if not video:
             error = {"errors":["Not Found"]}
-            return make_response(error, 400)
+            return make_response(error, 404)
         json = cls.video_json(video)
         return make_response(json, 200)
 
@@ -43,7 +43,7 @@ class Video_Controller():
         video = Video.query.get(video_id)
         if not video:
             error = {"errors":["Not Found"]}
-            return make_response(error, 400)
+            return make_response(error, 404)
         errors = cls.validate_data(data)
         if errors:
             return make_response(errors, 400)
@@ -59,10 +59,10 @@ class Video_Controller():
         video = Video.query.get(video_id)
         if not video:
             error = {"errors":["Not Found"]}
-            return make_response(error, 400)
+            return make_response(error, 404)
         db.session.delete(video)
         db.session.commit()
-        result = {"details": f"Video {video_id} \"{video.title}\" successfully deleted"}
+        result = {"id": video.video_id}
         return make_response(result, 200)
 
     @classmethod

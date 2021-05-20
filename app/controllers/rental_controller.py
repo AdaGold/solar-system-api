@@ -37,7 +37,7 @@ class Rental_Controller():
            return(make_response(errors, 400))
         rental = Rental.query.get((data["customer_id"], data["video_id"]))
         if not rental:
-            return(make_response({"errors":"No such rental"}))
+            return(make_response({"errors":"No such rental"}, 400))
         db.session.delete(rental)
         db.session.commit()
         json = cls.rental_json(rental)
@@ -66,6 +66,12 @@ class Rental_Controller():
             errors["customer_id"] = "required"
         if "video_id" not in data:
             errors["video_id"] = "required"
+
+        #try:
+        #    customer_id = int(data["customer_id"])
+        #    video_id = int(data["video_id"])
+        #except ValueError:
+        #    return {"errors":"Invalid Data Type"}
 
         if "customer_id" in data:
             customer = Customer.query.get(data["customer_id"])

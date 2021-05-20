@@ -39,7 +39,7 @@ class Customer_Controller():
         customer = Customer.query.get(customer_id)
         if not customer:
             error = {"errors":["Not Found"]}
-            return make_response(error, 400)
+            return make_response(error, 404)
         json = cls.customer_json(customer)
         return make_response(json, 200)
 
@@ -48,7 +48,7 @@ class Customer_Controller():
         customer = Customer.query.get(customer_id)
         if not customer:
             error = {"errors":["Not Found"]}
-            return make_response(error, 400)
+            return make_response(error, 404)
         errors = cls.validate_data(data)
         if errors:
             return make_response(errors, 400)
@@ -64,10 +64,10 @@ class Customer_Controller():
         customer = Customer.query.get(customer_id)
         if not customer:
             error = {"errors":["Not Found"]}
-            return make_response(error, 400)
+            return make_response(error, 404)
         db.session.delete(customer)
         db.session.commit()
-        result = {"details": f"Customer {customer_id} \"{customer.name}\" successfully deleted"}
+        result = {"id": customer.customer_id}
         return make_response(result, 200)
 
     # CLASS HELPER METHODS
