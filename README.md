@@ -34,7 +34,7 @@ Requests and Responses in Flask (required)
 
 ### Part 2
 
-Building and API (required)
+Building an API (required)
 Update and Delete (required)
 More Flask Queries (required)
 Testing our APIs (optional)
