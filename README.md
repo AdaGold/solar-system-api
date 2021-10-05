@@ -22,10 +22,22 @@ Here is a minimal setup for a Flask API.
 - Trade-off driver and navigator roles often
 - Take time to make sure you're on the same page
 
-## Guidelines for Stand Up
+## Submission Requirements
 
-- Prepare your updates
-- Describe:
-  - What you did since the last update
-  - What you plan to do today
-- Feel free to be brief
+The requirements for Solar System API are described in the Activites in Learn. 
+
+The activities required for submission are outlined by Learn topic below:
+
+### Part 1
+
+Requests and Responses in Flask (required)
+
+### Part 2
+
+Building an API (required)
+Update and Delete (required)
+More Flask Queries (required)
+Testing our APIs (optional)
+
+
+
