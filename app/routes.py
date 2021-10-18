@@ -6,3 +6,5 @@ import pprint
 planet_data = load_json.load('planets.json')
 satellite_data = load_json.load('satellites.json')
 
+pprint.pprint(planet_data, sort_dicts=False)
+pprint.pprint(satellite_data, sort_dicts=False)
