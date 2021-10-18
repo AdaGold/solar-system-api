@@ -37,8 +37,7 @@ def handle_planets():
                 "moon_count": planet.moon_count,
             }
         )
-    return planets_response
-    # return jsonify(planets_response)
+    return jsonify(planets_response)
 
 
 @planets_bp.route("/<planet_id>", methods=["GET"])
