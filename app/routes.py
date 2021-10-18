@@ -38,4 +38,11 @@ def get_all_planets():
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def get_single_planet(planet_id):
     planet_id = int(planet_id)
-    
+    for each_planet in planet_instances:
+        if each_planet.id == planet_id:
+            return {
+                "id": each_planet.id,
+                "name": each_planet.name,
+                "description": each_planet.description,
+                "mythology": each_planet.mythology,
+            }
