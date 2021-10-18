@@ -20,17 +20,35 @@ def make_planet_objects():
 
     return planets_list
 
+planets = make_planet_objects()
+
 planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
 
 @planets_bp.route("/", methods=["GET"])
 def handle_planets():
-    planet_response = []
-    planets = make_planet_objects()
+    planets_response = []
+    
     for planet in planets:
-        planet_response.append({
+        planets_response.append({
             "id": planet.id,
             "name": planet.name,
             "description": planet.description,
             "num_of_moons": planet.num_of_moons
             })
+    return jsonify(planets_response)
+
+
+@planets_bp.route("/<planet_id>", methods=["GET"])
+def handle_planet(planet_id):
+    planet_id = int(planet_id)
+
+    planet_response = {}
+
+    for planet in planets:
+        if planet_id == planet.id:
+            planet_response["id"] = planet.id
+            planet_response["name"] = planet.name
+            planet_response["description"] = planet.description
+            planet_response["num_of_moons"] = planet.num_of_moons
+            
     return jsonify(planet_response)
