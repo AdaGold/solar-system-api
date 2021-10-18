@@ -40,13 +40,17 @@ def handle_planet(planet_id):
       return {'id': planet.id, 'name':planet.name, 
     'description':planet.description, 'number of moons': planet.number_of_moons}
 
+# Accessing data from French solar system API
+# Using blueprint decorator to let client access 'planet/bodies' endpoint
 @planets_bp.route('/bodies', methods=['GET'])
+# This function indicates that the content is not hardcoded and not available in localhost.
+# This function uses requests package to access a different URL
 def get_bodies_from_solar():
   path = 'https://api.le-systeme-solaire.net/rest/bodies/'
   query_params = {
-          "filter": [],
+          "filter": [isPlanet,neq,False],
           "format": "json"
       }
   response = requests.get(path, params=query_params)
-      response_body = response.json()
+  response_body = response.json()
       
