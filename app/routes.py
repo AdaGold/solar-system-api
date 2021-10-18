@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify
 
 class Planet:
     def __init__(self, id, name, description, radius_size):
@@ -12,3 +12,5 @@ planets = [
     Planet(2, "Saturn", "The most distant planet that can be seen with the naked eye.", "36,184 mi" ),
     Planet(3, "Mars", "The fourth planet from the Sun and is a dusty, cold, desert world with a very thin atmosphere", "2,10.61 mi")
 ] 
+
+planets_bp = Blueprint('planets', __name__, url_prefix='/planets')
