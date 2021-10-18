@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify
+import requests
 
 class Planet:
     def __init__(self, id, name, description, moons):
@@ -27,3 +28,34 @@ def all_planets():
             "moons" : planet.moons
         })
     return jsonify(planets_response)
+
+@planets_bp.route("/category_planets", methods=["GET"])
+def get_category_planets(): 
+    path = "https://api.le-systeme-solaire.net/rest.php/bodies"
+
+    query_params = {
+        "filter[]": "isPlanet,neq,false",
+        "data": "id,englishName,isPlanet"
+    }
+
+    response = requests.get(path, params=query_params)
+
+    return response.json()
+    
+@planets_bp.route("/<planet_id>", methods=["GET"])
+def handle_planet(planet_id):
+    planet_id = int(planet_id)
+    for planet in planets:
+        if planet.id == planet_id:
+            return {
+               "id" : planet.id,
+                "name" : planet.name,
+                "description" : planet.description,
+                "moons" : planet.moons
+            }
+
+
+
+    # print("The value of response is", response)
+    # print("The value of response.text, which contains a text description of the request, is", response.text)
+
