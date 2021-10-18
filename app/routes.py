@@ -19,6 +19,7 @@ planets = [
 ]
 
 planets_bp = Blueprint("planets", __name__)
+one_planet_bp = Blueprint("one_planet", __name__, url_prefix="/planet")
 
 @planets_bp.route("/planets", methods=["GET"])
 def all_planets():
@@ -32,3 +33,17 @@ def all_planets():
         }
         planets_return.append(planet_dict)
     return jsonify(planets_return)
+
+#one_planet_bp = Blueprint("one_planet", __name__, url_prefix="/planet")
+# http://127.0.0.1:5000/planet/<planet_id>
+@one_planet_bp.route("/<planet_id>", methods=["GET"])
+def one_planet(planet_id):
+    planet_id = int(planet_id)
+    for planet in planets:
+        if planet.id == planet_id:
+            return {
+                "id": planet.id,
+                "name": planet.name,
+                "description": planet.description,
+                "color": planet.color
+            }
