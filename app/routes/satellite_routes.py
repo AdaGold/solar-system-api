@@ -29,3 +29,21 @@ def handle_satellites():
             "description": satellite.description
         })
     return jsonify(satellites_response)
+
+@satellite_bp.route("/<satellite_id>", methods=["GET"])
+def handle_satellite(satellite_id):
+    satellite_id = int(satellite_id)
+
+    satellite_response = {}
+
+    for satellite in satellites:
+        print(f"{satellite_id=}")
+        print(f"{satellite.id=}")
+        if satellite_id == satellite.id:
+            print(satellite.name)
+            satellite_response["id"] = satellite.id
+            satellite_response["name"] = satellite.name
+            satellite_response["planet_id"] = satellite.planet_id
+            satellite_response["description"] = satellite.description
+
+    return jsonify(satellite_response)
