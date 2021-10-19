@@ -10,7 +10,7 @@ def make_satellites_objects():
 
     for satellite in satellite_data:
         description = f'{satellite["name"]} is the {satellite["id"]} satellite that belongs to {satellite["planetId"]}.'
-        satellite_object = Satellite(satellite["id"], satellite["name"], description, satellite["planetId"])
+        satellite_object = Satellite(satellite["name"], satellite["id"], satellite["planetId"], description)
         satellites_list.append(satellite_object)
 
     return satellites_list
