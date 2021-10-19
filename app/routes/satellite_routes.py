@@ -18,3 +18,14 @@ def make_satellites_objects():
 satellites = make_satellites_objects()
 satellite_bp = Blueprint("satellites", __name__, url_prefix="/satellites")
 
+@satellite_bp.route("/", methods=["GET"])
+def handle_satellites():
+    satellites_reponse = []
+    for satellite in satellites:
+        satellite_reponse.append({
+            "id" : satellite.id,
+            "name": satellite.name,
+            "planet_id": satellite.planet_id,
+            "description": satellite.description
+        })
+    return jsonify(satellites_reponse)
