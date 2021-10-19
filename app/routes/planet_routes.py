@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
-from .planets_class import Planet
-from .load_json import load
+from app.planets_class import Planet
+from app.load_json import load
 import pprint
 
 # loads json data as dictionaries
