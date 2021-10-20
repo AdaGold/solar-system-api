@@ -12,8 +12,17 @@ class Planet:
         self.moons = moons
 
 
-planet_1= Planet("Mercury", 1, "Rocky", "Mercury is the closest planet to the sun and the eighth largest. It has a diameter of 4,880 kilometers. ", "1 Moon")
-planet_2= Planet("Venus", 2, "Terrestrial","Venus is the second planet from the Sun. It is named after the Roman goddess of love and beauty.", "13 Moons")
+planet_1= Planet("Mercury",
+                1, 
+                "Rocky", 
+                "Mercury is the closest planet to the sun and the eighth largest. It has a diameter of 4,880 kilometers. ",
+                "1 Moon")
+
+planet_2= Planet("Venus",
+                2,
+                "Terrestrial",
+                "Venus is the second planet from the Sun. It is named after the Roman goddess of love and beauty.",
+                "13 Moons")
 
 
 planet_lst=[planet_1,planet_2]
@@ -33,11 +42,9 @@ def handle_planets():
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def get_planet(planet_id):
     planet_id = int(planet_id)
-    for planet in planet_lst:
-        if planet.id == planet_id:
-            return {
-                "id":planet.id,
-                "name": planet.name,
-                "type": planet.description,
-                "moons": planet.moons
-            }
+
+    result = [vars(planet) for planet in planet_lst if planet.id == planet_id]
+    return jsonify(result)
+    # for planet in planet_lst:
+    #     if planet.id == planet_id:
+    #         return vars(planet)
