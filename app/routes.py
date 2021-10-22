@@ -40,9 +40,9 @@ def get_single_planet(planet_id):
     planet_id = int(planet_id)
     for each_planet in planet_instances:
         if each_planet.id == planet_id:
-            return {
+            return jsonify({
                 "id": each_planet.id,
                 "name": each_planet.name,
                 "description": each_planet.description,
                 "mythology": each_planet.mythology,
-            }
+            })
