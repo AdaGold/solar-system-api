@@ -22,6 +22,9 @@ def find_planets():
 
     elif request.method == "POST":
         request_body = request.get_json()
+        if "title" not in request_body or "description" not in request_body:
+            return make_response(f"Not Found", 404)
+
         new_planet = Planet(name=request_body["name"], description=request_body["description"], color=request_body["color"])
 
         db.session.add(new_planet)
