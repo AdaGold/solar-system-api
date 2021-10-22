@@ -1,35 +1,54 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request, make_response
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 import requests
+from app.Models.planets import Planet
+from app import db
 
 planets_bp = Blueprint('planets',__name__, url_prefix='/planets')
 # defining class planet
-class Planet:
-    def __init__(self,id, name, description, number_of_moons):
-        self.id = id
-        self.name = name
-        self.description = description
-        self.number_of_moons = number_of_moons
+# class Planet:
+#     def __init__(self,id, name, description, number_of_moons):
+#         self.id = id
+#         self.name = name
+#         self.description = description
+#         self.number_of_moons = number_of_moons
 # data set for Planet objects
-planets = [
-            Planet(1,'Earth', 'water planet', 1), 
-            Planet(2, 'Mercury', 'fastest', 0),
-            Planet(3, 'Jupiter', 'biggest', 79),
-            Planet(4, 'Saturn', 'gaseous', 82),
-            Planet(5, 'Mars', 'red', 2),
-            Planet(6, 'Uranus', 'coldest', 27),
-            Planet(7, 'Neptune', 'farthest from the sun', 14),
-            Planet(8, 'Venus', 'hottest', 0)
-          ]
+# planets = [
+#             Planet(1,'Earth', 'water planet', 1), 
+#             Planet(2, 'Mercury', 'fastest', 0),
+#             Planet(3, 'Jupiter', 'biggest', 79),
+#             Planet(4, 'Saturn', 'gaseous', 82),
+#             Planet(5, 'Mars', 'red', 2),
+#             Planet(6, 'Uranus', 'coldest', 27),
+#             Planet(7, 'Neptune', 'farthest from the sun', 14),
+#             Planet(8, 'Venus', 'hottest', 0)
+#           ]
 
 # planets_bp is a Blueprint object
-@planets_bp.route('', methods=['GET'])
-# this function is to allow a user to access all planets info
-def handle_planets():
+#@planets_bp.route('', methods=['GET'])
+# this function is to allow a user to access all planets info from a db that is hard coded into the program
+def handle_planets_with_hardcode_data():
   planets_response = []
   for planet in planets:
     planets_response.append({'id': planet.id, 'name':planet.name, 
     'description':planet.description, 'number of moons': planet.number_of_moons})
   return jsonify(planets_response)
+# this function allows a user to access all planets or just one planet with it's id,
+# using SQLAlchemey and a database connection (not hard coded)
+@planets_bp.route('', methods=['POST'])
+def user_creates_new_planet():
+  request_body = request.get_json()
+  new_planet = Planet(name=request_body["name"],
+                    description=request_body["description"],
+                    number_of_moons=request_body["number_of_moons"])
+
+  db.session.add(new_planet)
+  db.session.commit()
+
+  return make_response(f"Planet {new_planet.name} successfully created", 201)
+  
+
 
 @planets_bp.route('/<planet_id>', methods=['GET'])
 # this function  is to allow a user to access just one planet's info, given the planet id
