@@ -34,23 +34,53 @@ def handle_planets_with_hardcode_data():
     planets_response.append({'id': planet.id, 'name':planet.name, 
     'description':planet.description, 'number of moons': planet.number_of_moons})
   return jsonify(planets_response)
-# this function allows a user to access all planets or just one planet with it's id,
+# this function allows a user to create a planet or access all planets
 # using SQLAlchemey and a database connection (not hard coded)
-@planets_bp.route('', methods=['POST'])
-def user_creates_new_planet():
-  request_body = request.get_json()
-  new_planet = Planet(name=request_body["name"],
-                    description=request_body["description"],
-                    number_of_moons=request_body["number_of_moons"])
+@planets_bp.route('', methods=['POST', 'GET'])
+def user_creates_new_planet_reads_all_planets():
+    if request.method == "GET":
+    # this SQLAlchemy syntax tells Planet to query for all() planets. This method returns a list of instances of Planet. 
+      planets = Planet.query.all()
+      planets_response = []
+    # looping through list of planet objects and adding formatted data into planets_response list
+    # planets_response will be a list of dicts 
+      for planet in planets:
+        planets_response.append({
+                "id": planet.id,
+                "name": planet.name,
+                "description": planet.description,
+                "number_of_moons": planet.number_of_moons
+            })
+      return jsonify(planets_response)
+    # if user wants to add a new planet to DB, execute following lines
+    elif request.method == "POST":
+      request_body = request.get_json()
+      new_planet = Planet(name=request_body["name"],
+                        description=request_body["description"],
+                        number_of_moons=request_body["number_of_moons"])
 
-  db.session.add(new_planet)
-  db.session.commit()
+      db.session.add(new_planet)
+      db.session.commit()
 
-  return make_response(f"Planet {new_planet.name} successfully created", 201)
+      return make_response(f"Planet {new_planet.name} successfully created", 201)
   
 
 
 @planets_bp.route('/<planet_id>', methods=['GET'])
+# this function  is to allow a user to access just one planet's info, given the planet id
+# using the query method of SQLAlchemy
+def user_gets_one_planet(planet_id):
+  planet = Planet.query.get(planet_id)
+  return {
+    "id": planet.id,
+    "name": planet.name,
+    "description": planet.description,
+    "number_of_moons": planet.number_of_moons
+
+  }
+
+
+
 # this function  is to allow a user to access just one planet's info, given the planet id
 def handle_planet(planet_id):
   planet_id = int(planet_id)
