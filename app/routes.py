@@ -8,6 +8,7 @@ planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 @planets_bp.route("", methods=["GET", "POST"])
 def handle_planets():
     if request.method == "POST":
+        # get request body
         request_body = request.get_json()
         if "name" not in request_body or "description" not in request_body or "distance_from_sun_in_million_mi" not in request_body or "moon_count" not in request_body:
             # make_response is used to create header
@@ -20,6 +21,8 @@ def handle_planets():
             distance_from_sun_in_million_mi=request_body["distance_from_sun_in_million_mi"],
             moon_count=request_body["moon_count"]
         )
+        
+        # collect changes and sent to database
         db.session.add(new_planet)
         db.session.commit()
 
