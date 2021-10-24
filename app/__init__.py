@@ -19,7 +19,7 @@ migrate = Migrate()
 def create_app(test_config = None):
     app = Flask(__name__)
     
-    app.config['SQLAlCHEMY_TRACK_MODIFICATIONS']= False
+    app.config['SQLAlCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:postgres@localhost:5432/solar_system_development'
 
     db.init_app(app)
