@@ -4,7 +4,6 @@ from app.models.planet import Planet
 from app.load_json import load
 import jsonschema
 from jsonschema import validate
-import jsonpickle
 import json
 
 # loads json data as dictionaries
