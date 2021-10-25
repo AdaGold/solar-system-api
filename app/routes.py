@@ -5,7 +5,9 @@ import requests
 from app.Models.planets import Planet
 from app import db
 
+# planets_bp is a Blueprint object
 planets_bp = Blueprint('planets',__name__, url_prefix='/planets')
+
 # defining class planet
 # class Planet:
 #     def __init__(self,id, name, description, number_of_moons):
@@ -25,7 +27,7 @@ planets_bp = Blueprint('planets',__name__, url_prefix='/planets')
 #             Planet(8, 'Venus', 'hottest', 0)
 #           ]
 
-# planets_bp is a Blueprint object
+
 #@planets_bp.route('', methods=['GET'])
 # this function is to allow a user to access all planets info from a db that is hard coded into the program
 def handle_planets_with_hardcode_data():
