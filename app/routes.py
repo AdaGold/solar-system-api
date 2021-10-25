@@ -43,10 +43,10 @@ def handle_planets():
         return make_response(f"Planet {new_planet.name} successfully created", 201)
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def handle_planet(planet_id):
-    planet_id = int(planet_id)
-    for planet in planets:
-        if planet.id == planet_id:
-            return {"id": planet.id,
-            "name": planet.name,
-            "description": planet.description,
-            "cycle length (days)": planet.cycle_len}
+    if request.method == "GET":
+        planet = Planet.query.get(planet_id)
+
+        return {"id": planet.id,
+        "name": planet.name,
+        "description": planet.description,
+        "cycle length (days)": planet.cycle_len}\
