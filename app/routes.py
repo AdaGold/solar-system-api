@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, make_response, request
+from flask import Blueprint, json, jsonify, make_response, request
 from app import db
 from app.models.planet import Planet
 
@@ -34,16 +34,27 @@ def find_planets():
 
 
 
-@planets_bp.route("/<planet_id>", methods=["GET"])
+@planets_bp.route("/<planet_id>", methods=["GET", "PUT"])
 def find_planet(planet_id):
     planet_id = int(planet_id)
-    planets = Planet.query.all()
-    for planet in planets:
-        if planet_id == planet.id:
-            return {
-                "id": planet.id,
-                "name": planet.name,
-                "description": planet.description,
-                "color": planet.color
-            }
+    planet = Planet.query.get(planet_id)
+    if planet is None:
+        return jsonify("Not Found"), 404
+
+    if request.method == "GET":
+        return {
+            "id": planet.id,
+            "name": planet.name,
+            "description": planet.description,
+            "color": planet.color
+        }
+    elif request.method == "PUT":
+        request_body = request.get_json()
+
+        planet.name = request_body["name"]
+        planet.description = request_body["description"]
+        planet.color = request_body["color"]
+
+        db.session.commit()
+        return jsonify(f"Planet {planet.name} successsfully updated"), 200
 
