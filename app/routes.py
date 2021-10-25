@@ -66,18 +66,36 @@ def user_creates_new_planet_reads_all_planets():
   
 
 
-@planets_bp.route('/<planet_id>', methods=['GET'])
+@planets_bp.route('/<planet_id>', methods=['GET', 'PUT', 'DELETE'])
 # this function  is to allow a user to access just one planet's info, given the planet id
 # using the query method of SQLAlchemy
-def user_gets_one_planet(planet_id):
+def handle_one_planet(planet_id):
   planet = Planet.query.get(planet_id)
-  return {
-    "id": planet.id,
-    "name": planet.name,
-    "description": planet.description,
-    "number_of_moons": planet.number_of_moons
+  if request.method == "GET":
+    return {
+      "id": planet.id,
+      "name": planet.name,
+      "description": planet.description,
+      "number_of_moons": planet.number_of_moons
 
-  }
+    }
+  # this block of code is to update an existing record
+  elif request.method == "PUT":
+  # form data is a local variable to hold the body of the HTTP request
+    form_data = request.get_json()
+    planet.name = form_data['name']
+    planet.description = form_data['description']
+    planet.number_of_moons = form_data['number_of_moons']
+  # use session.commit method of db (which is our instance of SQLAlchemy class) to save 
+  # changes to db
+    db.session.commit()
+    return make_response(f"Planet #{planet.id} successfully updated")
+# this block of code is to delete one record
+  elif request.method == "DELETE":
+    db.session.delete(planet)
+    db.session.commit()
+    return make_response(f"Planet #{planet.id} successfully deleted")
+
 
 
 
