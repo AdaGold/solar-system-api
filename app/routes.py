@@ -1,69 +1,48 @@
-from flask import Blueprint
-from flask import jsonify
+from app import db
+from app.models.planet import Planet
+from flask import Blueprint, jsonify, make_response, request
 
 planet_bp = Blueprint("planets", __name__, url_prefix="/planets")
 
-
-class Planet:
-    def __init__(self, id, name, description, moon=False):
-        self.id = id
-        self.name = name
-        self.description = description
-        self.moon = moon
-
-    @staticmethod
-    def make_json_data(planets):
-        planet_response_object = []
-        for planet in planets:
-            planet_response_object.append(
-                {
-                    "id": planet.id,
-                    "name": planet.name,
-                    "description": planet.description,
-                    "moon": planet.moon
-                }
-            )
-        return jsonify(planet_response_object)
-
-
-planets = [Planet(1, "Jenesess", "chaos", True), Planet(2, "Binet", "misandrist", False), Planet(3, "Nerouba", "purple haze", True)]
-
-@planet_bp.route("", methods=["GET"])
+@planet_bp.route("", methods=["GET", "POST"])
 def get_planets():
-    planet_response = Planet.make_json_data(planets)
-    return planet_response
+    if request.method == "GET":
+        planets = Planet.query.all()
+        planets_response = []
+        for planet in planets:
+            planets_response.append({
+                "id": planet.id,
+                "name": planet.name,
+                "description": planet.description,
+                "moon": planet.moon
+            })
+        return jsonify(planets_response)
+    if request.method == "POST":
+        request_body = request.get_json()
+        new_planet = Planet(name=request_body["name"],
+        description = request_body["description"],
+        moon = request_body["moon"])
 
-    # planet_response = []
-    # for planet in planets:
-    #     planet_response.append(
-    #         {
-    #             "id": planet.id,
-    #             "name": planet.name,
-    #             "description": planet.description,
-    #             "moon": planet.moon
-    #         }
-    #     )
-    # return jsonify(planet_response)
+    db.session.add(new_planet)
+    db.session.commit()
 
+    new_planet_response = {
+        "id": new_planet.id,
+        "name": new_planet.name,
+        "description": new_planet.description,
+        "moon": new_planet.moon
+        }
 
-@planet_bp.route("<planet_id>", methods=["GET"])
-def single_planet(planet_id):
-    planet_data = Planet.make_json_data(planets)
-    for planet in planet_data:
-        if planet_id == planet["id"]:
-            return jsonify(planet)
+    return make_response(new_planet_response, 201)
+    #APIs usually return the new object, not friendly strings
 
-
-# def single_planet():
-#     planet_response = []
-#     for planet in planets:
-#         if planet_response["id"] == id:
-#             planet_response.append(
-#             {
-#                 "id": planet.id,
-#                 "name": planet.name,
-#                 "description": planet.description,
-#                 "moon": planet.moon
-#             }
-#         )
-#     return jsonify(planet_response)
+@planet_bp.route("/<id>", methods=["GET"])
+def single_planet(id):
+    id = int(id)
+    planet = Planet.query.get(id)
+    return {
+        "id": planet.id,
+        "name": planet.name,
+        "description": planet.description,
+        "moon": planet.moon
+            }
