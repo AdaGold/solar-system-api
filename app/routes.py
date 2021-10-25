@@ -1,4 +1,7 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify, make_response, request
+from app import db
+from app.models.planet import Planet
+
 
 class Planet:
     def __init__(self, id, name, description, moons):
@@ -8,9 +11,9 @@ class Planet:
         self.moons = moons 
 
 planets = [
-    Planet(1, "Mercury", "Smallest planet", "None"),
-    Planet(2,"Venus", "Second planet from sun","None"),
-    Planet(3, "Jupiter", "Gas giant", "53")
+    Planet(1, "Mercury", "Smallest planet", 0),
+    Planet(2,"Venus", "Second planet from sun",0),
+    Planet(3, "Jupiter", "Gas giant", 53)
     ]
 planets_bp = Blueprint("planets", __name__,url_prefix="/planets")
 
