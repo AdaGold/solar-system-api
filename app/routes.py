@@ -21,6 +21,9 @@ def get_all_planets():
 @planets_bp.route("", methods=["POST"])
 def create_new_planet():
     request_body = request.get_json()
+    if "name" not in request_body or "description" not in request_body or "mythology" not in request_body:
+        return jsonify({"message": "Missing input"}), 400
+
     new_planet = Planet(name=request_body["name"],
                     description=request_body["description"],
                     mythology=request_body["mythology"]
