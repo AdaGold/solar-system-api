@@ -31,8 +31,8 @@ def handle_planets():
     planets_response = []
     
     for planet in planets:
-        current_planet = make_planet_dict(planet)
-        planets_response.append(current_planet)
+        current_planet_dict = make_planet_dict(planet)
+        planets_response.append(current_planet_dict)
         
     return jsonify(planets_response) 
 
