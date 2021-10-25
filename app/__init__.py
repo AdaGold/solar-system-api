@@ -5,18 +5,21 @@ from flask_migrate import Migrate
 db = SQLAlchemy()
 migrate = Migrate()
 
+
 def create_app(test_config=None):
     app = Flask(__name__)
 
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:postgres@localhost:5432/planets_database'
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config[
+        "SQLALCHEMY_DATABASE_URI"
+    ] = "postgresql+psycopg2://postgres:postgres@localhost:5432/planets_database"
 
     db.init_app(app)
     migrate.init_app(app, db)
 
-    from .routes import planets_bp, one_planet_bp
-    app.register_blueprint(planets_bp)
-    app.register_blueprint(one_planet_bp)
+    from .routes import planet_bp
+
+    app.register_blueprint(planet_bp)
 
     from app.models.planet import Planet
 
