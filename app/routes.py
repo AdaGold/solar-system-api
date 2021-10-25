@@ -42,4 +42,4 @@ def get_single_planet(planet_id):
             "mythology": planet.mythology,
             })
     else:
-        return {"Message": f"This {planet} does not exist"}, 404
+        return {"Message": f"This planet does not exist"}, 404
