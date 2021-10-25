@@ -34,7 +34,7 @@ def find_planets():
 
 
 
-@planets_bp.route("/<planet_id>", methods=["GET", "PUT"])
+@planets_bp.route("/<planet_id>", methods=["GET", "PUT", "DELETE"])
 def find_planet(planet_id):
     planet_id = int(planet_id)
     planet = Planet.query.get(planet_id)
@@ -56,5 +56,9 @@ def find_planet(planet_id):
         planet.color = request_body["color"]
 
         db.session.commit()
-        return jsonify(f"Planet {planet.name} successsfully updated"), 200
+        return jsonify(f"Planet {planet.name} successfully updated"), 200
 
+    elif request.method == "DELETE":
+        db.session.delete(planet)
+        db.session.commit()
+        return jsonify(f"Planet {planet.name} successfully deleted"), 200
