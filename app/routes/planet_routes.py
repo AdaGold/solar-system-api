@@ -9,16 +9,6 @@ import json
 # loads json data as dictionaries
 #planet_data = load('app/planets.json')
 
-planet_schema = {
-    "key-values":
-        {
-            "name": {"type", "string"},
-            "description": {"type", "string"},
-            "num_of_moons": {"type", "integer"}
-        },
-    "required": ["name", "description", "num_of_moons"]
-}
-
 # primitive types: null, boolean, object, array, number, or string
 # integer matches any number with a zero fractional part
 
