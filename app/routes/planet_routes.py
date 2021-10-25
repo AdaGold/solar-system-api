@@ -4,6 +4,7 @@ from app.models.planet import Planet
 from app.load_json import load
 import jsonschema
 from jsonschema import validate
+import jsonpickle
 import json
 
 # loads json data as dictionaries
@@ -70,18 +71,15 @@ def get_planets():
             })
     return jsonify(planets_response)
 
+@planets_bp.route("/<planet_id>", methods=["GET"])
+def get_planet(planet_id):
+    planet_id = int(planet_id)
 
-# @planets_bp.route("/<planet_id>", methods=["GET"])
-# def handle_planet(planet_id):
-#     planet_id = int(planet_id)
+    planet = Planet.query.get(planet_id)
 
-#     planet_response = {}
-
-#     for planet in planets:
-#         if planet_id == planet.id:
-#             planet_response["id"] = planet.id
-#             planet_response["name"] = planet.name
-#             planet_response["description"] = planet.description
-#             planet_response["num_of_moons"] = planet.num_of_moons
-            
-#     return jsonify(planet_response)
+    return {
+            "id": planet.id,
+            "name": planet.name,
+            "description": planet.description,
+            "num_of_moons": planet.num_of_moons
+            }
