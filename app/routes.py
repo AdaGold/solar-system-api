@@ -34,9 +34,12 @@ def create_new_planet():
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def get_single_planet(planet_id):
     planet = Planet.query.get(planet_id)
-    return jsonify({
-        "id": planet.id,
-        "name": planet.name,
-        "description": planet.description,
-        "mythology": planet.mythology,
-        })
+    if planet:
+        return jsonify({
+            "id": planet.id,
+            "name": planet.name,
+            "description": planet.description,
+            "mythology": planet.mythology,
+            })
+    else:
+        return {"Message": f"This {planet} does not exist"}, 404
