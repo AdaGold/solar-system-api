@@ -12,12 +12,34 @@ import json
 planet_schema = {
     "key-values":
         {
-        "name": {"type", "string"},
-        "description": {"type", "string"},
-        "num_of_moons": {"type", "integer"}
-    },
+            "name": {"type", "string"},
+            "description": {"type", "string"},
+            "num_of_moons": {"type", "integer"}
+        },
     "required": ["name", "description", "num_of_moons"]
 }
+
+# primitive types: null, boolean, object, array, number, or string
+# integer matches any number with a zero fractional part
+
+planet_schema = {
+    "title": "Planet Data",
+    "description": "Contains planet name, description, and how many moons.",
+    "required": ["name", "description", "num_of_moons"],
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+        },
+        "description": {
+            "type": "string",
+        },
+        "num_of_moons": {
+            "type": "number"
+        }
+    }
+}
+
 
 def validate_json(json_data):
     try:
@@ -38,15 +60,16 @@ def validate_json(json_data):
 
 # planets = make_planet_objects()
 
+
 planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
+
 
 @planets_bp.route("", methods=["POST"])
 def populate_planets():
     request_body = request.get_json()
-    to_check = json.dumps(request_body)
-    if not validate_json(to_check):
+    if not validate_json(request_body):
         return make_response("Invalid response", 404)
-    
+
     new_planet = Planet(
         name=request_body["name"],
         description=request_body["description"],
@@ -57,7 +80,8 @@ def populate_planets():
 
     return make_response(f"Successfully added {new_planet.name} to Solar System Database", 201)
 
-@planets_bp.route("/", methods=["GET"])
+
+@planets_bp.route("", methods=["GET"])
 def get_planets():
     planets = Planet.query.all()
     planets_response = []
@@ -67,7 +91,7 @@ def get_planets():
             "name": planet.name,
             "description": planet.description,
             "num_of_moons": planet.num_of_moons
-            })
+        })
     return jsonify(planets_response)
 
 
@@ -83,5 +107,5 @@ def get_planets():
 #             planet_response["name"] = planet.name
 #             planet_response["description"] = planet.description
 #             planet_response["num_of_moons"] = planet.num_of_moons
-            
+
 #     return jsonify(planet_response)
