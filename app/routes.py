@@ -1,4 +1,6 @@
 from flask import Blueprint, jsonify
+from app.models.planet import Planet
+from app import db
 
 class Planets:
     def __init__(self, id, name, description, proximity):
@@ -22,9 +24,21 @@ planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
 
 @planets_bp.route("/all", methods=["GET"])
 def list_all_planets():
-    planets = ["Mercury", "Venus", "Earth", "Mars", \
-    "Jupiter", "Saturn", "Uranus", "Neptune"]
-    return jsonify(planets)
+    #planets = ["Mercury", "Venus", "Earth", "Mars", \
+    #"Jupiter", "Saturn", "Uranus", "Neptune"]
+    #return jsonify(planets)
+
+    planets_response = []
+    planets = Planet.query.all()
+    for planet in planets:
+        planets_response.append({
+            "id" : planet.id,
+            "name" : planet.name,
+            "description" : planet.description,
+            "proximity" : planet.proximity
+        })
+
+    return jsonify(planets), 200
 
 @planets_bp.route("/<id>", methods=["GET"])
 def list_one(id):
