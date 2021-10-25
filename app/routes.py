@@ -1,19 +1,6 @@
-from flask import Blueprint, jsonify
-
-class Planet:
-    def __init__(self, id, name, description, num_of_moons):
-        self.id = id 
-        self.name = name 
-        self.description = description 
-        self.num_of_moons = num_of_moons
-
-planets = [
-    Planet(1, "Mercury", "First planet from the sun", 0),
-    Planet(2, "Venus", "Second planet from the sun", 0),
-    Planet(3, "Earth", "Third planet from the sun", 1),
-    Planet(4, "Mars", "Fourth planet from the sun", 2),
-    Planet(5, "Jupiter", "Fifth planet from the sun", 79)
-]
+from flask import Blueprint, jsonify, request, make_response
+from app import db
+from app.models.planet import Planet
 
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 
@@ -25,23 +12,53 @@ def make_planet_dict(planet):
                 "num_of_moons" : planet.num_of_moons
             }
 
-
-@planets_bp.route("", methods=["GET"])
+@planets_bp.route("", methods=["GET", "POST"])
 def handle_planets():
-    planets_response = []
-    
-    for planet in planets:
-        current_planet_dict = make_planet_dict(planet)
-        planets_response.append(current_planet_dict)
+    if request.method == "GET":
+        planets_response = []
+        planets = Planet.query.all()
         
-    return jsonify(planets_response) 
+        for planet in planets:
+            current_planet = make_planet_dict(planet)
+            planets_response.append(current_planet)
+            
+        return jsonify(planets_response) 
 
-@planets_bp.route("/<planet_id>", methods=["GET"])
+    else: 
+        request_body = request.get_json()
+        new_planet = Planet(
+            name=request_body["name"],
+            description=request_body["description"],
+            num_of_moons=request_body["num_of_moons"]
+        )
+        db.session.add(new_planet)
+        db.session.commit()
+
+        return f"Planet successfully created {new_planet.name}", 201
+
+@planets_bp.route("/<planet_id>", methods=["GET", "PUT", "DELETE"])
 def handle_one_planet(planet_id):
-    planet_response = jsonify("Not a valid planet")
+    planet = Planet.query.get(planet_id)
     
-    for planet in planets:
-        if planet.id == int(planet_id):
-            planet_response = make_planet_dict(planet)
+    # Guard clause 
+    if planet is None:
+        return make_response("", 404)
+    
+    if request.method == "GET": 
+        return make_planet_dict(planet)
+        
+    elif request.method == "PUT":
+        form_data = request.get_json()
+        planet.name = form_data["name"]
+        planet.description = form_data["description"]
+        planet.num_of_moons = form_data["num_of_moons"]
 
-    return planet_response
+        db.session.commit()
+        return make_response(f"Planet #{planet.id} changed successfully")
+
+    elif request.method == "DELETE":
+        db.session.delete(planet)
+        db.session.commit()
+
+        return make_response(f"Planet #{planet.id} deleted successfully")
+
