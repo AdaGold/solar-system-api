@@ -1,4 +1,5 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request, make_response
+from app import db
 from app.planets_class import Planet
 from app.load_json import load
 import pprint
@@ -6,8 +7,22 @@ import pprint
 # loads json data as dictionaries
 planet_data = load('app/planets.json')
 
-# pprint.pprint(planet_data, sort_dicts=False)
-# pprint.pprint(satellite_data, sort_dicts=False)
+planet_schema = {
+    "key-values":
+        {
+        "name": {"type", "string"},
+        "description": {"type", "string"},
+        "num_of_moons": {"type", "integer"},
+    },
+    "required": ["name", "description", "num_of_moons"]
+}
+
+def validate_json(json_data):
+    try:
+        validate(instance=json_data, schema=planet_schema)
+    except jsonschema.exceptions.ValidationError as err:
+        return False
+    return True
 
 def make_planet_objects():
     planets_list = []
@@ -22,6 +37,21 @@ def make_planet_objects():
 planets = make_planet_objects()
 
 planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
+
+@planets_bp.route("/", methods=["POST"])
+def handle_planets():
+    request_body = request.get_json()
+    new_planet = Planet(
+        name = request_body.name,
+        description = request_body.description,
+        num_of_moons= request_body.num_of_moons,
+    )
+    db.session.add(new_planet)
+    db.session.commit()
+
+    return make_response("sdfgkhdfg")
+
+
 
 @planets_bp.route("/", methods=["GET"])
 def handle_planets():
