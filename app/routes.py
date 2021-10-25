@@ -49,4 +49,4 @@ def handle_planet(planet_id):
         return {"id": planet.id,
         "name": planet.name,
         "description": planet.description,
-        "cycle length (days)": planet.cycle_len}\
+        "cycle length (days)": planet.cycle_len}
