@@ -46,3 +46,20 @@ def get_single_planet(planet_id):
             })
     else:
         return {"Message": f"This planet does not exist"}, 404
+
+@planets_bp.route("/<planet_id>", methods=["PUT"])
+def change_data(planet_id):
+    planet = Planet.query.get(planet_id)
+    form_data = request.get_json()
+
+    if planet:
+        planet.name = form_data["name"]
+        planet.description = form_data["description"]
+        planet.mythology = form_data["mythology"]
+
+        db.session.commit()
+        return make_response(f"Planet {planet.name} was updated!")
+    else:
+        return make_response(f"Error planet does not exist"), 404
+
+    
