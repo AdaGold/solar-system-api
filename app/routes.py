@@ -84,7 +84,7 @@ def all_planets():
 #         "density": planet.density
 #     }
 
-@planets_bp.route("/<planet_id>", methods=["GET", "PUT", "DELETE"])
+@planets_bp.route("/<planet_id>", methods=["GET", "PUT", "DELETE", "PATCH"])
 def one_planet(planet_id):
     planet = Planet.query.get(planet_id)
     if not planet:
@@ -110,3 +110,11 @@ def one_planet(planet_id):
         db.session.delete(planet)
         db.session.commit()
         return jsonify(f"Planet #{planet.id} successfully deleted"), 200
+
+    elif request.method == "PATCH":
+        request_body = request.get_json()
+        planet.planet_name = request_body['planet_name']
+        planet.description = request_body['description']
+        planet.density = request_body['density']
+        db.session.commit()
+        return jsonify(f"Planet{planet.id} successfully updated"), 200
