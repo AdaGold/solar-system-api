@@ -96,7 +96,7 @@ def handle_planet(planet_id):
     elif request.method == "PUT":
         request_body = request.get_json()
         for key, value in request_body.items():
-            if hasattr(planet, key):
+            if key in Planet.__table__.columns.keys():
                 setattr(planet, key, value)
 
 
