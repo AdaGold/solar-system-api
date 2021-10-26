@@ -15,14 +15,21 @@ def make_planet_dict(planet):
 @planets_bp.route("", methods=["GET", "POST"])
 def handle_planets():
     if request.method == "GET":
+
+        planet_name_query = request.args.get("name")
+        if planet_name_query: 
+            planets = Planet.query.filter(Planet.name.contains(planet_name_query))
+            # we can search for a substring
+        else: 
+            planets = Planet.query.all()
+
+
         planets_response = []
-        planets = Planet.query.all()
-        
         for planet in planets:
             current_planet = make_planet_dict(planet)
             planets_response.append(current_planet)
             
-        return jsonify(planets_response) 
+        return jsonify(planets_response), 200
 
     else: 
         request_body = request.get_json()
