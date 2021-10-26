@@ -7,7 +7,17 @@ planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
 @planets_bp.route("", methods=["GET", "POST"])
 def handle_planets():
     if request.method == "GET":
-        planets = Planet.query.all()
+        name_query = request.args.get("name")
+        description_query = request.args.get("description")
+        moon_query = request.args.get("moons")
+        if name_query:
+            planets = Planet.query.filter_by(name=name_query)
+        elif description_query:
+            planets = Planet.query.filter_by(description=description_query)
+        elif moon_query:
+            planets = Planet.query.filter_by(moons=moon_query)
+        else:
+            planets = Planet.query.all()
         planets_response = []
         for planet in planets:
             planets_response.append({
