@@ -30,6 +30,8 @@ def handle_planets():
 @planet_bp.route("/<planet_id>", methods=["GET", "PUT", "DELETE"])
 def handle_planet(planet_id):
     planet = Planet.query.get(planet_id)
+    if not planet:
+        return make_response(f"Planet #{planet_id} No planet found", 404)
     if request.method == "GET":
         return planet.to_json()
     elif request.method == "PUT":
@@ -40,8 +42,8 @@ def handle_planet(planet_id):
         planet.color = form_data["color"]
 
         db.session.commit()
-        return make_response(f"Planet #{planet.id} successfully updated")
+        return make_response(f"Planet #{planet_id} successfully updated")
     elif request.method == "DELETE":
         db.session.delete(planet)
         db.session.commit()
-        return make_response(f"Planet #{planet.id} successfully deleted")
+        return make_response(f"Planet #{planet_id} successfully deleted")
