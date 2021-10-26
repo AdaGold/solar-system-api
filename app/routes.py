@@ -34,15 +34,29 @@ def get_planets():
         }
 
     return make_response(new_planet_response, 201)
-    #APIs usually return the new object, not friendly strings
 
-@planet_bp.route("/<id>", methods=["GET"])
+@planet_bp.route("/<id>", methods=["GET", "PUT", "DELETE"])
 def single_planet(id):
     id = int(id)
     planet = Planet.query.get(id)
-    return {
-        "id": planet.id,
-        "name": planet.name,
-        "description": planet.description,
-        "moon": planet.moon
+    if planet is None:
+        return make_response("", 404)
+    if request.body == "GET":
+        return {
+            "id": planet.id,
+            "name": planet.name,
+            "description": planet.description,
+            "moon": planet.moon
             }
+    if request.method == "PUT":
+        form_data = request.get_json()
+
+        planet.name = form_data["name"]
+        planet.description = form_data["description"]
+        planet.moon = form_data["moon"]
+
+        db.session.commit()
+    if request.method == "DELETE":
+        db.session.delete(planet)
+        db.session.commit()
+        return make_response(f"Planet #{planet.id} successfully deleted")
