@@ -8,13 +8,7 @@ from app import db
 # planets_bp is a Blueprint object
 planets_bp = Blueprint('planets',__name__, url_prefix='/planets')
 
-# defining class planet
-# class Planet:
-#     def __init__(self,id, name, description, number_of_moons):
-#         self.id = id
-#         self.name = name
-#         self.description = description
-#         self.number_of_moons = number_of_moons
+
 # data set for Planet objects
 # planets = [
 #             Planet(1,'Earth', 'water planet', 1), 
@@ -28,14 +22,7 @@ planets_bp = Blueprint('planets',__name__, url_prefix='/planets')
 #           ]
 
 
-#@planets_bp.route('', methods=['GET'])
-# this function is to allow a user to access all planets info from a db that is hard coded into the program
-def handle_planets_with_hardcode_data():
-  planets_response = []
-  for planet in planets:
-    planets_response.append({'id': planet.id, 'name':planet.name, 
-    'description':planet.description, 'number of moons': planet.number_of_moons})
-  return jsonify(planets_response)
+
 # this function allows a user to create a planet or access all planets
 # using SQLAlchemey and a database connection (not hard coded)
 @planets_bp.route('', methods=['POST', 'GET'])
@@ -73,6 +60,9 @@ def user_creates_new_planet_reads_all_planets():
 # using the query method of SQLAlchemy
 def handle_one_planet(planet_id):
   planet = Planet.query.get(planet_id)
+# this guard clause will check if planet_id is valid for all 3 parts of the function
+  if planet is None:
+    return jsonify(f"Planet {planet_id} not found"), 404 
   if request.method == "GET":
     return {
       "id": planet.id,
@@ -101,13 +91,7 @@ def handle_one_planet(planet_id):
 
 
 
-# this function  is to allow a user to access just one planet's info, given the planet id
-def handle_planet(planet_id):
-  planet_id = int(planet_id)
-  for planet in planets:
-    if planet.id == planet_id:
-      return {'id': planet.id, 'name':planet.name, 
-    'description':planet.description, 'number of moons': planet.number_of_moons}
+
 
 # Accessing data from French solar system API
 # Using blueprint decorator to let client access 'planet/bodies' endpoint
