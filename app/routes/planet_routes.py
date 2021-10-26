@@ -84,15 +84,45 @@ def get_planets():
         })
     return jsonify(planets_response)
 
-@planets_bp.route("/<planet_id>", methods=["GET"])
-def get_planet(planet_id):
-    planet_id = int(planet_id)
+@planets_bp.route("/<planet_id>", methods=["GET", "PUT", "DELETE"])
+def handle_planet(planet_id):
+    # Sanitize input
+    try:
+        int(planet_id)
+    except:
+        return jsonify("ID given is not an integer.", 400)
 
+    # planet_id = int(planet_id)
     planet = Planet.query.get(planet_id)
 
-    return {
-            "id": planet.id,
-            "name": planet.name,
-            "description": planet.description,
-            "num_of_moons": planet.num_of_moons
-            }
+    if request.method == "GET":
+        return {
+                "id": planet.id,
+                "name": planet.name,
+                "description": planet.description,
+                "num_of_moons": planet.num_of_moons
+                }
+
+    elif request.method == "PUT":
+        request_body = request.get_json()
+        if not validate_json(request_body):
+            return jsonify("Invalid request.", 400)
+        
+        planet.name = request_body["name"]
+        planet.description = request_body["description"]
+        planet.num_of_moons = request_body["num_of_moons"]
+
+        db.session.commit()
+
+        return {
+                "id": planet.id,
+                "name": planet.name,
+                "description": planet.description,
+                "num_of_moons": planet.num_of_moons
+                }
+
+    elif request.method == "DELETE":
+        db.session.delete(planet)
+        db.session.commit()
+
+        return jsonify({"message": f"Deleted {planet.name} with {planet.id}"}), 200
