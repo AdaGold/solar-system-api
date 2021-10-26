@@ -1,4 +1,5 @@
 from app import db
+from app.models import planet
 from app.models.planet import Planet
 from flask import Blueprint, jsonify, make_response, request
 
@@ -52,3 +53,13 @@ def get_planet(planet_id):
         "moons": planet.moons,
     }, 200
     
+@planets_bp.route("/<planet_id>", methods=["PATCH"])
+def update_planet(planet_id):
+    planet = Planet.query.get(planet_id)
+    form_data = request.get_json()
+
+    planet.title = form_data["title"]
+    planet.description = form_data["description"]
+
+    db.session.commit()
+    return make_response(f"Planet {planet.id} successfully updated", 200)
