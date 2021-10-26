@@ -29,22 +29,36 @@ def handle_planets():
             })
         return jsonify(planets_response)
 
-@planets_bp.route("/<planet_id>", methods=["GET"])
+@planets_bp.route("/<planet_id>", methods=["GET", "PUT", "DELETE"])
 def handle_planet(planet_id):
     planet = Planet.query.get(planet_id)
+    if request.method == "GET":
+        if planet is None:
+            return (f"Planet {planet_id} not found", 404)
 
-    if planet is None:
-        return (f"Planet {planet_id} not found", 404)
+        return {
+            "id": planet.id,
+            "name": planet.name,
+            "description": planet.description,
+            "elements": planet.elements
+        }
+    
+    elif request.method == "PUT":
+        form_data = request.get_json()
 
-    return {
-        "id": planet.id,
-        "name": planet.name,
-        "description": planet.description,
-        "elements": planet.elements
-    }
+        planet.name = form_data["name"]
+        planet.description = form_data["description"]
+        planet.elements = form_data["elements"]
 
+        db.session.commit()
+
+        return make_response(f"Planet #{planet.id} successfully updated")
+    
+    elif request.method == "DELETE":
+        db.session.delete(planet)
+        db.session.commit()
+        return make_response(f"Planet #{planet.id} successfully deleted")
 #____________________________________________________________________________
-
 # class Planet:
 #     def __init__(self, id, name, description, elements):
 #         self.id = id
