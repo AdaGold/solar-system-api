@@ -7,7 +7,7 @@ planet_bp = Blueprint("planets", __name__, url_prefix="/planets")
 @planet_bp.route("", methods=["GET", "POST"])
 def get_planets():
     if request.method == "GET":
-        name_query = request.args.get("title")
+        name_query = request.args.get("name")
         if name_query:
             planet = Planet.query.filter_by(name=name_query)
         else:
