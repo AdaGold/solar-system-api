@@ -73,13 +73,40 @@ def all_planets():
 
         return make_response(f"Planet {new_planet.planet_name} successfully created", 201)
 
-@planets_bp.route("/<planet_id>", methods = ["GET"])
+# @planets_bp.route("/<planet_id>", methods = ["GET"])
+# def one_planet(planet_id):
+#     planet = Planet.query.get(planet_id)
+
+#     return {
+#         "id": planet.id,
+#         "planet_name": planet.planet_name,
+#         "description": planet.description,
+#         "density": planet.density
+#     }
+
+@planets_bp.route("/<planet_id>", methods=["GET", "PUT", "DELETE"])
 def one_planet(planet_id):
     planet = Planet.query.get(planet_id)
+    if not planet:
+        return jsonify(f"Planet{planet_id} not found"), 404
+        
+    if request.method == "GET":
+        return {
+            "id": planet.id,
+            "planet_name": planet.planet_name,
+            "description": planet.description,
+            "density": planet.density
+            }
 
-    return {
-        "id": planet.id,
-        "planet_name": planet.planet_name,
-        "description": planet.description,
-        "density": planet.density
-    }
+    elif request.method == "PUT":
+        request_body = request.get_json()
+        planet.planet_name = request_body['planet_name']
+        planet.description = request_body['description']
+        planet.density = request_body['density']
+        db.session.commit()
+        return jsonify(f"Planet{planet.id} successfully updated"), 200
+
+    elif request.method == "DELETE":
+        db.session.delete(planet)
+        db.session.commit()
+        return jsonify(f"Planet #{planet.id} successfully deleted"), 200
