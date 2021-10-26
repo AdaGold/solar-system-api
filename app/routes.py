@@ -62,4 +62,13 @@ def change_data(planet_id):
     else:
         return make_response(f"Error planet does not exist"), 404
 
-    
+@planets_bp.route("/<planet_id>", methods=["DELETE"])
+def delete_planet(planet_id):
+    planet = Planet.query.get(planet_id)
+
+    if planet:
+        db.session.delete(planet)
+        db.session.commit()
+        return make_response(f"Planet {planet.name} successfully deleted from this solar system")
+    else:
+        return make_response("Planet you requested does not currently exist"), 404
