@@ -76,12 +76,7 @@ def get_planets():
     planets = Planet.query.all()
     planets_response = []
     for planet in planets:
-        planets_response.append({
-            "id": planet.id,
-            "name": planet.name,
-            "description": planet.description,
-            "num_of_moons": planet.num_of_moons
-        })
+        planets_response.append(planet.get_dict())
     return jsonify(planets_response)
 
 @planets_bp.route("/<planet_id>", methods=["GET", "PUT", "DELETE"])
@@ -92,34 +87,23 @@ def handle_planet(planet_id):
     except:
         return jsonify("ID given is not an integer.", 400)
 
-    # planet_id = int(planet_id)
+    planet_id = int(planet_id)
     planet = Planet.query.get(planet_id)
 
     if request.method == "GET":
-        return {
-                "id": planet.id,
-                "name": planet.name,
-                "description": planet.description,
-                "num_of_moons": planet.num_of_moons
-                }
+        return jsonify(planet.get_dict()), 200
 
     elif request.method == "PUT":
         request_body = request.get_json()
-        if not validate_json(request_body):
-            return jsonify("Invalid request.", 400)
-        
-        planet.name = request_body["name"]
-        planet.description = request_body["description"]
-        planet.num_of_moons = request_body["num_of_moons"]
+        for key, value in request_body.items():
+            if hasattr(planet, key):
+                setattr(planet, key, value)
 
+
+        
         db.session.commit()
 
-        return {
-                "id": planet.id,
-                "name": planet.name,
-                "description": planet.description,
-                "num_of_moons": planet.num_of_moons
-                }
+        return jsonify(planet.get_dict()), 201
 
     elif request.method == "DELETE":
         db.session.delete(planet)
