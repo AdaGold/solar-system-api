@@ -32,7 +32,21 @@ def get_planets():
         return make_response(f"Planet {new_planet.name} successfully created", 201)
 
     elif request.method == "GET":
-        planets = Planet.query.all()
+        name_from_url = request.args.get('name')
+        description_from_url = request.args.get('description')
+        radius_size_from_url = request.args.get('radius_size')
+
+        if name_from_url:
+            # planets = Planet.query.filter_by(name=name_from_url)
+            # Filter allows for more complex search queries/more customizable
+            planets = Planet.query.filter(Planet.name.contains(name_from_url))
+        elif description_from_url:
+            planets = Planet.query.filter_by(description=description_from_url)
+        elif radius_size_from_url:
+            planets = Planet.query.filter_by(radius_size=radius_size_from_url)
+        else:
+            planets = Planet.query.all()
+        
         planets_response =[]
         for planet in planets:
             planets_response.append({
