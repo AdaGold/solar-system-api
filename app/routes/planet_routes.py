@@ -99,6 +99,8 @@ def handle_planet(planet_id):
             if key in Planet.__table__.columns.keys():
                 setattr(planet, key, value)
 
+    # col_names = ObjectName.__table__.columns.keys()
+    # required_values = {name: getattr(sample_row, name) for name in col_names}
 
         
         db.session.commit()
