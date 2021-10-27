@@ -23,8 +23,19 @@ def handle_planets():
         # collect changes and sent to database
         db.session.add(new_planet)
         db.session.commit()
+        planet = {
+        "id": new_planet.id,
+        "name": new_planet.name,
+        "description": new_planet.description,
+        "distance_from_sun_in_million_mi": new_planet.distance_from_sun_in_million_mi,
+        "moon_count": new_planet.moon_count
 
-        return jsonify(f"{new_planet.name} is created"), 201
+        }
+        # return jsonify(f"{new_planet.name} is created"), 201
+        return jsonify(planet), 201
+
+
+
     elif request.method == "GET":
         query = request.args.get("name")
         if query:
