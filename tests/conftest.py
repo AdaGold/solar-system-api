@@ -1,6 +1,7 @@
 import pytest 
 from app import create_app
 from app import db 
+from app.models.planet import Planet
 
 @pytest.fixture 
 def app():
@@ -18,6 +19,14 @@ def app():
 @pytest.fixture 
 def client(app):
     return app.test_client()
+
+@pytest.fixture
+def two_saved_planets(app):
+    venus_planet = Planet(name="Venus", description="Yellow planet", num_of_moons=0)
+    dune_planet = Planet(name="Dune", description="Desert planet", num_of_moons=2)
+
+    db.session.add_all([venus_planet, dune_planet])
+    db.session.commit()
 
 
     
