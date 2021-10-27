@@ -7,3 +7,12 @@ class Planet(db.Model):
     planet_type = db.Column(db.String)
     description=  db.Column(db.String) 
     moons = db.Column(db.Integer)
+
+    def to_dict(self):
+        return {
+                "id": self.id,
+                "title": self.title,
+                "description": self.description,
+                "planet_type": self.planet_type,
+                "moons": self.moons
+            }
