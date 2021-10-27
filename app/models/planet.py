@@ -6,4 +6,4 @@ class Planet(db.Model):
     title = db.Column(db.String)
     planet_type = db.Column(db.String)
     description=  db.Column(db.String) 
-    moons = db.Column(db.String)
+    moons = db.Column(db.Integer)
