@@ -10,3 +10,7 @@ def load(file):
     except IOError as e:
         print("{}\nError opening {}. Terminating program.".format(e, file), file=sys.stderr)
         sys.exit(1)
+        # return error to user instead of crashing, use abort?
+        # maybe don't catch error here, send IOError in the route?
+
+        
