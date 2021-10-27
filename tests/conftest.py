@@ -18,3 +18,17 @@ def app():
 @pytest.fixture
 def client(app):
     return app.test_client()
+
+from app.Models.planets import Planet
+@pytest.fixture
+def two_saved_planets(app):
+    # Arrange
+    earth = Planet(name="Earth",
+                      description="home",
+                      number_of_moons=0)
+    mars = Planet(title="Mars",
+                         description="red",
+                         number_of_moons=0)
+
+    db.session.add_all([earth, mars])
+    db.session.commit()
