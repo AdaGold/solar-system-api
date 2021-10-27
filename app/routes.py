@@ -11,9 +11,10 @@ def handle_planets():
         description_query = request.args.get("description")
         moon_query = request.args.get("moons")
         if name_query:
-            planets = Planet.query.filter_by(name=name_query)
+            planets = Planet.query.filter(Planet.name.ilike('%'+name_query+'%'))
         elif description_query:
-            planets = Planet.query.filter_by(description=description_query)
+            planets = Planet.query.filter(Planet.description.ilike('%'+\
+                description_query+'%'))
         elif moon_query:
             planets = Planet.query.filter_by(moons=moon_query)
         else:
