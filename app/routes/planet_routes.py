@@ -87,8 +87,7 @@ def handle_planet(planet_id):
     except:
         return jsonify("ID given is not an integer.", 400)
 
-    planet_id = int(planet_id)
-    planet = Planet.query.get(planet_id)
+    planet = Planet.query.get_or_404(planet_id)
 
     if request.method == "GET":
         return jsonify(planet.get_dict()), 200
