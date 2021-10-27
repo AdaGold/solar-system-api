@@ -9,13 +9,7 @@ def get_all_planets():
     planets = Planet.query.all()
     planet_response = []
     for each_planet in planets:
-        planet_response.append({
-            "id": each_planet.id,
-            "name": each_planet.name,
-            "description": each_planet.description,
-            "mythology": each_planet.mythology
-        }   
-        )
+        planet_response.append(each_planet.to_dict())
     return jsonify(planet_response), 200
 
 @planets_bp.route("", methods=["POST"])
@@ -38,14 +32,9 @@ def create_new_planet():
 def get_single_planet(planet_id):
     planet = Planet.query.get(planet_id)
     if planet:
-        return jsonify({
-            "id": planet.id,
-            "name": planet.name,
-            "description": planet.description,
-            "mythology": planet.mythology,
-            })
+        return jsonify(planet.to_dict())
     else:
-        return {"Message": f"This planet does not exist"}, 404
+        return make_response(f"This planet does not exist"), 404
 
 @planets_bp.route("/<planet_id>", methods=["PUT"])
 def change_data(planet_id):
