@@ -49,7 +49,7 @@ def test_get_all_planets_with_data(client, two_saved_planets):
         "number_of_moons": 0
         }]
 
-def test_post_one_book(client):
+def test_post_one_planet(client):
     # Act
     response = client.post('/planets', json = {
         "name": "Jupiter",
