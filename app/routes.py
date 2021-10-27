@@ -3,6 +3,8 @@ from app import db
 from app.models.planet import Planet
 
 
+
+
 class Planet:
     def __init__(self, id, name, description, moons):
         self.id = id
@@ -15,6 +17,7 @@ planets = [
     Planet(2,"Venus", "Second planet from sun",0),
     Planet(3, "Jupiter", "Gas giant", 53)
     ]
+
 planets_bp = Blueprint("planets", __name__,url_prefix="/planets")
 
 @planets_bp.route("", methods = ["GET"])
@@ -28,6 +31,7 @@ def get_planets():
             "color" : planet.color,
         })
     return jsonify(planet_response)
+
 @planets_bp.route("/<planet_id>", methods = ["GET"])
 def get_single_planet(planet_id):
     given_planet_id = int(planet_id)
