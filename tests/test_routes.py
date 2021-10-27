@@ -50,19 +50,14 @@ def test_get_all_planets_with_data(client, two_saved_planets):
         }]
 
 def test_post_one_planet(client):
-    # Act
-    response = client.post('/planets', json = {
-        "name": "Jupiter",
-        "description": "huge",
-        "number_of_moons": 0
-    })
+    
+    planet = {"name": "Jupiter", "description": "huge", "number_of_moons": 0}
+    response = client.post("/planets", 
+        json = planet)
+    
+    assert response.status_code == 201 
+
+    response = client.get("/planets")
     response_body = response.get_json()
- 
-    # Assert
-    assert response.status_code == 201
-    assert response_body == {
-        "id": 1,
-        "name": "Jupiter",
-        "description": "huge",
-        "number_of_moons": 0
-    }
+  
+    assert planet in response_body

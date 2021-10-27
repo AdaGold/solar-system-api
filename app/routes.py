@@ -50,7 +50,7 @@ def user_creates_new_planet_reads_all_planets():
 
       db.session.add(new_planet)
       db.session.commit()
-
+      
       return make_response(f"Planet {new_planet.name} successfully created", 201)
   
 
@@ -93,17 +93,5 @@ def handle_one_planet(planet_id):
 
 
 
-# Accessing data from French solar system API
-# Using blueprint decorator to let client access 'planet/bodies' endpoint
-@planets_bp.route('/bodies', methods=['GET'])
-# This function indicates that the content is not hardcoded and not available in localhost.
-# This function uses requests package to access a different URL
-def get_bodies_from_solar():
-  path = 'https://api.le-systeme-solaire.net/rest/bodies/'
-  query_params = {
-          "filter": [isPlanet,neq,False],
-          "format": "json"
-      }
-  response = requests.get(path, params=query_params)
-  response_body = response.json()
+
       
