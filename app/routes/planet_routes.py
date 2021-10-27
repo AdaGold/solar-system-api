@@ -78,6 +78,15 @@ def populate_planets():
 
     return f"Successfully added {[data['name'] for data in request_body]} to Solar System Database", 201
 
+@planets_bp.route("/load-json", methods=["POST"])
+def loads_json():
+    request_body = request.get_json()
+    file_path = request_body["file"]
+    new_data = load(file_path)
+    # uploaded_file = request.files['file']
+    # print(new_data)
+    # Read file from request
+    return jsonify(new_data), 200
 
 
 @planets_bp.route("", methods=["GET"])
