@@ -19,7 +19,7 @@ def handle_planets():
                 "id": planet.id,
                 "name": planet.name,
                 "description": planet.description,
-                "cycle length (days)": planet.cycle_len
+                "cycle_len": planet.cycle_len
             })
         return jsonify(planets_response)
 
@@ -43,7 +43,7 @@ def handle_planet(planet_id):
         return {"id": planet.id,
         "name": planet.name,
         "description": planet.description,
-        "cycle length (days)": planet.cycle_len}
+        "cycle_len": planet.cycle_len}
 
     elif request.method == "PUT":
         request_body = request.get_json()
