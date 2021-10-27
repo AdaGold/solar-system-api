@@ -38,4 +38,3 @@ def all_saved_planets(app):
     db.session.add_all([planet_1, planet_2])
     db.session.commit()
 
-
