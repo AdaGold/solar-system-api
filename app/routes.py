@@ -21,6 +21,7 @@ def get_planets():
                 "moon": planet.moon
             })
         return jsonify(planets_response), 200
+
     if request.method == "POST":
         request_body = request.get_json()
         new_planet = Planet(name=request_body["name"],
@@ -45,7 +46,7 @@ def single_planet(id):
     planet = Planet.query.get(id)
     if planet is None:
         return jsonify(f"Planet {planet.id} not found"), 404
-    if request.body == "GET":
+    if request.method == "GET":
         return {
             "id": planet.id,
             "name": planet.name,
