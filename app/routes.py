@@ -69,16 +69,6 @@ def handle_planet(planet_id):
 
 
 
-
-# from flask import Blueprint, jsonify
-
-# class Planet:
-#     def __init__(self, id, name, description, moons):
-#         self.id = id
-#         self.name = name
-#         self.description = description
-#         self.moons = moons
-
 # planets = [
 #     Planet(1, "Mercury", "the smallest planet in our solar system and closest \
 #         to the Sun", 0),
@@ -99,33 +89,3 @@ def handle_planet(planet_id):
 #         14)
 
 # ]
-
-# planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
-
-# @planets_bp.route("", methods=["GET"])
-# def handle_planets():
-#     planets_response = []
-#     for planet in planets:
-#         planets_response.append({
-#             "id": planet.id,
-#             "name": planet.name,
-#             "description": planet.description,
-#             "moons": planet.moons
-#         })
-#     return jsonify(planets_response)
-
-# @planets_bp.route("/<planet_id>", methods=["GET"])
-# def handle_planet(planet_id):
-#     try:
-#         planet_id = int(planet_id)
-#         for planet in planets:
-#             if planet.id == planet_id:
-#                 return {
-#                 "id": planet.id,
-#                 "name": planet.name,
-#                 "description": planet.description,
-#                 "moons": planet.moons
-#                 }
-#     except:
-#         return "Invalid planet id. Please enter a number", 404
-#     return "We do not have a planet with that id", 404
