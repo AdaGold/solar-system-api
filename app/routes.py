@@ -22,22 +22,22 @@ def find_planets():
 
     elif request.method == "POST":
         request_body = request.get_json()
-        if "title" not in request_body or "description" not in request_body:
-            return make_response(f"Not Found", 404)
+        if "name" not in request_body or "description" not in request_body:
+            return jsonify("Not Found"), 404
 
         new_planet = Planet(name=request_body["name"], description=request_body["description"], color=request_body["color"])
 
         db.session.add(new_planet)
         db.session.commit()
 
-        return make_response(f"{new_planet.name} has been successfully created", 201)
-
+        return jsonify(f"Planet {new_planet.name} successfully created"), 201
 
 
 @planets_bp.route("/<planet_id>", methods=["GET", "PUT", "DELETE"])
 def find_planet(planet_id):
     planet_id = int(planet_id)
     planet = Planet.query.get(planet_id)
+
     if planet is None:
         return jsonify("Not Found"), 404
 
@@ -48,6 +48,7 @@ def find_planet(planet_id):
             "description": planet.description,
             "color": planet.color
         }
+
     elif request.method == "PUT":
         request_body = request.get_json()
 
