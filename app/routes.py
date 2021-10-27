@@ -67,12 +67,12 @@ def handle_planets():
             })
         return jsonify(planets_response)
 
-@planets_bp.route("/<book_id>", methods=["GET", "PUT", "DELETE"])
+@planets_bp.route("/<planet_id>", methods=["GET", "PUT", "DELETE"])
 def single_planet(planet_id):
     planet = Planet.query.get(planet_id)
 
     if not planet:
-        return make_response(f"Book {planet_id} resource was not found", 404)
+        return make_response(f"Planet {planet_id} resource was not found", 404)
 
     if request.method == "GET":
         return { 
@@ -84,8 +84,9 @@ def single_planet(planet_id):
     elif request.method == "PUT":
         request_body = request.get_json()
 
-        planet.title =request_body["title"]
-        planet.description =request_body["description"]
+        planet.name =request_body.get("name", planet.name)
+        planet.description =request_body.get("description", planet.description)
+        planet.moons = request_body.get("moons", planet.moons)
 
         db.session.commit()
 
