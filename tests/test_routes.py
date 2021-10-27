@@ -44,7 +44,7 @@ def test_get_all_planets_with_data(client, two_saved_planets):
         },
         {
         "id": 2,
-        "title": "Mars",
+        "name": "Mars",
         "description": "red",
         "number_of_moons": 0
         }]

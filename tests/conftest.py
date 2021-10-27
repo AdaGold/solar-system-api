@@ -26,7 +26,7 @@ def two_saved_planets(app):
     earth = Planet(name="Earth",
                       description="home",
                       number_of_moons=0)
-    mars = Planet(title="Mars",
+    mars = Planet(name="Mars",
                          description="red",
                          number_of_moons=0)
 
