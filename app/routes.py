@@ -2,25 +2,6 @@ from flask import abort, Blueprint, jsonify, request
 from app.models.planet import Planet
 from app import db
 
-# class Planets:
-#     def __init__(self, id, name, description, proximity):
-#         self.id = id
-#         self.name = name
-#         self.description = description 
-#         self.proximity = proximity
-        
-# planets = [
-#     Planets(1, "Mercury", "it is the smallest and fastest planet", "35.98 million miles from the Sun"),
-#     Planets(2, "Venus", "spins slowly in opposite direction, hottest planet because of its thick atmosphere", "67.24 million miles from the Sun"),
-#     Planets(3, "Earth", "is the only planet inhabited by living things (that we know of). Humans are ruining it", "92.96 million miles from the Sun"),
-#     Planets(4, "Mars", "is dusty, cold dessert with thin atmosphere", "141.6 million miles from the Sun"),
-#     Planets(5, "Jupiter", "It is the biggest planet. Its Great red spot is a storm bigger than Earth", "483.8 million miles from the Sun"),
-#     Planets(6, "Saturn", "It is the second largest planet. It has icy rings. made mostly of hydrogen and helium", "890.8 million miles from the Sun"),
-#     Planets(7, "Uranus", "A day in uranus lasts 17 hours and a year takes 84 Earth days. it has 27 moons", "1.784 billion miles from the Sun"),
-#     Planets(8, "Neptune", "A day takes 16 hours and a year takes 165 Earth days. Dark, cold and windy", "2.793 billion miles from the Sun")
-#     ]
-
-
 planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
 
 @planets_bp.route("", methods=["POST"])
@@ -43,7 +24,10 @@ def create_planet():
 def list_all_planets():
     planets_response = []
     #Can't be jsonified
-    planets = Planet.query.all()
+    if request.args.get("description"):
+        planets = Planet.query.filter_by(description=request.args.get("description"))
+    else:
+        planets = Planet.query.all()
     for planet in planets:
         planets_response.append(planet.to_dict())
     return jsonify(planets_response), 200
@@ -72,7 +56,7 @@ def sanitize_data(input_data):
     for name, val_type in data_types.items():
         try:
             val = input_data[name]
-            type_test = val_type(val)
+            val_type(val)
         except Exception as e:
             print(e)
             abort(400, "Bad Data")
@@ -94,15 +78,3 @@ def delete_planet(planet_id):
         return {"Success": f"Deleted Planet {planet_id}"}, 200
     else:
         return {"Error": f" No Planet with ID matching {planet_id}"}, 404
-# def list_one(id):
-#     for planet in planets:
-#         if planet.id == int(id):
-#             response = {
-#                 "id" : planet.id,
-#                 "name" : planet.name,
-#                 "description" : planet.description,
-#                 "proximity" : planet.proximity
-#             }
-#             return response
-#     return "There are only eight planets", 404
-
