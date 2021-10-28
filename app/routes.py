@@ -8,8 +8,8 @@ planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
 def create_planet():
     request_body = request.get_json()
     new_planet = Planet(name=request_body["name"],
-                    description=request_body["description"],
-                    elements=request_body["elements"])
+        description=request_body["description"],
+        elements=request_body["elements"])
 
     db.session.add(new_planet)
     db.session.commit()
