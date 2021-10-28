@@ -30,11 +30,11 @@ The activities required for submission are outlined by Learn topic below:
 
 ### Part 1
 
-* Requests and Responses in Flask (required)
+* Building and API - Part 1 (required)
 
 ### Part 2
 
-* Building an API (required)
+* Building an API - Part 2 (required)
 * Update and Delete (required)
 * More Flask Queries (required)
 * Testing our APIs (optional)
