@@ -25,18 +25,16 @@ def get_planet_from_id(planet_id):
 
 @planets_bp.route("", methods =["POST"])
 def create_planets():
-    request_body = request.get_json()
+    form_data = request.get_json()
 
-    """Add logic to check if all the data was passed  in the request
-        Add 404 -Not found  code status
-    """
-    if "title" not in request_body or "planet_type" not in request_body or "description" not in request_body or "moons" not in request_body:
+
+    if "title" not in form_data or "planet_type" not in form_data or "description" not in form_data or "moons" not in form_data:
         return {"error": "incomplete request body"}, 400
 
-    new_planet = Planet(title=request_body["title"], 
-                        planet_type= request_body["planet_type"],
-                        description=request_body["description"],
-                        moons = request_body["moons"])
+    new_planet = Planet(title=form_data["title"], 
+                        planet_type= form_data["planet_type"],
+                        description=form_data["description"],
+                        moons = form_data["moons"])
 
 
     db.session.add(new_planet)
@@ -75,19 +73,19 @@ def read_planets():
         planets = Planet.query.all()
 
     planet_response = []
+    
+    if not planets:
+        return make_response(f"Planets do not exist: Please Post some Planets into the database", 404)
 
     for planet in planets:
-        for planet in planets:
             planet_response.append(
             planet.to_dict()
         )
     return jsonify(planet_response), 200
 
 
-
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def get_planet(planet_id):
-
     planet= get_planet_from_id(planet_id)
 
     return  planet.to_dict()
@@ -95,18 +93,28 @@ def get_planet(planet_id):
 
 @planets_bp.route("/<planet_id>", methods=["PATCH"])
 def update_planet(planet_id):
-    planet = Planet.query.get(planet_id)
+    planet = get_planet_from_id(planet_id)
     form_data = request.get_json()
 
-    planet.title = form_data["title"]
-    planet.description = form_data["description"]
+    if not form_data:
+        return {"error": "incomplete request body"}, 400
+
+    if "title" in form_data:
+        planet.title = form_data["title"]
+    if "planet_type" in form_data:    
+        planet.type = form_data["planet_type"]
+    if "description" in form_data:
+        planet.description = form_data["description"]
+    if "moons" in form_data:
+        planet.moons = form_data["moons"]
+
 
     db.session.commit()
     return make_response(f"Planet {planet.id} successfully updated", 200)
 
 @planets_bp.route("/<planet_id>", methods=["DELETE"])
 def delete_planet(planet_id):
-    planet = Planet.query.get(planet_id)
+    planet = get_planet_from_id(planet_id)
     db.session.delete(planet)
     db.session.commit()
     return make_response(f"Planet {planet.id} successfully deleted", 200)
