@@ -76,12 +76,3 @@ def delete_planet(planet_id):
         return make_response(f"Planet {planet.name} successfully deleted from this solar system")
     else:
         return make_response(jsonify("Planet you requested does not currently exist")), 404
-
-def sanitize_data(form_data):
-    value_types = {"name": str, "description": str, "mythology": str}
-    for key, value in form_data.items():
-        try:
-            value == value_types[key]
-        except:
-            abort (400, "BLERG")
-        return form_data
