@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request, make_response
 from app.Model.planet import Planet
 from app import db
+from flask import abort
 
 
 planets_bp = Blueprint("planets", __name__, url_prefix ="/planets")
@@ -23,6 +24,7 @@ def get_all_planets():
 def create_new_planet():
     """Defines an endpoint for POST new planet to planets database, if not all planet attributes included will return an error"""
     request_body = request.get_json()
+    request_body = sanitize_data(request_body)
 
     if "name" not in request_body or "description" not in request_body or "mythology" not in request_body:
         return make_response("Missing input either name, description, or mythology"), 400
@@ -75,3 +77,11 @@ def delete_planet(planet_id):
     else:
         return make_response("Planet you requested does not currently exist"), 404
 
+def sanitize_data(form_data):
+    value_types = {"name": str, "description": str, "mythology": str}
+    for key, value in form_data.items():
+        try:
+            value == value_types[key]
+        except:
+            abort (400, "BLERG")
+        return form_data
