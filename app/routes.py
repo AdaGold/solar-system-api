@@ -10,7 +10,7 @@ def all_planets():
         # planets = Planet.query.all()
         planet_name_query = request.args.get("planet_name")
         if planet_name_query:
-	        planets = Planet.query.filter_by(planet_name=planet_name_query)
+	        planets = Planet.query.filter(planet_name=planet_name_query)
         else:
 	        planets = Planet.query.all()
             
