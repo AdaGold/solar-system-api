@@ -49,6 +49,7 @@ def read_planets():
     most_moons_query = request.args.get("most")
     planet_type_query = request.args.get("planet_type")
     sort_query = request.args.get("sort")
+
     
     if number_of_moons_query:
         valid_int(number_of_moons_query, "moons")
@@ -69,6 +70,11 @@ def read_planets():
 
     planet_response = []
 
+    "ADD 404 TO READ PLANETS"
+
+    if not planets:
+        return make_response(f"Planets not found", 404)
+
     for planet in planets:
         planet_response.append({
             "id": planet.id,
@@ -82,13 +88,10 @@ def read_planets():
 
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def get_planet(planet_id):
-   #ADD404 IF STATEMENT
+ 
     planet =  Planet.query.filter_by(id=planet_id).first()
-    
-    if not planet:
-        return make_response(f"Planet: {planet_id}  not found", 404)
-    else:
-        return {
+
+    return {
             "title": planet.title,
             "description": planet.description,
             "planet_type": planet.planet_type,
@@ -97,6 +100,7 @@ def get_planet(planet_id):
         
 @planets_bp.route("/<planet_id>", methods=["PATCH"])
 def update_planet(planet_id):
+
     planet = Planet.query.get(planet_id)
     form_data = request.get_json()
 
