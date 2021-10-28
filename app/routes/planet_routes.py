@@ -83,6 +83,27 @@ def loads_json():
     request_body = request.get_json()
     file_path = request_body["file"]
     new_data = load(file_path)
+    for data in new_data:
+        if not validate_json(data):
+            return make_response("Invalid response", 404)
+
+        if 'description' in data:
+            new_planet = Planet(
+                name=data["name"],
+                num_of_moons=data["num_of_moons"],
+                description=data["description"]
+            )
+        else:
+            new_planet = Planet(
+                name=data["name"],
+                num_of_moons=data["num_of_moons"],
+                description=f'{data["name"]} has {data["num_of_moons"]} moon(s).'
+            )
+        db.session.add(new_planet)
+    db.session.commit()
+
+    return f"Successfully added {[data['name'] for data in new_data]} to Solar System Database", 201
+
     # uploaded_file = request.files['file']
     # print(new_data)
     # Read file from request
@@ -91,7 +112,14 @@ def loads_json():
 
 @planets_bp.route("", methods=["GET"])
 def get_planets():
-    planets = Planet.query.all()
+    # query_params = [] TODO: Future
+    if request.args.get("name"):
+        planets = Planet.query.filter_by(name=request.args.get("name"))
+    elif request.args.get("order_by") == "num_of_moons":
+        planets = Planet.query.order_by(Planet.num_of_moons)
+    else:
+        planets = Planet.query.all()
+
     planets_response = []
     for planet in planets:
         planets_response.append(planet.get_dict())
