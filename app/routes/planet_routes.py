@@ -58,6 +58,7 @@ def populate_planets():
     request_body = request.get_json()
 
     for data in request_body:
+        print(data)
         if not validate_json(data):
             return make_response("Invalid response", 404)
 

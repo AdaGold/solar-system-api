@@ -24,9 +24,21 @@ def client(app):
 def one_planet(app):
     planet = Planet(
         description = "Mercury has 0 moon(s).",
-        id = 1,
         name = "Mercury",
         num_of_moons = 0)
     db.session.add(planet)
     db.session.commit()
 
+
+@pytest.fixture
+def many_planets(app):
+    planet_1 = Planet(
+        description = "Mercury has 0 moon(s).",
+        name = "Mercury",
+        num_of_moons = 0)
+    planet_2 = Planet(
+        description = "Venus has 0 moon(s).",
+        name = "Venus",
+        num_of_moons = 0)
+    db.session.add_all([planet_1, planet_2])
+    db.session.commit()
