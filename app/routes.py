@@ -27,7 +27,7 @@ def create_new_planet():
     request_body = sanitize_data(request_body)
 
     if "name" not in request_body or "description" not in request_body or "mythology" not in request_body:
-        return make_response("Missing input either name, description, or mythology"), 400
+        return make_response(jsonify("Missing input either name, description, or mythology")), 400
 
     new_planet = Planet(name=request_body["name"],
                     description=request_body["description"],
@@ -36,7 +36,7 @@ def create_new_planet():
     db.session.add(new_planet)
     db.session.commit()
     
-    return make_response(f"Your mystical planet {new_planet.name} was successfully created in our universe!", 201) 
+    return make_response(jsonify(f"Your mystical planet {new_planet.name} was successfully created in our universe!"), 201) 
 
 
 @planets_bp.route("/<planet_id>", methods=["GET"])
@@ -47,7 +47,7 @@ def get_single_planet(planet_id):
     if planet:
         return jsonify(planet.to_dict())
     else:
-        return make_response(f"This planet does not exist"), 404
+        return make_response(jsonify(f"This planet does not exist")), 404
 
 @planets_bp.route("/<planet_id>", methods=["PUT"])
 def change_data(planet_id):
@@ -61,9 +61,9 @@ def change_data(planet_id):
         planet.mythology = form_data["mythology"]
 
         db.session.commit()
-        return make_response(f"Planet {planet.name} was updated!")
+        return make_response(jsonify(f"Planet {planet.name} was updated!"))
     else:
-        return make_response(f"Error planet does not exist"), 404
+        return make_response(jsonify(f"Error planet does not exist")), 404
 
 @planets_bp.route("/<planet_id>", methods=["DELETE"])
 def delete_planet(planet_id):
@@ -75,7 +75,7 @@ def delete_planet(planet_id):
         db.session.commit()
         return make_response(f"Planet {planet.name} successfully deleted from this solar system")
     else:
-        return make_response("Planet you requested does not currently exist"), 404
+        return make_response(jsonify("Planet you requested does not currently exist")), 404
 
 def sanitize_data(form_data):
     value_types = {"name": str, "description": str, "mythology": str}

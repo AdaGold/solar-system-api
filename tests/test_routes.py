@@ -12,9 +12,10 @@ def test_get_one_planets_with_no_record(client):
     response = client.get("/planets/1")
     response_body = response.get_json()
 
+
     #Assert
     assert response.status_code == 404
-    assert response_body == None
+    assert response_body == "This planet does not exist"
 
 def test_get_all_planets_with_records(client, create_two_planets):
     #Act
