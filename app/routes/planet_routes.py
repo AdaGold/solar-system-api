@@ -142,8 +142,10 @@ def handle_planet(planet_id):
     elif request.method == "PUT":
         request_body = request.get_json()
         for key, value in request_body.items():
-            if key in Planet.__table__.columns.keys():
-                setattr(planet, key, value)
+            if key in Planet.__table__.columns.keys(): # This allows you to restict the user to only 
+                setattr(planet, key, value)             # column attributes from __table__.columns.keys()
+                                                        # Getattr will give all attributes, inclueding all db.Model atributes
+                                                        # which is a security issue. 
 
     # col_names = ObjectName.__table__.columns.keys()
     # required_values = {name: getattr(sample_row, name) for name in col_names}
