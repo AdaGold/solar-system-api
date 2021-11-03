@@ -57,27 +57,45 @@ planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
 def populate_planets():
     request_body = request.get_json()
 
-    for data in request_body:
-        print(data)
-        if not validate_json(data):
-            return make_response("Invalid response", 404)
+    if isinstance(request_body, list):
+        for data in request_body:
+            if not validate_json(data):
+                return make_response("Invalid response", 404)
 
-        if 'description' in data:
-            new_planet = Planet(
-                name=data["name"],
-                num_of_moons=data["num_of_moons"],
-                description=data["description"]
-            )
-        else:
-            new_planet = Planet(
-                name=data["name"],
-                num_of_moons=data["num_of_moons"],
-                description=f'{data["name"]} has {data["num_of_moons"]} moon(s).'
-            )
-        db.session.add(new_planet)
+            if 'description' in data:
+                new_planet = Planet(
+                    name=data["name"],
+                    num_of_moons=data["num_of_moons"],
+                    description=data["description"]
+                )
+            else:
+                new_planet = Planet(
+                    name=data["name"],
+                    num_of_moons=data["num_of_moons"],
+                    description=f'{data["name"]} has {data["num_of_moons"]} moon(s).'
+                )
+            db.session.add(new_planet)
+        return f"Successfully added {[data['name'] for data in request_body]} to Solar System Database", 201
+
+    if not validate_json(request_body):
+        return make_response("Invalid response", 404)
+
+    if 'description' in request_body:
+        new_planet = Planet(
+            name=request_body["name"],
+            num_of_moons=request_body["num_of_moons"],
+            description=request_body["description"]
+        )
+    else:
+        new_planet = Planet(
+            name=request_body["name"],
+            num_of_moons=request_body["num_of_moons"],
+            description=f'{request_body["name"]} has {request_body["num_of_moons"]} moon(s).'
+        )
+    db.session.add(new_planet)
     db.session.commit()
 
-    return f"Successfully added {[data['name'] for data in request_body]} to Solar System Database", 201
+    return f"Successfully added {request_body['name']} to Solar System Database", 201
 
 @planets_bp.route("/load-json", methods=["POST"])
 def loads_json():
