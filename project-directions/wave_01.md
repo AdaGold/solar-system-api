@@ -8,8 +8,10 @@ Perform following setup steps for the Solar System API repo to get started on th
 1. Define a `Planet` class with the attributes `id`, `name`, and `description`, and one additional attribute
 1. Create a list of `Planet` instances
 
-## Endpoints
+## RESTful Endpoints: Read
 Create the following endpoints, with similar functionality presented in the Hello Books API:
 
-1. As a client, I want to send a request to get all existing `planets`, so that I can see a list of `planets`, with their `id`, `name`, `description`, and other data of the `planet`.
-2. As a client, I want to send a request to get one existing `planet`, so that I can see the `id`, `name`, `description`, and other data of the `planet`.
+As a client, I want to send a request...
+
+1. ...to get all existing `planets`, so that I can see a list of `planets`, with their `id`, `name`, `description`, and other data of the `planet`.
+1. ...to get one existing `planet`, so that I can see the `id`, `name`, `description`, and other data of the `planet`.

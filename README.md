@@ -42,6 +42,15 @@ We will focus on creating RESTful endpoints for CRUD operations.
 
 [Wave 1: Read Endpoints](./project-directions/wave_01.md)
 
+### Database Setup
+For each wave in Part 2, the new driver may need to setup their database. Follow these steps:
+
+1. Pull down all new git commits
+1. Activate the virtual environment
+1. Create the database `solar_system_development`
+1. Run `flask db upgrade`
+1. Run `flask run` to confirm that the API is running as expected
+
 ### Part 2
 
 [Wave 2: Connecting the Database, Read and Create Endpoints](./project-directions/wave_02.md)
