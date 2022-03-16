@@ -1,12 +1,14 @@
 # Solar System API
 
-Here is a minimal setup for a Flask API.
+## Goal
 
-## Github Setup
+Our coding skills improve with repetition.
 
-1. One person should fork this repo
-1. Then, add all group members as _collaborators_ to this forked repo
-1. All group members should clone this new, forked, group repo
+Our goal is to practice creating a minimal Flask API in a pair or group setting.
+
+Pairing with other programmers will help create stronger understanding of the material, and improved skill at working with others. Software teams thrive on collaboration, so working side-by-side with someone while coding is vital!
+
+In this activity, we will build a Solar System API. This API will store information about different planets.
 
 ## Tips
 
@@ -15,29 +17,37 @@ Here is a minimal setup for a Flask API.
 - Add configuration, such as registering blueprints or configuring databases, in `app/__init__.py`
 - Commit and push often
 
+## Github Setup
+
+1. Choose one member to fork the Solar System API repo 
+1. Add all members to the forked repo as collaborators (through the repo settings)
+1. All group members should clone this new, forked, group repo and `cd` into it
+1. Discuss good git hygiene: 
+    * Make regular commits
+    * Push commits before switching driver
+    * Pull before starting to drive
+
 ## Guidelines for Pair-Programming
 
 - The driver is the person who is at the keyboard and mouse
 - The navigator is the person who is thinking out loud, actively collaborating with the driver about the next step, and helping guide the development
-- Trade-off driver and navigator roles often
+- Trade-off driver and navigator roles often, at least daily
 - Take time to make sure you're on the same page
 
-## Submission Requirements
-
-The requirements for Solar System API are described in the Activites in Learn. 
-
-The activities required for submission are outlined by Learn topic below:
+## Project Directions
 
 ### Part 1
 
-* Building and API - Part 1 (required)
+[Wave 1: Read Endpoints](./project-directions/wave_01.md)
 
 ### Part 2
 
-* Building an API - Part 2 (required)
-* Update and Delete (required)
-* More Flask Queries (required)
-* Testing our APIs (optional)
+[Wave 2: Read and Create Endpoints](./project-directions/wave_02.md)
+[Wave 3: Update and Delete](./project-directions/wave_03.md)
+[Wave 4: Handling 404s](./project-directions/wave_04.md)
+[Wave 5: Writing Tests](./project-directions/wave_05.md)
+
+
 
 
 
