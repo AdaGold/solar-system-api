@@ -10,6 +10,8 @@ Pairing with other programmers will help create stronger understanding of the ma
 
 In this activity, we will build a Solar System API. This API will store information about different planets.
 
+We will focus on creating RESTful endpoints for CRUD operations.
+
 ## Tips
 
 - Don't forget to work in a virtual environment
@@ -42,7 +44,7 @@ In this activity, we will build a Solar System API. This API will store informat
 
 ### Part 2
 
-[Wave 2: Read and Create Endpoints](./project-directions/wave_02.md)
+[Wave 2: Connecting the Database, Read and Create Endpoints](./project-directions/wave_02.md)
 [Wave 3: Update and Delete](./project-directions/wave_03.md)
 [Wave 4: Handling 404s](./project-directions/wave_04.md)
 [Wave 5: Writing Tests](./project-directions/wave_05.md)
