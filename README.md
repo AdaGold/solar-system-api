@@ -39,10 +39,16 @@ We will focus on creating RESTful endpoints for CRUD operations.
 ## Project Directions
 
 ### Part 1
+1. [Wave 1: Read Endpoints](./project-directions/wave_01.md)
 
-[Wave 1: Read Endpoints](./project-directions/wave_01.md)
 
-### Database Setup
+### Part 2
+2. [Wave 2: Connecting the Database, Read and Create Endpoints](./project-directions/wave_02.md)
+3. [Wave 3: Update and Delete](./project-directions/wave_03.md)
+4. [Wave 4: Handling 404s](./project-directions/wave_04.md)
+5. [Wave 5: Writing Tests](./project-directions/wave_05.md)
+
+#### Database Setup
 For each wave in Part 2, the new driver may need to setup their database. Follow these steps:
 
 1. Pull down all new git commits
@@ -50,15 +56,6 @@ For each wave in Part 2, the new driver may need to setup their database. Follow
 1. Create the database `solar_system_development`
 1. Run `flask db upgrade`
 1. Run `flask run` to confirm that the API is running as expected
-
-### Part 2
-
-[Wave 2: Connecting the Database, Read and Create Endpoints](./project-directions/wave_02.md)
-[Wave 3: Update and Delete](./project-directions/wave_03.md)
-[Wave 4: Handling 404s](./project-directions/wave_04.md)
-[Wave 5: Writing Tests](./project-directions/wave_05.md)
-
-
 
 
 
