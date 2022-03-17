@@ -39,14 +39,14 @@ We will focus on creating RESTful endpoints for CRUD operations.
 ## Project Directions
 
 ### Part 1
-1. [Wave 1: Read Endpoints](./project-directions/wave_01.md)
+1. [Wave 01: Read Endpoints](./project-directions/wave_01.md)
 
 
 ### Part 2
-2. [Wave 2: Connecting the Database, Read and Create Endpoints](./project-directions/wave_02.md)
-3. [Wave 3: Update and Delete](./project-directions/wave_03.md)
-4. [Wave 4: Handling 404s](./project-directions/wave_04.md)
-5. [Wave 5: Writing Tests](./project-directions/wave_05.md)
+2. [Wave 02: Connecting the Database, Read and Create Endpoints](./project-directions/wave_02.md)
+3. [Wave 03: Update and Delete](./project-directions/wave_03.md)
+4. [Wave 04: Handling 404s](./project-directions/wave_04.md)
+5. [Wave 05: Writing Tests](./project-directions/wave_05.md)
 
 #### Database Setup/Update
 For Waves 03, 04, and 05, the new driver may need to setup or update their database. Follow these steps:
