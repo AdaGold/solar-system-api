@@ -48,8 +48,8 @@ We will focus on creating RESTful endpoints for CRUD operations.
 4. [Wave 4: Handling 404s](./project-directions/wave_04.md)
 5. [Wave 5: Writing Tests](./project-directions/wave_05.md)
 
-#### Database Setup
-For each wave in Part 2, the new driver may need to setup their database. Follow these steps:
+#### Database Setup/Update
+For each Wave 03 - 05 in Part 2, the new driver may need to setup or update their database. Follow these steps:
 
 1. Pull down all new git commits
 1. Activate the virtual environment
