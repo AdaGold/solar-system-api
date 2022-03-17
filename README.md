@@ -49,7 +49,7 @@ We will focus on creating RESTful endpoints for CRUD operations.
 5. [Wave 5: Writing Tests](./project-directions/wave_05.md)
 
 #### Database Setup/Update
-For each Wave 03 - 05 in Part 2, the new driver may need to setup or update their database. Follow these steps:
+For Waves 03, 04, and 05, the new driver may need to setup or update their database. Follow these steps:
 
 1. Pull down all new git commits
 1. Activate the virtual environment
