@@ -12,7 +12,10 @@ Complete the following requirements, with similar functionality to the Hello Boo
    * Check for a configuration flag
    * Read the correct database location from the appropriate environment variables
 1. Manually test that our development environment still works.
-1. Create a `tests` folder with the files `tests/__init__.py`, `tests/conftest.py`, and `tests/test_routes.py`.
+1. Create a `tests` folder with the files:
+    -  `tests/__init__.py`
+    -  `tests/conftest.py`
+    -  `tests/test_routes.py`.
 1. Populate `tests/conftest.py` with the recommended configuration.
 1. Create a test to check `GET` `/planets` returns `200` and an empty array.
 1. Confirm this test runs and passes.

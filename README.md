@@ -2,11 +2,11 @@
 
 ## Goal
 
-Our coding skills improve with repetition.
 
-Our goal is to practice creating a minimal Flask API in a pair or group setting.
-
-Pairing with other programmers will help create stronger understanding of the material, and improved skill at working with others. Software teams thrive on collaboration, so working side-by-side with someone while coding is vital!
+* Improve our understand of Flask & SQL Alchemy with repetition
+* Discuss and explain Flask code together in pair or group programming
+* Improve skill at working with others. 
+    * Software teams thrive on collaboration, so working side-by-side with someone while coding is vital!
 
 In this activity, we will build a Solar System API. This API will store information about different planets.
 
