@@ -1,4 +1,4 @@
-# Wave 01
+# Wave 01: Setup and Read
 
 ## Flask Setup
 Perform following setup steps for the Solar System API repo to get started on this Flask project:

@@ -1,4 +1,4 @@
-# Wave 05: Writing Tests
+# Wave 06: Writing Tests
 
 ## Setup
 
