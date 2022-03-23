@@ -1,6 +1,5 @@
 # Wave 05: Writing Tests
 
-
 ## Setup
 
 Complete the following requirements, with similar functionality to the Hello Books API:
