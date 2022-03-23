@@ -1,4 +1,4 @@
-# Wave 01
+# Wave 01: Setup and Read
 
 ## Flask Setup
 Perform following setup steps for the Solar System API repo to get started on this Flask project:
@@ -9,7 +9,7 @@ Perform following setup steps for the Solar System API repo to get started on th
 1. Create a list of `Planet` instances
 
 ## RESTful Endpoints: Read
-Create the following endpoints, with similar functionality presented in the Hello Books API:
+Create the following endpoint(s), with similar functionality presented in the Hello Books API:
 
 As a client, I want to send a request...
 
