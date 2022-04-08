@@ -34,4 +34,4 @@ Check your code coverage using `pytest-cov`. Review the [code coverage exercise]
 
 `pytest --cov=app --cov-report html --cov-report term`
 
-For this project, we will not expect to have high test coverage because we have not tested all of our CRUD routes. Still, it is helpful to see a report of the code that details the code that is tested, and the code that is not tested.
+For this project, we will not expect to have high test coverage because we have not tested all of our CRUD routes. Still, it is helpful to practice checking coverage and reading reports of the code which detail the code that is tested, and the code that is not tested.
