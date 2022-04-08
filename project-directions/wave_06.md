@@ -27,3 +27,11 @@ Create test fixtures and unit tests for the following test cases:
 1. `GET` `/planets/1` with no data in test database (no fixture) returns a `404`
 1. `GET` `/planets` with valid test data (fixtures) returns a `200` with an array including appropriate test data
 1. `POST` `/planets` with a JSON request body returns a `201`
+
+## Code Coverage
+
+Check your code coverage using `pytest-cov`. Review the [code coverage exercise](https://github.com/adaGold/code-coverage-exercise) on how to use `pytest-cov` to generate a code coverage report. We will need to change the directory where the application code is located from `student` to `app`.
+
+`pytest --cov=app --cov-report html --cov-report term`
+
+For this project, we will not expect to have high test coverage because we have not tested all of our CRUD routes. Still, it is helpful to practice checking coverage and reading reports of the code which detail the code that is tested, and the code that is not tested.
