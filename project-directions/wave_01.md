@@ -14,4 +14,3 @@ Create the following endpoint(s), with similar functionality presented in the He
 As a client, I want to send a request...
 
 1. ...to get all existing `planets`, so that I can see a list of `planets`, with their `id`, `name`, `description`, and other data of the `planet`.
-1. ...to get one existing `planet`, so that I can see the `id`, `name`, `description`, and other data of the `planet`.
