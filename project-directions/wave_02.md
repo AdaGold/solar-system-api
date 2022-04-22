@@ -1,4 +1,4 @@
-# Wave 02: Read All Books and 404s
+# Wave 02: Read One Book and 404s
 
 ## RESTful Endpoint(s): Read One Planet
 Create the following endpoint(s), with similar functionality presented in the Hello Books API:
