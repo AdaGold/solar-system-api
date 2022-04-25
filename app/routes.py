@@ -10,6 +10,14 @@ class Planet:
         self.description = description
         self.dist_from_sun = dist_from_sun
 
+    def to_dict(self):
+        return {
+            "id" : self.id,
+            "name" : self.name,
+            "description" : self.description,
+            "distance from sun" : self.dist_from_sun
+        }
+
 planets = [
     Planet(1, "Mercury", "rocky", 1),
     Planet(2, "Venus", "rocky", 2),
@@ -37,8 +45,10 @@ def planet_data():
         )
     return jsonify(planet_list)
 
-# @planets_bp.route("<")
-# def 
+# @planets_bp.route("/<planet_id>", methods = ["GET"])
+# def get_planet_by_id(planet_id):
+#     planet = validate_planet(planet_id)
+
 
 def validate_planet(planet_id):
     try:
