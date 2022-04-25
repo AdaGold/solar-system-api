@@ -45,9 +45,10 @@ def planet_data():
         )
     return jsonify(planet_list)
 
-# @planets_bp.route("/<planet_id>", methods = ["GET"])
-# def get_planet_by_id(planet_id):
-#     planet = validate_planet(planet_id)
+@planets_bp.route("/<planet_id>", methods = ["GET"])
+def get_planet_by_id(planet_id):
+    planet = validate_planet(planet_id)
+    return planet.to_dict()
 
 
 def validate_planet(planet_id):
