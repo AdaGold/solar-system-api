@@ -1,6 +1,7 @@
 import json
 from unicodedata import name
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, abort, make_response
+
 
 class Planet:
     def __init__(self, id, name, description, dist_from_sun):
@@ -35,3 +36,19 @@ def planet_data():
         }
         )
     return jsonify(planet_list)
+
+# @planets_bp.route("<")
+# def 
+
+def validate_planet(planet_id):
+    try:
+        planet_id = int(planet_id)
+    except:
+        abort(make_response({"message": f"planet {planet_id} is invalid"}, 400))
+
+    for planet in planets:
+        if planet.id == planet_id:
+            return planet
+
+    abort(make_response({"message": f"planet {planet_id} not found"}, 404))
+
