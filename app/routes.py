@@ -32,15 +32,15 @@ planets = [
 ]
 
 @bp.route("/<id>", methods=["GET"])
-def get_planet_id():
-    id = int(id)
+def get_planet_id(id):
+    try:
 
-    for planet in index_planets:
+        id = int(id)
+    
+    except:
+        return "Bad data, 400"
+
+    for planet in planets:
         if planet.id == id:
-            jsonify(dict(
-            id=planet.id,
-            name=planet.name,
-            color=planet.color,
-            personality=planet.description,
-
-            ))
+            return planet.to_dict()
+    return "Not found", 404
