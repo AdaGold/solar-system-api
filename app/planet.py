@@ -11,5 +11,4 @@ class Planet():
             "name" : self.name,
             "decription": self.description,
             "moons": self.moons
-
         }
