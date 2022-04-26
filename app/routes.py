@@ -21,14 +21,19 @@ def validate_planet(id):
         id = int(id)
     except:
         return abort(make_response({"message":f"planet_id {id} invalid"}, 400))
+        
+        
+    
 
     for planet in planets:
         if planet.id == id:
             return planet
 
     return abort(make_response({"message":f"planet {id} not found"}, 404))
+    
+ 
 
 @planets_bp.route("/<id>", methods=["GET"])
 def handle_planet(id):
     planet = validate_planet(id)
-    return jsonify(planet.to_json(), 200)
+    return jsonify(planet.to_json()), 200
