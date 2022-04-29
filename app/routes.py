@@ -50,32 +50,45 @@ def handle_planets():
 
 @planets_bp.route("", methods = ["GET"])
 def planet_data():
-    planet_list = []
-    for planet in planets:
-        planet_list.append({
-        "id" : planet.id,
-        "name" : planet.name,
-        "description" : planet.description,
-        "distance from sun" : planet.dist_from_sun
-        }
-        )
-    return jsonify(planet_list)
-
-@planets_bp.route("/<planet_id>", methods = ["GET"])
-def get_planet_by_id(planet_id):
-    planet = validate_planet(planet_id)
-    return planet.to_dict()
-
-
-def validate_planet(planet_id):
-    try:
-        planet_id = int(planet_id)
-    except:
-        abort(make_response({"message": f"planet {planet_id} is invalid"}, 400))
+    planets = Planet.query.all()
+    planets_response = []
 
     for planet in planets:
-        if planet.id == planet_id:
-            return planet
+        planets_response.append({
+            "id": planet.id,
+            "name": planet.name,
+            "description": planet.description,
+            "distance from sun": planet.distance_from_sun
+        })
+    
+    return jsonify(planets_response)
 
-    abort(make_response({"message": f"planet {planet_id} not found"}, 404))
+    # planet_list = []
+    # for planet in planets:
+    #     planet_list.append({
+    #     "id" : planet.id,
+    #     "name" : planet.name,
+    #     "description" : planet.description,
+    #     "distance from sun" : planet.dist_from_sun
+    #     }
+    #     )
+    # return jsonify(planet_list)
+
+# @planets_bp.route("/<planet_id>", methods = ["GET"])
+# def get_planet_by_id(planet_id):
+#     planet = validate_planet(planet_id)
+#     return planet.to_dict()
+
+
+# def validate_planet(planet_id):
+#     try:
+#         planet_id = int(planet_id)
+#     except:
+#         abort(make_response({"message": f"planet {planet_id} is invalid"}, 400))
+
+#     for planet in planets:
+#         if planet.id == planet_id:
+#             return planet
+
+#     abort(make_response({"message": f"planet {planet_id} not found"}, 404))
 
