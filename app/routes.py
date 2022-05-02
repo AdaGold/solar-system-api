@@ -80,7 +80,6 @@ def update_planet(planet_id):
     db.session.commit()
 
     return make_response(f"Planet #{planet.id} successfully updated")
-
 @planets_bp.route("/<planet_id>", methods=["DELETE"])
 def delete_planet(planet_id):
     planet = validate_planet(planet_id)
