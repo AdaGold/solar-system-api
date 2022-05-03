@@ -72,6 +72,20 @@ def get_planet_by_id(planet_id):
             "distance from sun": planet.distance_from_sun
     }
 
+@planets_bp.route("/<planet_id>", methods=["PUT"])
+def update_planet(planet_id):
+    planet = validate_planet(planet_id)
+
+    request_body = request.get_json()
+
+    planet.name = request_body["name"]
+    planet.description = request_body["description"]
+    planet.distance_from_sun = request_body["distance from sun"]
+
+    db.session.commit()
+
+    return make_response(f"Planet {planet.name} successfully updated.")
+
 
     # planet_list = []
     # for planet in planets:
