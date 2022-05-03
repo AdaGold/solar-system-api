@@ -65,9 +65,13 @@ def planet_data():
 
 @planets_bp.route("/<planet_id>", methods = ["GET"])
 def get_planet_by_id(planet_id):
+    planet = validate_planet(planet_id)
+    return { 
+            "name": planet.name,
+            "description": planet.description,
+            "distance from sun": planet.distance_from_sun
+    }
 
-
-    pass
 
     # planet_list = []
     # for planet in planets:
