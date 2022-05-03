@@ -86,6 +86,14 @@ def update_planet(planet_id):
 
     return make_response(f"Planet {planet.name} successfully updated.")
 
+@planets_bp.route("/<planet_id>", methods=["DELETE"])
+def delete_planet_by_id(planet_id):
+    planet = validate_planet(planet_id)
+
+    db.session.delete(planet)
+    db.session.commit()
+    
+    return make_response(f"Planet {planet.name} successfully deleted.")
 
     # planet_list = []
     # for planet in planets:
