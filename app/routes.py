@@ -63,6 +63,12 @@ def planet_data():
     
     return jsonify(planets_response)
 
+@planets_bp.route("/<planet_id>", methods = ["GET"])
+def get_planet_by_id(planet_id):
+
+
+    pass
+
     # planet_list = []
     # for planet in planets:
     #     planet_list.append({
@@ -80,15 +86,20 @@ def planet_data():
 #     return planet.to_dict()
 
 
-# def validate_planet(planet_id):
-#     try:
-#         planet_id = int(planet_id)
-#     except:
-#         abort(make_response({"message": f"planet {planet_id} is invalid"}, 400))
+def validate_planet(planet_id):
+    try:
+        planet_id = int(planet_id)
+    except:
+        abort(make_response({"message": f"planet {planet_id} is invalid"}, 400))
 
-#     for planet in planets:
-#         if planet.id == planet_id:
-#             return planet
+    planet = Planet.query.get(planet_id)
+    
+    if not planet:
+        abort(make_response({"message": f"planet {planet_id} not found"}, 404))
+    return planet
 
-#     abort(make_response({"message": f"planet {planet_id} not found"}, 404))
+    # for planet in planets:
+    #     if planet.id == planet_id:
+    #         return planet
+
 
