@@ -4,27 +4,7 @@ from app.models.planet import Planet
 from flask import Blueprint, jsonify, abort, make_response, request
 from .helper import validate_planet
 
-
-
-# planets = [
-#     Planet(1, "Earth", "blue planet", 1),
-#     Planet(2, "Mercury", "closest to sun"),
-#     Planet(3, "Jupiter", "has big spot", 66)
-# ]
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
-
-# def validate_planet(planet_id):
-#     try:
-#         planet_id = int(planet_id)
-#     except:
-#         abort(make_response({"message":f"planet_id {planet_id} invalid"}, 400))
-        
-#     planet = Planet.query.get(planet_id)
-
-#     if not planet:
-#         abort(make_response({"message":f"planet {planet_id} not found"}, 404))
-
-#     return planet
 
 @planets_bp.route("", methods=["POST"])
 def create_planet():
@@ -32,9 +12,6 @@ def create_planet():
 
     new_planet = Planet.create(request_body)
 
-    # new_planet = Planet(name=request_body["name"],
-    #                     description=request_body["description"],
-    #                     moons=request_body["moons"])
     db.session.add(new_planet)
     db.session.commit()
 
@@ -78,10 +55,6 @@ def update_planet(planet_id):
     request_body = request.get_json()
 
     planet.update(request_body)
-
-    # planet.name = request_body["name"]
-    # planet.description = request_body["description"]
-    # planet.moons = request_body['moons']
 
     db.session.commit()
 
