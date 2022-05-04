@@ -21,6 +21,16 @@ def test_get_one_planet(client, two_saved_planets):
         "moons": 66
     }
 
+def test_get_one_planet_empty(client):
+    # Act
+    response = client.get("/planets/1")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 404
+
+
+
 def test_create_one_planet(client):
     # Act
     response = client.post("/planets", json={

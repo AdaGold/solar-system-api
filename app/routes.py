@@ -2,6 +2,7 @@ from requests import request
 from app import db
 from app.models.planet import Planet
 from flask import Blueprint, jsonify, abort, make_response, request
+from .helper import validate_planet
 
 
 
@@ -12,25 +13,28 @@ from flask import Blueprint, jsonify, abort, make_response, request
 # ]
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 
-def validate_planet(planet_id):
-    try:
-        planet_id = int(planet_id)
-    except:
-        abort(make_response({"message":f"planet_id {planet_id} invalid"}, 400))
+# def validate_planet(planet_id):
+#     try:
+#         planet_id = int(planet_id)
+#     except:
+#         abort(make_response({"message":f"planet_id {planet_id} invalid"}, 400))
         
-    planet = Planet.query.get(planet_id)
+#     planet = Planet.query.get(planet_id)
 
-    if not planet:
-        abort(make_response({"message":f"planet {planet_id} not found"}, 404))
+#     if not planet:
+#         abort(make_response({"message":f"planet {planet_id} not found"}, 404))
 
-    return planet
+#     return planet
 
 @planets_bp.route("", methods=["POST"])
 def create_planet():
     request_body = request.get_json()
-    new_planet = Planet(name=request_body["name"],
-                        description=request_body["description"],
-                        moons=request_body["moons"])
+
+    new_planet = Planet.create(request_body)
+
+    # new_planet = Planet(name=request_body["name"],
+    #                     description=request_body["description"],
+    #                     moons=request_body["moons"])
     db.session.add(new_planet)
     db.session.commit()
 
@@ -73,9 +77,11 @@ def update_planet(planet_id):
 
     request_body = request.get_json()
 
-    planet.name = request_body["name"]
-    planet.description = request_body["description"]
-    planet.moons = request_body['moons']
+    planet.update(request_body)
+
+    # planet.name = request_body["name"]
+    # planet.description = request_body["description"]
+    # planet.moons = request_body['moons']
 
     db.session.commit()
 
@@ -89,14 +95,3 @@ def delete_planet(planet_id):
     db.session.commit()
 
     return make_response(jsonify(f"Planet #{planet.id} successfully deleted"))
-
-
-
-
-
-
-    
-# @planets_bp.route("/<id>", methods=["GET"])
-# def handle_planet(id):
-#     planet = validate_planet(id)
-#     return jsonify(planet.to_json())

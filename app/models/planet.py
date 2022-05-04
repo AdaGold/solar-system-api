@@ -1,3 +1,4 @@
+
 from app import db
 
 class Planet(db.Model):
@@ -13,6 +14,21 @@ class Planet(db.Model):
             "decription": self.description,
             "moons": self.moons
         }
+
+    def update(self, req_body):
+        self.name = req_body["name"]
+        self.description = req_body["description"]
+        self.moons = req_body["moons"]
+
+    @classmethod
+    def create(cls,req_body):
+        new_planet = cls(
+            name=req_body["name"],
+            description=req_body["description"],
+            moons=req_body["moons"]
+        )
+        return new_planet
+
 
 
 # class Planet():
