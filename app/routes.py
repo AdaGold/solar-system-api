@@ -58,7 +58,9 @@ def update_planet(planet_id):
     planet = validate_planet(planet_id)
     request_body = request.get_json()
 
-    planet.from_dict(request_body)
+    planet.color = request_body["color"]
+    planet.name = request_body["name"]
+    planet.description = request_body["description"]
 
     db.session.commit()
 
