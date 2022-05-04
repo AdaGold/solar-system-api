@@ -22,9 +22,9 @@ def validate_planet(planet_id):
 @planets_bp.route("", methods=["GET"])
 def index_planets():
     if request.method == "GET":
-        title_query = request.args.get("title")
-        if title_query:
-            planets = Planet.query.filter_by(title=title_query)
+        color_query = request.args.get("color")
+        if color_query:
+            planets = Planet.query.filter_by(color=color_query)
         else:
             planets = Planet.query.all()
         planets_response = []
