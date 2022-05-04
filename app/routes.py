@@ -24,23 +24,14 @@ def planet_data():
     planets_response = []
 
     for planet in planets:
-        planets_response.append({
-            "id": planet.id,
-            "name": planet.name,
-            "description": planet.description,
-            "distance from sun": planet.distance_from_sun
-        })
+        planets_response.append(planet.to_dictionary())
     
     return jsonify(planets_response)
 
 @planets_bp.route("/<planet_id>", methods = ["GET"])
 def get_planet_by_id(planet_id):
     planet = validate_planet(planet_id)
-    return { 
-            "name": planet.name,
-            "description": planet.description,
-            "distance from sun": planet.distance_from_sun
-    }
+    return jsonify(planet.to_dictionary())
 
 @planets_bp.route("/<planet_id>", methods=["PUT"])
 def update_planet(planet_id):
