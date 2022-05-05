@@ -11,7 +11,7 @@ class Planet(db.Model):
         return {
             "id": self.id,
             "name" : self.name,
-            "decription": self.description,
+            "description": self.description,
             "moons": self.moons
         }
 
