@@ -18,7 +18,21 @@ def test_get_one_planet(client, two_saved_planets):
     # Assert
     assert response.status_code == 200
     assert response_body == {
-        "id": ,
-        "title": "Ocean Book",
-        "description": "watr 4evr"
+        "id": 1,
+        "name": "Mercury",
+        "color": "purple",
+        "description": "pretty"
     }
+
+def test_create_one_planet(client):
+    # Act
+    response = client.post("/planets", json={
+        "name": "Earth",
+        "color": "blue",
+        "description": "The Best!"
+    })
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 201
+    assert response_body == "Planet Earth successfully created"
