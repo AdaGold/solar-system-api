@@ -1,8 +1,8 @@
-"""empty message
+"""adds planets
 
-Revision ID: e1cff176ee22
+Revision ID: 2c36a825ccc2
 Revises: 
-Create Date: 2022-04-30 21:20:36.091638
+Create Date: 2022-05-11 08:07:48.872328
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'e1cff176ee22'
+revision = '2c36a825ccc2'
 down_revision = None
 branch_labels = None
 depends_on = None
