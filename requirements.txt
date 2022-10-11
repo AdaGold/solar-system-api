@@ -12,9 +12,9 @@ itsdangerous==1.1.0
 Jinja2==2.11.3
 Mako==1.1.4
 MarkupSafe==1.1.1
-psycopg2-binary==2.8.6
+psycopg2-binary==2.9.4
 pycodestyle==2.6.0
-pytest==6.2.3
+pytest==7.1.1
 pytest-cov==2.12.1
 python-dateutil==2.8.1
 python-dotenv==0.15.0
