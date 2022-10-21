@@ -22,7 +22,7 @@ planets = [
 bp = Blueprint("planets", __name__, url_prefix="/planets")
 
 @bp.route("", methods=["GET"])
-def list_planets():
+def handle_planets():
     return_body = []
     for planet in planets:
         return_body.append({
