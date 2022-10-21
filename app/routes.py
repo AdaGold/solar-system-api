@@ -1,6 +1,7 @@
-from flask import Blueprint
+from crypt import methods
+from flask import Blueprint, jsonify
 
-class Planet():
+class Planet:
     def __init__(self, id, name, description, rings):
         self.id = id
         self.name = name
@@ -18,3 +19,17 @@ planets = [
         Planet(8, "Neptune", "The most distant planet from the sun", False)
         ]
 
+bp = Blueprint("planets", __name__, url_prefix="/planets")
+
+@bp.route("", methods=["GET"])
+def list_planets():
+    return_body = []
+    for planet in planets:
+        return_body.append({
+            "id": planet.id,
+            "name": planet.name,
+            "description": planet.description,
+            "rings": planet.rings
+        })
+    
+    return jsonify(return_body)
