@@ -30,5 +30,26 @@ def get_all_planets():
             "description": planet.description,
             "color": planet.color
         })
-        
+
     return jsonify(result)
+
+@planets_bp.route("/<planet_id>", methods=["GET"])
+def get_one_planet(planet_id):
+    #planet_id = int(planet_id)
+    try:
+        planet_id = int(planet_id)
+    except:
+        return {"message":f"planet {planet_id} invalid"}, 400
+
+    for planet in planets:
+        if planet.id == planet_id:
+
+            return {
+                "id": planet.id,
+                "name": planet.name,
+                "description": planet.description,
+                "color": planet.color
+            }  
+
+        return {"message":f"planet {planet_id} not found"}, 404
+
