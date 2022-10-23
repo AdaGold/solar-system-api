@@ -1,7 +1,7 @@
 
 from flask import Blueprint, jsonify
 
-planets_bp = Blueprint("planets", __name__,url_prefix="/planets")
+planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
 
 class Planet:
     def __init__(self, id, name, description):
