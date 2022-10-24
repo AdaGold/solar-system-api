@@ -1,5 +1,5 @@
 from crypt import methods
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, abort, make_response
 
 class Planet:
     def __init__(self, id, name, description, rings):
@@ -33,3 +33,22 @@ def handle_planets():
         })
     
     return jsonify(return_body)
+
+@bp.route("/<id>", methods=["GET"])
+def handle_planet(id):
+    try:
+        planet_id = int(id)
+    except:
+        abort(400, description=f"planet {id} is not valid")
+    
+    for planet in planets:
+        if planet.id == planet_id:
+            return jsonify({
+                "id": planet.id,
+                "name": planet.name,
+                "description": planet.description,
+                "rings": planet.rings
+            })
+    
+    abort(404, description=f"Planet {id} not found")
+
