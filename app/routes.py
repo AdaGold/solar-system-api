@@ -39,7 +39,7 @@ def handle_planet(id):
     try:
         planet_id = int(id)
     except:
-        abort(400, description=f"planet {id} is not valid")
+        abort(make_response({"message":f"planet {id} is not valid"}, 400))
     
     for planet in planets:
         if planet.id == planet_id:
@@ -50,5 +50,5 @@ def handle_planet(id):
                 "rings": planet.rings
             })
     
-    abort(404, description=f"Planet {id} not found")
+    abort(make_response({"message":f"Planet {id} not found."}, 404))
 
