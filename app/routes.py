@@ -14,11 +14,11 @@ planets = [
     Planet(3, "Mercury", "Grey", 1500)
 ]
 
-planet_bp = Blueprint("planets", __name__)
+planet_bp = Blueprint("planet_bp", __name__, url_prefix = "/planets")
 
 
 #this is the decorator that saying when a request matches turn this function into url
-@planet_bp.route("/planets", methods = ["GET"])
+@planet_bp.route("", methods = ["GET"])
 #need to create function here 
 
 def all_planets():
@@ -29,3 +29,15 @@ def all_planets():
 
         })
     return jsonify(planet_data)
+
+@planet_bp.route("/<planet_id>", methods = ["GET"])
+
+def planet_info(planet_id):
+    try: 
+        planet = int(planet_id)
+    except:
+        {"message": f'planet_id {planet_id} is in valid'}, 400
+
+    for planet in planets:
+        if planet.id == planet_id:
+            return {"id": planet.id, "name": planet.name, "description": planet.description, "size": planet.size}
