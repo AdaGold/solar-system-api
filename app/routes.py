@@ -30,14 +30,21 @@ def all_planets():
         })
     return jsonify(planet_data)
 
+# this is the decorator for the planet_id endpoint
 @planet_bp.route("/<planet_id>", methods = ["GET"])
 
 def planet_info(planet_id):
     try: 
-        planet = int(planet_id)
+        planet_id = int(planet_id)
     except:
-        {"message": f'planet_id {planet_id} is in valid'}, 400
+        return {"message": f'planet {planet_id} is invalid'}, 400
 
     for planet in planets:
         if planet.id == planet_id:
-            return {"id": planet.id, "name": planet.name, "description": planet.description, "size": planet.size}
+            return {
+                "id": planet.id, 
+                "name": planet.name, 
+                "description": planet.description, 
+                "size": planet.size
+            }
+    return {"message": f"planet {planet_id} is not found"}, 404
