@@ -1,12 +1,6 @@
-from crypt import methods
-from flask import Blueprint, jsonify, abort, make_response
-
-class Planet:
-    def __init__(self, id, name, description, rings):
-        self.id = id
-        self.name = name
-        self.description = description
-        self.rings = rings
+from flask import Blueprint, jsonify, abort, make_response, request
+from app.models.planet import Planet
+from app import db
 
 planets = [
         Planet(1, "Mercury", "The smallest and fastest planet", False),
@@ -51,4 +45,16 @@ def handle_planet(id):
             })
     
     abort(make_response({"message":f"Planet {id} not found."}, 404))
+
+@bp.route("", methods=["POST"])
+def create_planet():
+    request_body = request.get_json()
+    new_planet = Planet(name=request_body["name"],
+                        description=request_body["description"],
+                        rings=request_body["rings"])
+    
+    db.session.add(new_planet)
+    db.session.commit()
+
+    return make_response(f"Planet {new_planet.name} created", 201)
 
