@@ -3,6 +3,11 @@ from __future__ import with_statement
 import logging
 from logging.config import fileConfig
 
+<<<<<<< HEAD
+=======
+from sqlalchemy import engine_from_config
+from sqlalchemy import pool
+>>>>>>> 6090479c75453dcce233fbba05263a13891da630
 from flask import current_app
 
 from alembic import context
@@ -22,8 +27,12 @@ logger = logging.getLogger('alembic.env')
 # target_metadata = mymodel.Base.metadata
 config.set_main_option(
     'sqlalchemy.url',
+<<<<<<< HEAD
     str(current_app.extensions['migrate'].db.get_engine().url).replace(
         '%', '%%'))
+=======
+    str(current_app.extensions['migrate'].db.engine.url).replace('%', '%%'))
+>>>>>>> 6090479c75453dcce233fbba05263a13891da630
 target_metadata = current_app.extensions['migrate'].db.metadata
 
 # other values from the config, defined by the needs of env.py,
@@ -71,7 +80,15 @@ def run_migrations_online():
                 directives[:] = []
                 logger.info('No changes in schema detected.')
 
+<<<<<<< HEAD
     connectable = current_app.extensions['migrate'].db.get_engine()
+=======
+    connectable = engine_from_config(
+        config.get_section(config.config_ini_section),
+        prefix='sqlalchemy.',
+        poolclass=pool.NullPool,
+    )
+>>>>>>> 6090479c75453dcce233fbba05263a13891da630
 
     with connectable.connect() as connection:
         context.configure(
