@@ -35,15 +35,15 @@ def get_planet(id):
     
     return make_response(f"Planet {id} not found", 404)
 
-@bp.route.route("", methods=["POST"])
+@bp.route("", methods=["POST"])
 def update_planet():
     request_body = request.get_json()
-    new_planet = Planet(title=request_body["name"],
+    update_planet = Planet(title=request_body["name"],
                     description=request_body["description"],
                     rings=request_body["rings"])
 
 
-    db.session.add(new_planet)
+    db.session.add(update_planet)
     db.session.commit()
 
 @bp.route("/guide/<id>", methods=["DELETE"])
