@@ -18,7 +18,7 @@ from flask import Blueprint, jsonify, abort, make_response, request
 
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 
-@planets_bp.route("", methods=["GET","POST"])
+@planets_bp.route("", methods=["GET"])
 #def handle_planets():
 def read_all_planets():
     #if request.method == "GET":
