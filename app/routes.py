@@ -19,32 +19,36 @@ from flask import Blueprint, jsonify, abort, make_response, request
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 
 @planets_bp.route("", methods=["GET"])
+<<<<<<< HEAD
 #def handle_planets():
+=======
+# def handle_planets():
+>>>>>>> 68a434404c7ba63ab6a6c941f364c6142757b4d5
 def read_all_planets():
     #if request.method == "GET":
-        planets = Planet.query.all()
-        planets_response = []
-        for planet in planets:
-            planets_response.append({
-                "id": planet.id,
-                "name": planet.name,
-                "description": planet.description,
-                "color": planet.color
-            })
-        return jsonify(planets_response)
+    planets = Planet.query.all()
+    planets_response = []
+    for planet in planets:
+        planets_response.append({
+            "id": planet.id,
+            "name": planet.name,
+            "description": planet.description,
+            "color": planet.color
+        })
+    return jsonify(planets_response)
     
 @planets_bp.route("", methods=["POST"])
 def create_planet():
     #elif request.method == "POST":
-        request_body = request.get_json()
-        new_planet = Planet(name=request_body["name"],
-                            description=request_body["description"],
-                            color=request_body["color"])
+    request_body = request.get_json()
+    new_planet = Planet(name=request_body["name"],
+                        description=request_body["description"],
+                        color=request_body["color"])
 
-        db.session.add(new_planet)
-        db.session.commit()
+    db.session.add(new_planet)
+    db.session.commit()
 
-        return make_response(f"planet {new_planet.name} successfully created", 201)
+    return make_response(f"planet {new_planet.name} successfully created", 201)
 
 
 
