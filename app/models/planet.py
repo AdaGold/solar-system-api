@@ -7,9 +7,37 @@ class Planet(db.Model):
     color = db.Column(db.String)
 
 
-    # class Planet():
-    # def __init__(self, id, name, description, color):
-    #     self.id = id
-    #     self.name = name
-    #     self.description = description
-    #     self.color = color
+def to_dict(self):
+
+    return {
+        "name": self.name,
+        "color": self.color,
+        "description": self.description,
+        "id": self.id
+    }
+@classmethod   
+def from_json(cls, req_body):
+    return cls(
+        name= req_body["name"],
+        color= req_body["color"],
+        description= req_body["description"]
+    )
+    
+def update(self, req_body):
+    self.name= req_body["name"],
+    self.color= req_body["color"],
+    self.description= req_body["description"]
+    
+    
+    
+    
+    
+    
+    
+    
+    # planet_as_dict = {}
+    # planet_as_dict["id"] = self.id
+    # planet_as_dict["title"] = self.title
+    # planet_as_dict["description"] = self.description
+
+    # return planet_as_dict
