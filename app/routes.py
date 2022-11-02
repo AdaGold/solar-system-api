@@ -4,6 +4,22 @@ from flask import Blueprint, jsonify, make_response, request
 
 planet_bp = Blueprint("planet_bp", __name__, url_prefix = "/planets")
 
+#create a planet 
+
+@planet_bp.route("", methods=["POST"])
+def handle_planets():
+    request_body = request.get_json()
+    new_planet = Planet(name=request_body["name"],
+                description=request_body["description"],
+                )
+
+    db.session.add(new_planet)
+    db.session.commit()
+
+    return make_response(f"Planet {new_planet} successfully created", 201)
+
+
+#read  planets
 @planet_bp.route("", methods = ["GET"])
 def all_planet_data():
     if request.method == "GET":
@@ -14,10 +30,10 @@ def all_planet_data():
             planet_data.append({
                 "id": planet.id, 
                 "name": planet.name,
-                "description": planet.description,
-                "size": planet.size
+                "description": planet.description
             })
         return jsonify(planet_data)
+
 
 # class Planet:
 #     def __init__(self, id, name, description, size):
