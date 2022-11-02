@@ -4,6 +4,8 @@ from flask_migrate import Migrate
 db=SQLAlchemy()
 migrate=Migrate()
 
+db = SQLAlchemy()
+migrate = Migrate()
 
 def create_app(test_config=None):
     app = Flask(__name__)
@@ -15,10 +17,11 @@ def create_app(test_config=None):
     
     from.routes import planets_bp
     app.register_blueprint(planets_bp)
+    from app.models.planet import Planet
 
 
     return app
-    
+
 # commands to remember: 
 # flask run -h localhost -p 3000
 # FLASK_ENV=development flask run
