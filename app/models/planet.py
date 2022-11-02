@@ -7,3 +7,11 @@ class Planet(db.Model):
     name = db.Column(db.String)
     description = db.Column(db.String)
     size = db.Column(db.String)
+
+    #def dict_planet(self):
+        #return{
+            #"id": self.id,
+            #"name": self.name,
+            #"description": self.description,
+            #"size": self.size
+            #}
