@@ -57,18 +57,18 @@ def read_one_planet(planet_id):
                 "description": planet.description
             }
 
-# @planet_bp.route("/<planet_id>", methods=["PUT"])
-# def update_planet(planet_id):
-#     planet = validate_planet(planet_id)
+@planet_bp.route("/<planet_id>", methods=["PUT"])
+def update_planet(planet_id):
+    planet = validate_planet(planet_id)
 
-#     request_body = request.get_json()
+    request_body = request.get_json()
 
-#     planet.name = request_body["name"]
-#     planet.description = request_body["description"]
+    planet.name = request_body["name"]
+    planet.description = request_body["description"]
 
-#     db.session.commit()
+    db.session.commit()
 
-#     return make_response(f"Planet #{planet.id} successfully updated")
+    return make_response(f"Planet #{planet.id} successfully updated")
 
 # class Planet:
 #     def __init__(self, id, name, description, size):
