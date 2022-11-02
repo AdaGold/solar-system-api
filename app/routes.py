@@ -35,38 +35,31 @@ def create_planet():
 
 @planet_bp.route("", methods=["GET"])
 def read_all_planets():
+    planet_query = request.args.get("name")
+    if planet_query:
+        planets = Planet.query.filter_by(name=planet_query)
+    else:
+        planets = Planet.query.all()
+
     planets_response = []
-    planets = Planet.query.all()
     for planet in planets:
-        planets_response.append(
-            {
-            "id": planet.id,
-            "name": planet.name,
-            "description": planet.description,
-            "diameter": planet.diameter
-            }
-        )
+        planets_response.append(planet.to_dict())
     return jsonify(planets_response)
     
 
 @planet_bp.route("/<planet_id>", methods=["GET"])
 def read_one_planet(planet_id):
     planet = validate_planet(planet_id)
-    return {
-        "id": planet.id,
-        "name": planet.name,
-        "description": planet.description,
-        "diameter": planet.diameter
-    }
+    return planet.to_dict()
 
 @planet_bp.route("/<planet_id>", methods=["DELETE"])
 def delete_planet(planet_id):
     planet = validate_planet(planet_id)
 
     db.session.delete(planet)
-    db.session.commit()
+    db.session.commit
 
-    return make_response(f"Planet #{planet.id} successfully deleted")
+    return make_response(jsonify(f"Planet #{planet.id} successfully deleted!"))
 
 @planet_bp.route("/<planet_id>", methods=["PUT"])
 def update_planet(planet_id):
@@ -80,7 +73,9 @@ def update_planet(planet_id):
 
     db.session.commit()
 
-    return make_response(f"Planet #{planet.id} successfully updated")
+    return make_response(jsonify(f"Planet #{planet_id} successfully updated! "))
+
+
 
 
 
