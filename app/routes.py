@@ -29,7 +29,7 @@ def read_all_planets():
             "id": planet.id,
             "name": planet.name,
             "description": planet.description,
-            "size": planet.description
+            "size": planet.size
             }), 200
     return jsonify(planets_response)
 
