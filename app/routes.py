@@ -26,9 +26,7 @@ def read_all_planets():
     planets_response = []
 
     name_param=request.args.get("name")
-    
     description_param=request.args.get("description")
-
     size_param=request.args.get("size")
     
     if name_param:
