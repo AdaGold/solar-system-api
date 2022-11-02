@@ -22,16 +22,34 @@ def validate_planet(planet_id):
 #route functions
 @planets_bp.route("", methods=["GET"])
 def read_all_planets():
-    planets = Planet.query.all()
+    #planets = Planet.query.all()
     planets_response = []
+
+    name_param=request.args.get("name")
+    
+    description_param=request.args.get("description")
+
+    size_param=request.args.get("size")
+    
+    if name_param:
+        planets=Planet.query.filter_by(name=name_param)
+    elif description_param:
+        planets=Planet.query.filter_by(description=description_param)
+    elif size_param:
+        planets=Planet.query.filter_by(size=size_param)
+    else:
+        planets=Planet.query.all()
+
+
     for planet in planets:
         planets_response.append({
             "id": planet.id,
             "name": planet.name,
             "description": planet.description,
-            "size": planet.description
+            "size": planet.size
             }), 200
-    return jsonify(planets_response)
+        #planets_response.append(planet.dict_planet())
+        return jsonify(planets_response),200
 
 @planets_bp.route("", methods=["POST"])
 def create_planet():          
