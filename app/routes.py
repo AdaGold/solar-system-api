@@ -1,6 +1,24 @@
 from app import db
 from app.models.planet import Planet
 from flask import Blueprint, jsonify, make_response, request
+
+planet_bp = Blueprint("planet_bp", __name__, url_prefix = "/planets")
+
+@planet_bp.route("", methods = ["GET"])
+def all_planet_data():
+    if request.method == "GET":
+        planets = Planet.query.all()
+
+        planet_data = []
+        for planet in planets:
+            planet_data.append({
+                "id": planet.id, 
+                "name": planet.name,
+                "description": planet.description,
+                "size": planet.size
+            })
+        return jsonify(planet_data)
+
 # class Planet:
 #     def __init__(self, id, name, description, size):
 #         self.id = id
@@ -14,8 +32,6 @@ from flask import Blueprint, jsonify, make_response, request
 #     Planet(2, "Earth", "Blue", 3958),
 #     Planet(3, "Mercury", "Grey", 1500)
 # ]
-
-planet_bp = Blueprint("planet_bp", __name__, url_prefix = "/planets")
 
 
 # #this is the decorator that saying when a request matches turn this function into url
