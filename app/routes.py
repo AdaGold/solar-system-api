@@ -44,7 +44,7 @@ def read_all_planets():
     if color_param:
         planets = Planet.query.filter_by(color=color_param)
     elif name_param:
-        planets = Planet.query.filter_by(name= name_param)
+        planets = Planet.query.filter_by(name=name_param)
     else:
         planets = Planet.query.all()
     planets_response = []
@@ -65,7 +65,7 @@ def create_planet():
 
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def read_one_planet(planet_id):
-    planet = validate_planet(planet_id)
+    planet = validate_planet(Planet, planet_id)
     return jsonify(planet.to_dict()), 200
 
 
