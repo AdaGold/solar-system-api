@@ -20,4 +20,17 @@ def test_get_one_planet(client, two_saved_planets):
         "description": "watr 4evr",
         "color": "color"
     }
+# I have added this create function
+def test_create_one_planet(client):
+    # Act
+    response = client.post("/planets", json={
+        "name": "MelMash Planet",
+        "description": "The Best!",
+        "color": "Green"
+    })
+    response_body = response.get_json()
 
+    # Assert
+    assert response.status_code == 201
+    assert response_body == "Book New Book successfully created"
+    
