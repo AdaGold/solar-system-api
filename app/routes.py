@@ -26,9 +26,7 @@ def read_all_planets():
     planets_response = []
 
     name_param=request.args.get("name")
-    
     description_param=request.args.get("description")
-
     size_param=request.args.get("size")
     
     if name_param:
@@ -49,7 +47,7 @@ def read_all_planets():
             "size": planet.size
             }), 200
         #planets_response.append(planet.dict_planet())
-        return jsonify(planets_response),200
+    return jsonify(planets_response),200
 
 @planets_bp.route("", methods=["POST"])
 def create_planet():          
