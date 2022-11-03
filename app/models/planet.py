@@ -14,3 +14,11 @@ class Planet(db.Model):
         planet_dict["description"] = self.description
         planet_dict["diameter"] = self.diameter
         return planet_dict
+    
+    @classmethod
+    def from_dict(cls, planet_data):
+        new_planet = Planet(name=planet_data["name"],
+                            description=planet_data["description"],
+                            diameter=planet_data["diameter"]
+                            )
+        return new_planet
