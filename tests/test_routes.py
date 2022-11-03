@@ -36,5 +36,5 @@ def test_create_one_planet(client):
 
 
     # Assert
-    assert response.status_code == 200
-    assert response_body == "Planet Saturn successfully created, 201"
+    assert response.status_code == 201
+    assert response_body == "Planet Saturn successfully created"
