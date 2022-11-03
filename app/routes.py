@@ -24,14 +24,15 @@ def validate_planet(cls, planet_id):
 @planet_bp.route("", methods=["POST"])
 def create_planet():
     request_body = request.get_json()
-    new_planet = Planet(name=request_body["name"],
-                    description=request_body["description"],
-                    diameter = request_body["diameter"])
+    new_planet = Planet.from_dict(request_body)
+                    # name=request_body["name"],
+                    # description=request_body["description"],
+                    # diameter = request_body["diameter"])
 
     db.session.add(new_planet)
     db.session.commit()
 
-    return make_response(jsonify(f"Planet {new_planet.name} successfully created", 201))
+    return make_response(jsonify(f"Planet {new_planet.name} successfully created"), 201)
 
 @planet_bp.route("", methods=["GET"])
 def read_all_planets():
