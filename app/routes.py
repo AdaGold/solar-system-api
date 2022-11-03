@@ -49,7 +49,7 @@ def validate_planet(cls, planet_id):
         abort(make_response({"message":f"{cls.__name__} {planet_id} not found"}, 404))
     
     return planet
-   
+
 @planet_bp.route("/<planet_id>", methods= ["GET"])
 def read_one_planet(planet_id):
     planet = validate_planet(Planet, planet_id)
