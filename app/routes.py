@@ -29,7 +29,7 @@ def create_planet():
 
     return make_response(f"Planet {new_planet.name} successfully created", 201)
 
-# FIXME: response returns 400 code even when successful
+
 @bp.route("", methods=["GET"])
 def get_all_planets():
     planets_response = []
@@ -59,7 +59,6 @@ def update_planet(planet_id):
 
     return make_response(f"Planet #{planet.id} successfully updated", 200)
 
-# FIXME: response returns 405 'Method not allowed'
 @bp.route("/<planet_id>", methods=["DELETE"])
 def delete_planet(planet_id):
     planet = validate_planet(planet_id)
