@@ -29,11 +29,23 @@ def create_planet():
 
     return make_response(f"Planet {new_planet.name} successfully created", 201)
 
-# FIXME: response returns 400 code even when successful
 @bp.route("", methods=["GET"])
 def get_all_planets():
+    name_query = request.args.get("name")
+    rings_query = request.args.get("rings")
+    limit_query = request.args.get("limit")
+
+    planet_query = Planet.query
+
+    if name_query:
+        planet_query = planet_query.filter_by(name=name_query)
+    if rings_query:
+        planet_query = planet_query.filter_by(rings=rings_query)
+    if limit_query:
+        planet_query = planet_query.limit(limit=limit_query)
+
+    planets = planet_query.all()
     planets_response = []
-    planets = Planet.query.all()
 
     for planet in planets:
         planets_response.append(planet.build_planet_dict())
@@ -59,7 +71,6 @@ def update_planet(planet_id):
 
     return make_response(f"Planet #{planet.id} successfully updated", 200)
 
-# FIXME: response returns 405 'Method not allowed'
 @bp.route("/<planet_id>", methods=["DELETE"])
 def delete_planet(planet_id):
     planet = validate_planet(planet_id)
