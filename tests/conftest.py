@@ -33,7 +33,7 @@ def two_saved_planets(app):
     earth_planet = Planet(name="Earth",
                     description="Inhabits life",
                     size= "7,917.5 mi" )
-    saturn_planet = Planet(title="Saturn",
+    saturn_planet = Planet(name="Saturn",
                     description="Adorned with ringlets 0o0o0o",
                     size="72,367 mi")
 
