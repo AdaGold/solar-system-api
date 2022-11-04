@@ -13,11 +13,6 @@ def create_app(test_config=None):
     app = Flask(__name__)
 
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    # if not test_config: 
-        # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:postgres@localhost:5432/solar_system_development'
-    # else:
-        # app.config("TESTING") = True
-        # app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("SQLALCHEMY_DATABASE_URI")
 
 
     from app.models.planet import Planet
