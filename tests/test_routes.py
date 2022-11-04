@@ -11,7 +11,17 @@ def test_get_all_planets_with_no_records(client):
 
 #`GET` /planets/1 returns a response body that matches our fixture
 #check if one planet exists, check that status code == 200
+def test_get_one_planet(client, one_saved_planet):
+    response = client.get("/planets/1")
+    response_body = response.get_json()
 
+    assert response.status_code == 200
+    assert response_body == {
+        "id": 1, 
+        "name": "Posh", 
+        "description": "very posh"
+
+    }
 
 # `GET`/planets/1  with no data in test database (no fixtures) returns 404
 def test_get_one_planet_with_no_records(client):

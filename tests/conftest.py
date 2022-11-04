@@ -45,6 +45,6 @@ def one_saved_planet(app):
     description='very posh')
 
     db.session.add(posh_planet)
-    db.sesson.commit()
-    db.session.refersh(posh_planet, ["id"])
+    db.session.commit()
+    db.session.refresh(posh_planet, ["id"])
     return posh_planet
