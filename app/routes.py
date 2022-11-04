@@ -27,12 +27,13 @@ def validate_planet(class_obj, planet_id):
     try:
         planet_id = int(planet_id)
     except:
-        abort(make_response({"message":f"planet {class_obj} {planet_id} is an invalid planet_id"}, 400))
+        abort(make_response({"message": f"planet {planet_id} has an invalid planet_id"}, 400))
 
     query_result = class_obj.query.get(planet_id)
 
     if not query_result:
-        abort(make_response({"message":f"{class_obj} {planet_id} not found"}, 404))
+        abort(make_response({"message": f"planet {planet_id} not found"}, 404))
+
 
     return query_result
 

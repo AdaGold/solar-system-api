@@ -43,6 +43,53 @@ def test_get_one_planet(client, one_planet):
         "color": "color"
     }
 
+def test_get_one_planet_from_many_planets_valid_id(client, many_planets):
+    #Arrange
+    EXPECTED_ID = 3
+    
+    # Act
+    response = client.get(f"/planets/{EXPECTED_ID}")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert response_body == {
+        "id": 3,
+        "name": "Planet of butterflies",
+        "description": "Butterflies and unicorns live there",
+        "color": "Rainbow"
+    }
+
+def test_get_one_planet_from_many_planets_non_existing_id_returns_404(client, many_planets):
+    #Arrange
+    NON_EXISTING_ID = 7
+    
+    # Act
+    response = client.get(f"/planets/{NON_EXISTING_ID}")
+    response_body = response.get_data(as_text=True)
+
+    # Assert
+    assert response.status_code == 404
+
+    # ??????????? big question here how to make pretty message
+    assert response_body == "{\"message\":\"planet 7 not found\"}\n"
+
+def test_get_one_planet_from_many_planets_invalid_id_returns_400(client, many_planets):
+    #Arrange
+    INVALID_ID = "ABC"
+    
+    # Act
+    response = client.get(f"/planets/{INVALID_ID}")
+    response_body = response.get_data(as_text=True)
+
+    # Assert
+    assert response.status_code == 400
+
+    # ??????????? big question here how to make pretty message
+    # assert response_body == f"Message: Planet {INVALID_ID} has an invalid planet_id"
+    assert response_body == "{\"message\":\"planet ABC has an invalid planet_id\"}\n"
+    #abort(make_response({"message":f"planet {class_obj} {planet_id} is an invalid planet_id"}, 400))
+
 
 def test_create_planet_can_create_planet_in_empty_db(client):
     #arrange
