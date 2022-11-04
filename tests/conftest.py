@@ -43,3 +43,37 @@ def one_planet(app):
     db.session.refresh(test_planet, ["id"])
 
     return test_planet
+
+@pytest.fixture
+def many_planets(app):
+    # Arrange
+
+    #     ocean_book = Book(title="Ocean Book",
+    #                   description="watr 4evr")
+    # mountain_book = Book(title="Mountain Book",
+    #                      description="i luv 2 climb rocks")
+
+
+    apes_planet = Planet(name="Planet of apes",
+                    description="Only apes live there",
+                    color = "Grey")
+    crocodile_planet = Planet(name="Planet crocodiles",
+                    description="Only crocodiles live there",
+                    color = "Green")
+    butterfly_planet = Planet(name="Planet of butterflies",
+                    description="Butterflies and unicorns live there",
+                    color = "Rainbow")
+    orange_planet = Planet(name="Planet of oranges",
+                    description="It's full of oranges",
+                    color = "Orange")
+    
+    db.session.add_all([apes_planet, crocodile_planet, butterfly_planet, orange_planet])
+
+    #db.session.add(several_test_planets)
+    # Alternatively, we could do
+    # db.session.add(planet_number_one)
+    # db.session.add(test_planet)
+    db.session.commit()
+    
+    #db.session.refresh(test_planet, ["id"])
+    
