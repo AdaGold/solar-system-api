@@ -1,5 +1,8 @@
 
 #`GET` /planets; returns 200 and empty array
+from urllib import response
+
+
 def test_get_all_planets_with_no_records(client):
     # Act
     response = client.get("/planets")
@@ -46,3 +49,17 @@ def test_get_one_planet_with_two_records(client, two_saved_planets):
     }
 
 # `POST` /planets with JSON request body, returns 201
+def test_create_one_planet(client):
+    new_planet = {"name": "Sporty", "description": "very sporty"}
+
+    response = client.post("/planets", json = new_planet)
+    response_body = response.get_data(as_text = True)
+    assert response.status_code == 201
+    assert response_body == f"Planet {new_planet['name']} successfully created"
+
+    # response = client.post("/planets", json = {"name": "Sporty", "description": "very sporty"})
+
+    # response_body = response.get_json()
+
+    # assert response.status_code == 201
+    # assert response_body == "New planet successfully created"
