@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, abort, make_response, request
 from app.models.planet import Planet
 from app import db
 
-bp = Blueprint("planets", __name__, url_prefix="/planets")
+planet_bp = Blueprint("planets", __name__, url_prefix="/planets")
 
 def validate_planet(planet_id):
     try:
@@ -17,7 +17,7 @@ def validate_planet(planet_id):
 
     return planet
 
-@bp.route("", methods=["POST"])
+@planet_bp.route("", methods=["POST"])
 def create_planet():
     request_body = request.get_json()
     new_planet = Planet(name=request_body["name"],
@@ -29,7 +29,7 @@ def create_planet():
 
     return make_response(f"Planet {new_planet.name} successfully created", 201)
 
-@bp.route("", methods=["GET"])
+@planet_bp.route("", methods=["GET"])
 def get_all_planets():
     name_query = request.args.get("name")
     rings_query = request.args.get("rings")
@@ -52,13 +52,13 @@ def get_all_planets():
 
     return jsonify(planets_response)
 
-@bp.route("/<planet_id>", methods=["GET"])
+@planet_bp.route("/<planet_id>", methods=["GET"])
 def read_one_planet(planet_id):
     planet = validate_planet(planet_id)
 
     return jsonify(planet.build_planet_dict())
 
-@bp.route("/<planet_id>", methods=["PUT"])
+@planet_bp.route("/<planet_id>", methods=["PUT"])
 def update_planet(planet_id):
     planet = validate_planet(planet_id)
     request_body = request.get_json()
@@ -71,7 +71,7 @@ def update_planet(planet_id):
 
     return make_response(f"Planet #{planet.id} successfully updated", 200)
 
-@bp.route("/<planet_id>", methods=["DELETE"])
+@planet_bp.route("/<planet_id>", methods=["DELETE"])
 def delete_planet(planet_id):
     planet = validate_planet(planet_id)
     
