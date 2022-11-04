@@ -61,7 +61,8 @@ def create_planet():
     db.session.add(new_planet)
     db.session.commit()
 # I have changed this retun statement and run the test. My terminal is acting up. Plaease try to run the test.
-    return make_response(jsonify(f"planet {new_planet.name} successfully created", 201))
+    #return make_response(jsonify(f"planet {new_planet.name} successfully created")), 201
+    return make_response(f"planet {new_planet.name} successfully created"), 201
 
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def read_one_planet(planet_id):

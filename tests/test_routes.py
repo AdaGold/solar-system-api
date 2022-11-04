@@ -32,7 +32,7 @@ def test_create_planet_can_create_planet_in_empty_db(client):
         "color": "New color"
     }
 
-    EXPECTED_ID = 1
+    #EXPECTED_ID = 1
 
     #act
     response = client.post("/planets", json = EXPECTED_PLANET)
