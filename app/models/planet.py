@@ -27,17 +27,3 @@ class Planet(db.Model):
         self.name= req_body["name"],
         self.color= req_body["color"],
         self.description= req_body["description"]
-    
-    
-    
-    
-    
-    
-    
-    
-    # planet_as_dict = {}
-    # planet_as_dict["id"] = self.id
-    # planet_as_dict["title"] = self.title
-    # planet_as_dict["description"] = self.description
-
-    # return planet_as_dict

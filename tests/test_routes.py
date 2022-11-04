@@ -71,9 +71,6 @@ def test_get_one_planet_from_many_planets_non_existing_id_returns_404(client, ma
     # Assert
     assert response.status_code == 404
     assert response_body == "{\"message\":\"planet 7 not found\"}\n"
-    # alternative
-    #assert response_body == f"Message: Planet {NON_EXISTING_ID} not found"
-
 
 def test_get_one_planet_from_many_planets_invalid_id_returns_400(client, many_planets):
     #Arrange
@@ -85,11 +82,7 @@ def test_get_one_planet_from_many_planets_invalid_id_returns_400(client, many_pl
 
     # Assert
     assert response.status_code == 400
-    # assert response_body == f"Message: Planet {INVALID_ID} has an invalid planet_id"
     assert response_body == "{\"message\":\"planet ABC has an invalid planet_id\"}\n"
-    #abort(make_response({"message":f"planet {class_obj} {planet_id} is an invalid planet_id"}, 400))
-    # alternative
-    #assert response_body == f"Message: Planet {INVALID_ID} has an invalid planet_id"
 
 def test_create_planet_can_create_planet_in_empty_db(client):
     #arrange
@@ -99,13 +92,9 @@ def test_create_planet_can_create_planet_in_empty_db(client):
         "color": "New color"
     }
 
-    #EXPECTED_ID = 1
-
     #act
     response = client.post("/planets", json = EXPECTED_PLANET)
     response_body = response.get_data(as_text=True)
-
-    #actual_planet = Planet.query.get(EXPECTED_ID)
 
     assert response.status_code == 201
     assert response_body == f"planet {EXPECTED_PLANET['name']} successfully created"
@@ -118,8 +107,6 @@ def test_create_one_planet_if_there_are_planets_in_db(client, many_planets):
         "description": "New watr 4evr",
         "color": "New color"
     }
-
-    EXPECTED_ID = 5
 
     #act
     response = client.post("/planets", json = EXPECTED_PLANET)
