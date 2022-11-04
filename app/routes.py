@@ -68,6 +68,9 @@ def read_one_planet(planet_id):
     planet = validate_planet(Planet, planet_id)
     return jsonify(planet.to_dict()), 200
 
+# We should also make this change to jsonify our response body 
+# in the PUT /books/<book_id> and DELETE /books/<book_id> routes. 
+# This adds predictability to our RESTful routes.
 
 @planets_bp.route("/<planet_id>", methods=["PUT"])
 def update_planet(planet_id):

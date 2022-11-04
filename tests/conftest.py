@@ -1,6 +1,5 @@
 import pytest
-from app import create_app
-from app import db
+from app import create_app, db
 from flask.signals import request_finished
 from app.models.planet import Planet
 
@@ -26,17 +25,21 @@ def client(app):
     return app.test_client()
 
 @pytest.fixture
-def two_saved_planets(app):
+def one_planet(app):
     # Arrange
-    planet_number_one = Planet(name="Planet number one",
+    test_planet = Planet(name="Planet number one",
                     description="watr 4evr",
                     color = "color")
-    test_planet = Planet(name="Test planet",
-                        description="i luv 2 climb rocks",
-                        color = "color")
 
-    db.session.add_all([planet_number_one, test_planet])
+    # test_planet = Planet(name="Test planet",
+    #                     description="i luv 2 climb rocks",
+    #                     color = "color")
+
+    db.session.add(test_planet)
     # Alternatively, we could do
     # db.session.add(planet_number_one)
     # db.session.add(test_planet)
     db.session.commit()
+    db.session.refresh(test_planet, ["id"])
+
+    return test_planet
