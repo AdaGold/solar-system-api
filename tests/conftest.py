@@ -25,11 +25,11 @@ def app():
 def two_saved_planets(app):
     # Arrange
     venus_planet = Planet(name="Venus",
-                      description="a fun planet to be on",
-                      diameter = "2,374 km")
+                    description="a fun planet to be on",
+                    diameter = "2,374 km")
     mars_planet = Planet(name="Mars",
-                         description="home of the martians",
-                         diameter="3,456 km")
+                        description="home of the martians",
+                        diameter="3,456 km")
 
     db.session.add_all([venus_planet, mars_planet])
     db.session.commit()
