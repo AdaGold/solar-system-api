@@ -36,7 +36,6 @@ def two_saved_planets(app):
     #alternative: db.session.add(scary_planet)
 
     db.session.commit()
-    # db.session.refresh()
     return [baby_planet, scary_planet]
 
 @pytest.fixture
