@@ -1,3 +1,5 @@
+from app.models.planet import Planet
+
 def test_get_all_planets_with_no_records(client):
     #Act
     response = client.get("/planets")
@@ -39,6 +41,19 @@ def test_get_all_planets_returns_all_planets(client, all_planets):
     assert response.status_code == 200
     assert len(response_body) == 8
 
-def test_post_
+def test_create_planet_path(client):
+    EXPECTED_PLANET = {
+        "name": "Pluto",
+        "description": "Not a planet :(",
+        "rings": False
+    }
+
+    response = client.post("/planets", json=EXPECTED_PLANET)
+    response_body = response.get_data(as_text=True)
+    planet = Planet.query.get(1)
 
     assert response.status_code == 201
+    assert response_body == f"Planet {EXPECTED_PLANET['name']} successfully created"
+    assert planet.name == EXPECTED_PLANET["name"]
+    assert planet.description == EXPECTED_PLANET["description"]
+    assert planet.rings == EXPECTED_PLANET["rings"]
