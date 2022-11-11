@@ -26,6 +26,14 @@ def client(app):
 
 
 @pytest.fixture
+def one_planet(app):
+    new_planet = Planet(name="Earth", description="Earth description", moons=2)
+        
+    db.session.add(new_planet)
+    db.session.commit()
+
+
+@pytest.fixture
 def two_saved_planets(app):
     # Arrange
     planet_mercury = Planet(name="Mercury",
