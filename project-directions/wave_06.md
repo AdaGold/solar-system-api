@@ -23,15 +23,10 @@ Complete the following requirements, with similar functionality to the Hello Boo
 
 Create test fixtures and unit tests for the following test cases:
 
-1. `GET` `/planets/1` returns a `200` with a response body that matches our fixture
+1. `GET` `/planets/1` returns a response body that matches our fixture
 1. `GET` `/planets/1` with no data in test database (no fixture) returns a `404`
 1. `GET` `/planets` with valid test data (fixtures) returns a `200` with an array including appropriate test data
 1. `POST` `/planets` with a JSON request body returns a `201`
-1. `PUT` `/planets/1` with a JSON request body returns a `200` with a response body that matches our fixture
-1.  `DELETE` `/planets/1` with a JSON request body returns a `200` with a response body that matches our fixture
-
-## Additional Tests 
-Write at least 3 additional tests to test endpoints not covered by the **Writing Tests** section above. Add these tests to the bottom of `test_routes.py`.
 
 ## Code Coverage
 
