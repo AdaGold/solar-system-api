@@ -4,4 +4,7 @@ class Moon:
         self.name=name
         self.description=description
         
-moons_list = [Moon(1, "Moon", "Earths Moon")]
+
+moons_list = []
+first_mon = Moon(1, "Moon", "Earths Moon")
+moons_list.append(first_mon)
