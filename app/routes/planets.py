@@ -13,4 +13,16 @@ planets = [
     
 ]
 
-planets_bp = Blueprint()
+planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
+
+@planets_bp.route("",methods=["GET"])
+def get_all_planets():
+    planets_res = []
+    for planet in planets:
+        planets_res.append({
+            "planet_id" : planet.id,
+            "name" : planet.name,
+            "description" : planet.description,
+            "is_rocky" : planet.is_rocky
+        })
+    return jsonify(planets_res)
