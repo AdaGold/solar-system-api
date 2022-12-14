@@ -21,7 +21,17 @@ def display_planets():
 
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def display_planet(planet_id):
-    pass
+    planet_id = int(planet_id)
+    for planet in solar_system:
+        if planet.id == planet_id:
+            return {
+                "id": planet.id,
+                "name": planet.name, 
+                "description": planet.description,
+                "Has Rings": planet.has_rings,
+                "Moons" : [moon.name for moon in planet.moons]
+            }
+    return {"message":f"{planet_id} not found"}, 404
 
 @moons_bp.route("", methods=["GET"])
 def get_all_moons():
