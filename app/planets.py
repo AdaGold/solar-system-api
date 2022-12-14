@@ -1,3 +1,4 @@
+from .moon import Moon
 class Planet:
     def __init__(self, id, name, description, has_rings=False, moons=None):
         self.id=id
