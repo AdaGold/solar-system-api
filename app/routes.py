@@ -5,7 +5,7 @@ class Planets:
         self.id = id
         self.name = name 
         self.description = description 
-        self.type = type 
+        self.gravity = gravity 
     
 planets = [
     Planets(1, "Mercury", "The smallest planet in our solar system and nearest to the Sun.", "3.7 m/s^2"),
