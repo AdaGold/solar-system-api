@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from source.planet import Planet
+from ..source.planet import Planet
 
 planets = [
     Planet(1, "Mercury" ,"First planet of the solar system",True),
