@@ -7,8 +7,8 @@ class Planet:
 
     def to_dict(self):
         return {
-            "id": planet.id,
-            "name": planet.name,
-            "description": planet.description,
-            "is_rocky" : planet.is_rocky
+            "id": self.id,
+            "name": self.name,
+            "description": self.description,
+            "is_rocky" : self.is_rocky
         }

@@ -28,8 +28,8 @@ def validate_planet(planet_id):
         msg = f"Planet id {planet_id} is Invalid"
         abort(make_response({"message" : msg },400))
     for planet in planets:
-            if planet.id == id:
-                return planet.to_dict()
+        if planet.id == id:
+            return planet.to_dict()
                 
     abort(make_response({"message" :  f"Planet id {planet_id} is Not Found" },404))
 
