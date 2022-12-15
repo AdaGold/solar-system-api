@@ -2,15 +2,14 @@ from flask import Blueprint, jsonify, abort, make_response
 from ..source.planet import Planet
 
 planets = [
-    Planet(1, "Mercury" ,"First planet of the solar system",True),
-    Planet(2, "Venus" ,"2nd planet of the solar system",True),
-    Planet(3, "Earth" ,"3rd planet of the solar system",True),
-    Planet(4, "Mars" ,"4th planet of the solar system",True),
-    Planet(5, "Jupiter" ,"5th planet of the solar system",False),
-    Planet(6, "Saturn" ,"6th planet of the solar system",False),
-    Planet(7, "Uranus" ,"7th planet of the solar system",False),
-    Planet(8, "Neptune" ,"8th planet of the solar system",False)
-    
+    Planet(1, "Mercury" ,"Mercury is the smallest planet of our solar system.",True),
+    Planet(2, "Venus" ,"Venus is the hottest planet in the solar system.",True),
+    Planet(3, "Earth" ,"This is the only place where there is life.",True),
+    Planet(4, "Mars" ,"This planet is very cold and dry but there is ice at the poles.",True),
+    Planet(5, "Jupiter" ,"The planet has more than 80 moons and the largest moon of all planets.",False),
+    Planet(6, "Saturn" ,"Saturn has a beatuful visible rings.",False),
+    Planet(7, "Uranus" ,"The planet orbits on its side and has 27 moons.",False),
+    Planet(8, "Neptune" ,"Neptune is a planet of heavy winds and storms.",False)
 ]
 
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
@@ -29,7 +28,7 @@ def validate_planet(planet_id):
         msg = f"Planet id {planet_id} is Invalid"
         abort(make_response({"message" : msg },400))
     for planet in planets:
-            if planet.id == planet_id:
+            if planet.id == id:
                 return planet.to_dict()
                 
     abort(make_response({"message" :  f"Planet id {planet_id} is Not Found" },404))
