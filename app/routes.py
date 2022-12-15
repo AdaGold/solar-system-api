@@ -1,6 +1,4 @@
 from flask import Blueprint, jsonify, abort, make_response
-from flask import Blueprint, jsonify, abort, make_response
-
 
 class Planets:
     def __init__(self, id, name, description, gravity):
