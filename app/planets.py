@@ -6,6 +6,16 @@ class Planet:
         self.description=description
         self.has_rings=has_rings
         self.moons = moons if moons else []
+    
+    def add_moon(self, moon):
+        # validate if is a moon object
+        if moon.__class__.__name__ != "Moon":
+            raise ValueError(f"{moon} is not a moon.")
+        # validate if the planet_id of the moon is the same as self.id
+        if moon.planet_id != self.id:
+            raise ValueError(f"{moon} is not the moon of {self.name}")
+        self.moons.append(moon)
+
 
 
 solar_system=[]
