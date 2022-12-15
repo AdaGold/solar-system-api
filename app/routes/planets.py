@@ -35,6 +35,6 @@ def validate_planet(planet_id):
 
 @planets_bp.route("/<planet_id>",methods=["GET"])
 def get_planet(planet_id):
-     planet_info = validate_planet(planet_id)
-     return jsonify(planet_info)
+    planet_info = validate_planet(planet_id)
+    return jsonify(planet_info)
 
