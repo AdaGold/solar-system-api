@@ -1,11 +1,11 @@
+from app import db
 
-
-class Planet:
-    def __init__(self, id, name, description, is_rocky):
-        self.id = id
-        self.name = name
-        self.description = description
-        self.is_rocky = is_rocky
+class Planet(db.Model):
+    
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String)
+    description = db.Column(db.Text)
+    is_rocky = db.Column(db.Boolean)
 
     def to_dict(self):
         return {

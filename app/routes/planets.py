@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, abort, make_response
 from app.models.planet import Planet
 
+'''
 planets = [
     Planet(1, "Mercury" ,"Mercury is the smallest planet of our solar system.",True),
     Planet(2, "Venus" ,"Venus is the hottest planet in the solar system.",True),
@@ -10,7 +11,7 @@ planets = [
     Planet(6, "Saturn" ,"Saturn has a beatuful visible rings.",False),
     Planet(7, "Uranus" ,"The planet orbits on its side and has 27 moons.",False),
     Planet(8, "Neptune" ,"Neptune is a planet of heavy winds and storms.",False)
-]
+]'''
 
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 
