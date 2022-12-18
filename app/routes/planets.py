@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, abort, make_response
-from ..models.planet import Planet
+from ..source.planet import Planet
 
 planets = [
     Planet(1, "Mercury" ,"Mercury is the smallest planet of our solar system.",True),
