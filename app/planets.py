@@ -35,7 +35,13 @@ class Planet:
             raise ValueError(f"{moon} is not the moon of {self.name}")
         self.moons.append(moon)
 
-
+    def serialize(self):
+        filtered_attributes = self.__dict__.copy()
+        new_value = []
+        for moon_object in filtered_attributes["moons"]:
+            new_value.append(moon_object.name)
+        filtered_attributes["moons"] = new_value
+        return filtered_attributes
 
 solar_system=[]
 mercurey = Planet(1, "Mercury", "First Planet near the Sun", .330, 4878, 5429, 3.7, 4.3, 1407.6, 4222.6,

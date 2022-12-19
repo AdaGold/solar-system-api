@@ -8,13 +8,14 @@ moons_bp = Blueprint("moons", __name__, url_prefix="/moons")
 def display_planets():
     planets_response = []
     for planet in solar_system:
-        planets_response.append({
-            "id": planet.id,
-            "name": planet.name, 
-            "description": planet.description,
-            "Has Rings": planet.has_rings,
-            "Moons" : [moon.name for moon in planet.moons]
-        })
+        # planets_response.append({
+        #     "id": planet.id,
+        #     "name": planet.name, 
+        #     "description": planet.description,
+        #     "Has Rings": planet.has_rings,
+        #     "Moons" : [moon.name for moon in planet.moons]
+        # })
+        planets_response.append(planet.serialize())
     return jsonify(planets_response)
 
 def validate_planet(planet_id):
@@ -31,13 +32,15 @@ def validate_planet(planet_id):
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def display_planet(planet_id):
     planet = validate_planet(planet_id)
-    return {
-        "id": planet.id,
-        "name": planet.name, 
-        "description": planet.description,
-        "Has Rings": planet.has_rings,
-        "Moons" : [moon.name for moon in planet.moons]
-    }
+    # return {
+    #     "id": planet.id,
+    #     "name": planet.name, 
+    #     "description": planet.description,
+    #     "Has Rings": planet.has_rings,
+    #     "Moons" : [moon.name for moon in planet.moons]
+    # }
+    # Use __dict__ to access all the attributes from planet
+    return planet.serialize()
 
 
 @moons_bp.route("", methods=["GET"])
