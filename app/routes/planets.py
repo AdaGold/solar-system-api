@@ -1,5 +1,6 @@
-from flask import Blueprint, jsonify, abort, make_response
+from flask import Blueprint, jsonify, abort, make_response,request
 from app.models.planet import Planet
+from app import db
 
 '''
 planets = [
@@ -27,7 +28,7 @@ def create_planet():
     db.session.add(new_planet)
     db.session.commit()
 
-    return make_response({f"Planet {new_planet.name} successfully created"}, 201)
+    return make_response(f"Planet {new_planet.name} successfully created", 201)
 
 @planets_bp.route("",methods=["GET"])
 def get_all_planets():
