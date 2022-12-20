@@ -3,9 +3,9 @@ from app import db
 class Planet(db.Model):
     
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String)
-    description = db.Column(db.Text)
-    is_rocky = db.Column(db.Boolean)
+    name = db.Column(db.String, nullable = False)
+    description = db.Column(db.Text, nullable = False)
+    is_rocky = db.Column(db.Boolean, nullable = False)
 
     def to_dict(self):
         return {
