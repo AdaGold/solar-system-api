@@ -60,6 +60,9 @@ def update_planet(planet_id):
     planet_info = validate_planet(planet_id)
     request_body = request.get_json()
 
+    print(f"the request body {request_body}")
+    print(planet_info.name)
+
     planet_info.name = request_body["name"]
     planet_info.description= request_body["description"]
     planet_info.is_rocky = request_body["is_rocky"]
