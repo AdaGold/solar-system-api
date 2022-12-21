@@ -44,14 +44,35 @@ def validate_planet(planet_id):
     except:
         msg = f"Planet id {planet_id} is Invalid"
         abort(make_response({"message" : msg },400))
-    for planet in planets:
-        if planet.id == id:
-            return planet.to_dict()
+    planet = Planet.query.get(id)
+    if not planet:
+        abort(make_response({"message" :  f"Planet id {planet_id} is Not Found" },404))
+    elif planet.id == id:
+        return planet.to_dict()
                 
-    abort(make_response({"message" :  f"Planet id {planet_id} is Not Found" },404))
-
 @planets_bp.route("/<planet_id>",methods=["GET"])
 def get_planet(planet_id):
     planet_info = validate_planet(planet_id)
     return jsonify(planet_info)
 
+@planets_bp.route("/<planet_id>",methods=["PUT"])
+def update_planet(planet_id):
+    planet_info = validate_planet(planet_id)
+    request_body = request.get_json()
+
+    planet_info.name = request_body["name"]
+    planet_info.description= request_body["description"]
+    planet_info.is_rocky = request_body["is_rocky"]
+
+    db.session.commit()
+    
+    return make_response(f"Planet {planet_info.name} successfully updated", 200)
+
+@planets_bp.route("/<planet_id>",methods=["DELETE"])
+def delete_planet(planet_id):
+    planet_info = validate_planet(planet_id)
+    
+    db.session.delete(planet_info)
+    db.session.commit()
+    
+    return make_response(f"Planet {planet_info.name} successfully deleted", 200)
