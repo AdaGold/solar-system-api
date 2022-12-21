@@ -121,25 +121,26 @@ def display_planet(planet_id):
 def update_a_planet(planet_id):
     planet = validate_planet(planet_id)
     request_body = request.get_json()
-    planet.name=request_body["name"],
-    planet.description=request_body["description"],
-    planet.mass=request_body["mass"],
-    planet.diameter=request_body["diameter"],
-    planet.density=request_body["density"],
-    planet.gravity=request_body["gravity"],
-    planet.escape_velocity=request_body["escape_velocity"],
-    planet.rotation_period=request_body["rotation_period"],
-    planet.day_length=request_body["day_length"],
-    planet.distance_from_sun=request_body["distance_from_sun"],
-    planet.orbital_period=request_body["orbital_period"],
-    planet.orbital_velocity=request_body["orbital_velocity"],
-    planet.orbital_inclination=request_body["orbital_inclination"],
-    planet.orbital_eccentricity=request_body["orbital_eccentricity"],
-    planet.obliquity_to_orbit=request_body["obliquity_to_orbit"],
-    planet.mean_tempurature_c=request_body["mean_tempurature_c"],
-    planet.surface_pressure=request_body["surface_pressure"],
-    planet.global_magnetic_feild=request_body["global_magnetic_feild"],
-    planet.img=request_body["img"],
+    
+    planet.name=request_body["name"]
+    planet.description=request_body["description"]
+    planet.mass=request_body["mass"]
+    planet.diameter=request_body["diameter"]
+    planet.density=request_body["density"]
+    planet.gravity=request_body["gravity"]
+    planet.escape_velocity=request_body["escape_velocity"]
+    planet.rotation_period=request_body["rotation_period"]
+    planet.day_length=request_body["day_length"]
+    planet.distance_from_sun=request_body["distance_from_sun"]
+    planet.orbital_period=request_body["orbital_period"]
+    planet.orbital_velocity=request_body["orbital_velocity"]
+    planet.orbital_inclination=request_body["orbital_inclination"]
+    planet.orbital_eccentricity=request_body["orbital_eccentricity"]
+    planet.obliquity_to_orbit=request_body["obliquity_to_orbit"]
+    planet.mean_tempurature_c=request_body["mean_tempurature_c"]
+    planet.surface_pressure=request_body["surface_pressure"]
+    planet.global_magnetic_feild=request_body["global_magnetic_feild"]
+    planet.img=request_body["img"]
     planet.has_rings=request_body["has_rings"]
 
     db.session.commit()
