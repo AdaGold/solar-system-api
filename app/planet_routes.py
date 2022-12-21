@@ -4,6 +4,21 @@ from app.models.planet import Planet
 
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 
+#---------------------------------------------- Helper Functions----------------------------------------------
+def validate_planet_id(planet_id):
+    try:
+        planet_id = int(planet_id)
+    except: 
+        abort(make_response("Planet id is invalid"), 400)
+    
+    planet = Planet.query.get(planet_id)
+
+    if not planet:
+        abort(make_response(f"Planet: {planet_id} is not found."), 404)
+    
+    return planet 
+
+# ---------------------------------------------- Route Functions ----------------------------------------------
 @planets_bp.route("", methods = ["POST"])
 def create_planet(): 
     request_body =  request.get_json()
@@ -31,6 +46,41 @@ def read_all_planets():
             "description": planet.description}
         )
     return jsonify(planet_response), 200 
+
+@planets_bp.route("/<planet_id>", methods = ["GET"])
+def read_one_planet_by_id(planet_id): 
+    planet = validate_planet_id(planet_id) 
+
+    return ({
+        "id" : planet.id,
+        "name" : planet.name, 
+        "description" : planet.description 
+    }, 200)  
+
+@planets_bp.route("/<planet_id>", methods = ["PUT"])
+def update_planet_by_id(planet_id):
+    planet = validate_planet_id(planet_id) 
+
+    request_body = request.get_json() 
+
+    if "name" in request_body:
+        planet.name = request_body["name"]
+    if "description" in request_body:
+        planet.name = request_body["description"]
+
+    db.session.commit() 
+
+    return (f"Planet: {planet_id} has been updated successfully.", 200) 
+
+@planets_bp.route("/<planet_id>", methods = ["DELETE"])
+def delete_planet_by_id(planet_id): 
+    planet = validate_planet_id(planet_id)  
+
+    db.session.delete(planet)
+    db.session.commit()
+
+    return (f"Planet: {planet_id} has been deleted successfully.", 200) 
+
 
 # ----------------------- Hard coded routes for practice and notes ------------------------------
 # class Planets:
