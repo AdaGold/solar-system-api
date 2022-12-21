@@ -7,4 +7,5 @@ class Planets(db.Model):
     name = db.Column(db.String)
     description = db.Column(db.String)
     gravity = db.Column(db.String)
+    distance = db.Column(db.String)
     
