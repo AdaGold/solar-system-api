@@ -44,11 +44,10 @@ def validate_planet(planet_id):
     except:
         msg = f"Planet id {planet_id} is Invalid"
         abort(make_response({"message" : msg },400))
-    planet = Planet.query.get(id)
-    if not planet:
-        abort(make_response({"message" :  f"Planet id {planet_id} is Not Found" },404))
-    elif planet.id == id:
-        return planet.to_dict()
+    planet = Planet.query.get(id)    
+    if planet.id == id:
+        return planet
+    abort(make_response({"message" :  f"Planet id {planet_id} is Not Found" },404))
                 
 @planets_bp.route("/<planet_id>",methods=["GET"])
 def get_planet(planet_id):
