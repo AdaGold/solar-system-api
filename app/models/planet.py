@@ -20,9 +20,9 @@ class Planet(db.Model):
     obliquity_to_orbit=db.Column(db.Float)
     mean_tempurature_c=db.Column(db.Float)
     surface_pressure=db.Column(db.Float)
-    global_magnetic_feild=db.Column(db.Boolean)
+    global_magnetic_feild=db.Column(db.Boolean, default=False, server_default="false")
     img=db.Column(db.String)
-    has_rings=db.Column(db.Boolean)
+    has_rings=db.Column(db.Boolean, default=False, server_default="false")
     moons = db.relationship("Moon", back_populates="planet")
 #     def __init__(self, id, name, description, mass, diameter, density, gravity, escape_velocity,
 #     rotation_period, day_length, distance_from_sun, orbital_period, orbital_velocity, orbital_inclination, orbital_eccentricity,
