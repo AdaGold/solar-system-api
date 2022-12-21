@@ -4,7 +4,7 @@ from app.models.planet import Planet
 
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 
-#---------------------------------------------- Helper Functions----------------------- -----------------------
+#---------------------------------------------- Helper Functions----------------------------------------------
 def validate_planet_id(planet_id):
     try:
         planet_id = int(planet_id)
