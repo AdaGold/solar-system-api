@@ -28,8 +28,7 @@ def validate_request_body(request_body):
 @planets_bp.route("", methods = ["POST"])
 def create_planet(): 
     request_body =  request.get_json()
-    if "name" not in request_body or "description" not in request_body:
-        abort(make_response("Invalid request.", 400))
+    validate_request_body(request_body)
         
     new_planet = Planet(
         name = request_body["name"], 
