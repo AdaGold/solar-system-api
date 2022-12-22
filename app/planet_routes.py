@@ -18,12 +18,18 @@ def validate_planet_id(planet_id):
     
     return planet 
 
+def validate_request_body(request_body): 
+    if "name" not in request_body or "description" not in request_body or "gravity" \
+        not in request_body or "distance" not in request_body:
+
+        abort(make_response("Invalid Request", 400))
+
 # ---------------------------------------------- Route Functions ----------------------------------------------
 @planets_bp.route("", methods = ["POST"])
 def create_planet(): 
     request_body =  request.get_json()
     if "name" not in request_body or "description" not in request_body:
-        return make_response("Invalid request.", 400)
+        abort(make_response("Invalid request.", 400))
         
     new_planet = Planet(
         name = request_body["name"], 
@@ -68,6 +74,7 @@ def update_planet_by_id(planet_id):
     planet = validate_planet_id(planet_id) 
 
     request_body = request.get_json() 
+    validate_request_body(request_body)
 
     planet.name = request_body["name"]
     planet.description = request_body["description"]
