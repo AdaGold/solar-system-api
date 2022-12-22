@@ -2,18 +2,6 @@ from flask import Blueprint, jsonify, abort, make_response,request
 from app.models.planet import Planet
 from app import db
 
-'''
-planets = [
-    Planet(1, "Mercury" ,"Mercury is the smallest planet of our solar system.",True),
-    Planet(2, "Venus" ,"Venus is the hottest planet in the solar system.",True),
-    Planet(3, "Earth" ,"This is the only place where there is life.",True),
-    Planet(4, "Mars" ,"This planet is very cold and dry but there is ice at the poles.",True),
-    Planet(5, "Jupiter" ,"The planet has more than 80 moons and the largest moon of all planets.",False),
-    Planet(6, "Saturn" ,"Saturn has a beatuful visible rings.",False),
-    Planet(7, "Uranus" ,"The planet orbits on its side and has 27 moons.",False),
-    Planet(8, "Neptune" ,"Neptune is a planet of heavy winds and storms.",False)
-]'''
-
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 
 @planets_bp.route("",methods=["POST"])
@@ -32,8 +20,21 @@ def create_planet():
 
 @planets_bp.route("",methods=["GET"])
 def get_all_planets():
+    planet_query = Planet.query  
+    name_query = request.args.get("planet_name")
+    
+    if name_query:
+        planet_query = planet_query.filter(Planet.name.ilike(f"%{name_query}%"))
+
+    sort_query = request.args.get("sort")
+    if sort_query:
+        if sort_query == "desc":
+            planet_query = planet_query.order_by(Planet.name.desc())
+        else:
+            planet_query = planet_query.order_by(Planet.name.asc())
+
+    planets = planet_query.all()
     planets_response = []
-    planets = Planet.query.all()
     for planet in planets:
         planets_response.append(planet.to_dict())
     return jsonify(planets_response)
