@@ -5,7 +5,7 @@ from flask_migrate import Migrate
 
 #postgresql+psycopg2://postgres:postgres@localhost:5432/solar_system_development
 db = SQLAlchemy()
-migrate = Migrate()
+migrate = Migrate(compare_type=True)
 
 def create_app(test_config=None):
     app = Flask(__name__)
