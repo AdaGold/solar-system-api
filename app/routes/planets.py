@@ -21,8 +21,8 @@ def create_planet():
 @planets_bp.route("",methods=["GET"])
 def get_all_planets():
     planet_query = Planet.query  
-    name_query = request.args.get("planet_name")
     
+    name_query = request.args.get("planet_name")
     if name_query:
         planet_query = planet_query.filter(Planet.name.ilike(f"%{name_query}%"))
 
