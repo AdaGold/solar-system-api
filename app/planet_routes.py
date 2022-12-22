@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, abort, make_response, request 
 from app import db 
 from app.models.planet import Planet 
+from sqlalchemy import desc, asc 
 
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 
@@ -43,7 +44,22 @@ def create_planet():
 
 @planets_bp.route("", methods = ["GET"])
 def read_all_planets(): 
-    planets = Planet.query.all() 
+
+    # Query planets use name argument 
+    name_query = request.args.get("name")
+    if name_query:
+        planets = Planet.query.filter_by(name = name_query)
+
+    # Sort argument passed by client 
+    is_sort = request.args.get("sort")
+    if is_sort == "asc": 
+        planets = Planet.query.order_by(asc(Planet.name)).all()
+    elif is_sort == "desc": 
+        planets = Planet.query.order_by(desc(Planet.name)).all()
+
+    if not name_query and not is_sort:
+        planets = Planet.query.all()
+        
     planet_response = [] 
     for planet in planets: 
         planet_response.append(
