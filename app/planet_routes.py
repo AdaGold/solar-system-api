@@ -9,13 +9,12 @@ def validate_planet_id(planet_id):
     try:
         planet_id = int(planet_id)
     except: 
-        abort(make_response("Planet id is invalid"), 400)
-    
+        abort(make_response({"message":f"Planet_id {planet_id} is invalid"}, 400)) 
+
     planet = Planet.query.get(planet_id)
 
     if not planet:
-        abort(make_response(f"Planet: {planet_id} is not found."), 404)
-    
+        abort(make_response({"message":f"Planet_id {planet_id} not found"}, 404))    
     return planet 
 
 def validate_request_body(request_body): 
