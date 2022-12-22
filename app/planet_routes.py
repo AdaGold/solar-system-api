@@ -27,7 +27,9 @@ def create_planet():
         
     new_planet = Planet(
         name = request_body["name"], 
-        description = request_body["description"]
+        description = request_body["description"], 
+        gravity = request_body["gravity"], 
+        distance = request_body["distance"]
     )
 
     db.session.add(new_planet)
@@ -43,7 +45,9 @@ def read_all_planets():
         planet_response.append(
             {"id": planet.id,
             "name": planet.name,
-            "description": planet.description}
+            "description": planet.description,
+            "gravity": planet.gravity, 
+            "distance": planet.distance}
         )
     return jsonify(planet_response), 200 
 
@@ -54,7 +58,9 @@ def read_one_planet_by_id(planet_id):
     return ({
         "id" : planet.id,
         "name" : planet.name, 
-        "description" : planet.description 
+        "description" : planet.description,
+        "gravity": planet.gravity, 
+        "distance": planet.distance
     }, 200)  
 
 @planets_bp.route("/<planet_id>", methods = ["PUT"])
@@ -63,10 +69,10 @@ def update_planet_by_id(planet_id):
 
     request_body = request.get_json() 
 
-    if "name" in request_body:
-        planet.name = request_body["name"]
-    if "description" in request_body:
-        planet.name = request_body["description"]
+    planet.name = request_body["name"]
+    planet.description = request_body["description"]
+    planet.gravity = request_body["gravity"]
+    planet.distance = request_body["distance"]
 
     db.session.commit() 
 
