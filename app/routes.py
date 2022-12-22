@@ -27,11 +27,41 @@ def validate_moon(moon_id):
     
     abort(make_response({"message": f"moon {moon_id} not found"}))
 
+
+def filter_planet(planet_query):
+
+    order_by_asc = request.args.get("order_by_asc")
+    order_by_desc = request.args.get("order_by_desc")
+    max = request.args.get("max")
+    min = request.args.get("min")
+    #greater_than_ave = request.args.get("greater_than_ave")
+    global_magnetic_feild= request.args.get("global_magnetic_feild")
+    has_rings = request.args.get("has_rings")
+    if order_by_asc:
+        planet_query = planet_query.query.order_by(getattr(Planet, order_by_asc))
+    elif order_by_desc:
+        planet_query = planet_query.query.order_by(getattr(Planet, order_by_desc).desc())
+    elif max:
+        planet_query = planet_query.query.order_by(getattr(Planet, order_by_desc).desc()).limit(1)
+    elif min:
+        planet_query = planet_query.query.order_by(getattr(Planet, order_by_desc)).limit(1)
+    #elif greater_than_ave:
+    #    planet_query = planet_query.query.filter(getattr(Planet, greater_than_ave).func.avg())
+
+    elif has_rings or global_magnetic_feild:
+        required_parameters = {"global_magnetic_feild":global_magnetic_feild, "has_rings":has_rings}
+        planet_query = planet_query.query.filter_by(**required_parameters)
+    
+    return planet_query
+    
+
+
 @planets_bp.route("", methods=["GET"])
 def display_planets():
     planets_response = []
-    solar_system = Planet.query.all()
-    for planet in solar_system:
+    planet_query = Planet.query
+    planet_query = filter_planet(planet_query).all()
+    for planet in planet_query:
         planets_response.append({
             "id": planet.id,
             "name": planet.name, 
