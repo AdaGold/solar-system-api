@@ -50,7 +50,7 @@ def validate_planet(planet_id):
     if planet:
         return planet
 
-    abort(make_response({"message" :  f"Planet id {planet_id} is Not Found" },404))
+    abort(make_response({"message":f"Planet id {planet_id} is Not Found" },404))
                 
 @planets_bp.route("/<planet_id>",methods=["GET"])
 def get_planet(planet_id):
