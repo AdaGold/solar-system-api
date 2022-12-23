@@ -1,7 +1,6 @@
 from flask import Blueprint, jsonify, abort, make_response, request 
 from app import db 
 from app.models.planet import Planet 
-from sqlalchemy import desc, asc 
 
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 
@@ -24,6 +23,18 @@ def validate_request_body(request_body):
 
         abort(make_response("Invalid Request", 400))
 
+# def sort_helper(planet_query, atr, sort_method): 
+#     if sort_method == "asc" and atr: 
+#         planet_query = planet_query.order_by(atr.asc())
+#     elif sort_method == "desc" and atr: 
+#         planet_query = planet_query.order_by(atr.desc())
+#     elif sort_method == "desc": 
+#         planet_query = planet_query.order_by(Planet.name.desc())
+#     else:
+#         planet_query = planet_query.order_by(Planet.name.asc()) #Sort by name in ascending order by default 
+
+#     return planet_query
+
 # ---------------------------------------------- Route Functions ----------------------------------------------
 @planets_bp.route("", methods = ["POST"])
 def create_planet(): 
@@ -43,22 +54,40 @@ def create_planet():
     return make_response(f"Planet: {new_planet.name} created successfully.", 201)
 
 @planets_bp.route("", methods = ["GET"])
-def read_all_planets(): 
+def read_planets(): 
+
+    planet_query = Planet.query # Get a query object for later use 
 
     # Query planets use name argument 
     name_query = request.args.get("name")
-    if name_query:
-        planets = Planet.query.filter_by(name = name_query)
-
+    distance_query = request.args.get("distance")
+    gravity_query = request.args.get("gravity")
     # Sort argument passed by client 
     is_sort = request.args.get("sort")
-    if is_sort == "asc": 
-        planets = Planet.query.order_by(asc(Planet.name)).all()
-    elif is_sort == "desc": 
-        planets = Planet.query.order_by(desc(Planet.name)).all()
 
-    if not name_query and not is_sort:
-        planets = Planet.query.all()
+    # Attribute that users want to sort by
+    # If it's none, then we sort by name in ascending order by default 
+    # atr_to_be_sort = None 
+
+    if name_query:
+        planet_query = planet_query.filter_by(name = name_query) 
+        # atr_to_be_sort = Planet.name
+
+    if distance_query:
+        planet_query = planet_query.filter_by(distance = distance_query)
+        # atr_to_be_sort = Planet.distance
+
+    if gravity_query:
+        planet_query = planet_query.filter_by(gravity = gravity_query)
+        # atr_to_be_sort = Planet.gravity
+
+    if is_sort:
+        if is_sort == "asc":
+            planet_query = planet_query.order_by(Planet.name.asc())
+        else: 
+            planet_query = planet_query.order_by(Planet.name.desc())
+
+    planets = planet_query.all()
         
     planet_response = [] 
     for planet in planets: 
