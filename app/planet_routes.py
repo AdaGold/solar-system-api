@@ -82,8 +82,16 @@ def read_planets():
         # atr_to_be_sort = Planet.gravity
 
     if is_sort:
-        attribute = is_sort.split(":")[0] 
-        sort_method = is_sort.split(":")[1] 
+        attribute = None 
+        sort_method = is_sort
+
+        split_sort = is_sort.split(":") 
+
+        if len(split_sort) == 2:
+            attribute = split_sort[0] 
+            sort_method = split_sort[1] 
+        if len(split_sort) > 2:
+            abort(make_response("Too many parameters", 400))
 
         # Sort records by client's request 
         if attribute == "name":
