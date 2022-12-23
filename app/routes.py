@@ -28,39 +28,48 @@ def validate_moon(moon_id):
     abort(make_response({"message": f"moon {moon_id} not found"}))
 
 
-def filter_planet(planet_query):
+def apply_filter(planet_query):
+    FILTERABLE_ATTRIBUTES = ['global_magnetic_feild', 'has_rings']
+    required_parameters = {}
+    for attribute in FILTERABLE_ATTRIBUTES:
+        value = request.args.get(attribute)
+        if value is not None:
+            required_parameters[attribute] = value
+    if required_parameters:
+        print(required_parameters)
+        planet_query = planet_query.filter_by(**required_parameters)
+        print(planet_query)
 
     order_by_asc = request.args.get("order_by_asc")
     order_by_desc = request.args.get("order_by_desc")
-    max = request.args.get("max")
-    min = request.args.get("min")
-    #greater_than_ave = request.args.get("greater_than_ave")
-    global_magnetic_feild= request.args.get("global_magnetic_feild")
-    has_rings = request.args.get("has_rings")
-    if order_by_asc:
-        planet_query = planet_query.query.order_by(getattr(Planet, order_by_asc))
-    elif order_by_desc:
-        planet_query = planet_query.query.order_by(getattr(Planet, order_by_desc).desc())
-    elif max:
-        planet_query = planet_query.query.order_by(getattr(Planet, order_by_desc).desc()).limit(1)
-    elif min:
-        planet_query = planet_query.query.order_by(getattr(Planet, order_by_desc)).limit(1)
-    #elif greater_than_ave:
-    #    planet_query = planet_query.query.filter(getattr(Planet, greater_than_ave).func.avg())
+    max_query = request.args.get("max")
+    min_query = request.args.get("min")
 
-    elif has_rings or global_magnetic_feild:
-        required_parameters = {"global_magnetic_feild":global_magnetic_feild, "has_rings":has_rings}
-        planet_query = planet_query.query.filter_by(**required_parameters)
+    # Validate that only one option at a time is specified
+    options = [order_by_asc, order_by_desc, max_query, min_query]
+    num_options = sum(1 if option is not None else 0 for option in options)
+    if num_options > 1:
+        abort(make_response("Bad request: Too many options", 400))
+
+    #greater_than_ave = request.args.get("greater_than_ave")
+    if order_by_asc is not None:
+        planet_query = planet_query.order_by(getattr(Planet, order_by_asc))
+    elif order_by_desc is not None:
+        planet_query = planet_query.order_by(getattr(Planet, order_by_desc).desc())
+    elif max_query is not None:
+        planet_query = planet_query.order_by(getattr(Planet, max_query).desc()).limit(1)
+    elif min_query is not None:
+        planet_query = planet_query.order_by(getattr(Planet, min_query)).limit(1)
+    #elif greater_than_ave is not None:
+    #    planet_query = planet_query.query.filter(getattr(Planet, greater_than_ave).func.avg())
     
     return planet_query
-    
-
 
 @planets_bp.route("", methods=["GET"])
 def display_planets():
     planets_response = []
     planet_query = Planet.query
-    planet_query = filter_planet(planet_query).all()
+    planet_query = apply_filter(planet_query).all()
     for planet in planet_query:
         planets_response.append({
             "id": planet.id,
