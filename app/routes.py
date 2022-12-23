@@ -36,9 +36,7 @@ def apply_filter(planet_query):
         if value is not None:
             required_parameters[attribute] = value
     if required_parameters:
-        print(required_parameters)
         planet_query = planet_query.filter_by(**required_parameters)
-        print(planet_query)
 
     order_by_asc = request.args.get("order_by_asc")
     order_by_desc = request.args.get("order_by_desc")
