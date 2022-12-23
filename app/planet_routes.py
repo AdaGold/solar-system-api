@@ -23,17 +23,18 @@ def validate_request_body(request_body):
 
         abort(make_response("Invalid Request", 400))
 
-# def sort_helper(planet_query, atr, sort_method): 
-#     if sort_method == "asc" and atr: 
-#         planet_query = planet_query.order_by(atr.asc())
-#     elif sort_method == "desc" and atr: 
-#         planet_query = planet_query.order_by(atr.desc())
-#     elif sort_method == "desc": 
-#         planet_query = planet_query.order_by(Planet.name.desc())
-#     else:
-#         planet_query = planet_query.order_by(Planet.name.asc()) #Sort by name in ascending order by default 
+def sort_helper(planet_query, atr = None, sort_method = "asc"): 
+    if sort_method == "asc" and atr: 
+        planet_query = planet_query.order_by(atr.asc())
+    elif sort_method == "desc" and atr: 
+        planet_query = planet_query.order_by(atr.desc())
+    elif sort_method == "desc": 
+        planet_query = planet_query.order_by(Planet.name.desc())
+    else:
+        #Sort by name in ascending order by default 
+        planet_query = planet_query.order_by(Planet.name.asc())
 
-#     return planet_query
+    return planet_query
 
 # ---------------------------------------------- Route Functions ----------------------------------------------
 @planets_bp.route("", methods = ["POST"])
@@ -65,21 +66,14 @@ def read_planets():
     # Sort argument passed by client 
     is_sort = request.args.get("sort")
 
-    # Attribute that users want to sort by
-    # If it's none, then we sort by name in ascending order by default 
-    # atr_to_be_sort = None 
-
     if name_query:
         planet_query = planet_query.filter_by(name = name_query) 
-        # atr_to_be_sort = Planet.name
 
     if distance_query:
         planet_query = planet_query.filter_by(distance = distance_query)
-        # atr_to_be_sort = Planet.distance
 
     if gravity_query:
         planet_query = planet_query.filter_by(gravity = gravity_query)
-        # atr_to_be_sort = Planet.gravity
 
     if is_sort:
         attribute = None 
@@ -87,32 +81,21 @@ def read_planets():
 
         split_sort = is_sort.split(":") 
 
-        if len(split_sort) == 2:
+        if len(split_sort) == 2: # Case: ?sort=attribute:asc 
             attribute = split_sort[0] 
             sort_method = split_sort[1] 
-        if len(split_sort) > 2:
+        if len(split_sort) > 2: 
             abort(make_response("Too many parameters", 400))
 
         # Sort records by client's request 
         if attribute == "name":
-            if sort_method == "asc": 
-                planet_query = planet_query.order_by(Planet.name.asc()) 
-            else:
-                planet_query = planet_query.order_by(Planet.name.desc()) 
+            planet_query = sort_helper(planet_query, Planet.name, sort_method)
         elif attribute == "distance":
-            if sort_method == "asc": 
-                planet_query = planet_query.order_by(Planet.distance.asc()) 
-            else:
-                planet_query = planet_query.order_by(Planet.distance.desc()) 
+            planet_query = sort_helper(planet_query, Planet.distance, sort_method)
         elif attribute == "gravity":
-            if sort_method == "asc": 
-                planet_query = planet_query.order_by(Planet.gravity.asc()) 
-            else:
-                planet_query = planet_query.order_by(Planet.gravity.desc()) 
-        elif sort_method == "desc":
-            planet_query = planet_query.order_by(Planet.name.desc())
-        else: # Sort by name in ascending order by default 
-            planet_query = planet_query.order_by(Planet.name.asc())
+            planet_query = sort_helper(planet_query, Planet.gravity, sort_method)
+        else: # If user don't specify any attribute, we would sort by name 
+            planet_query = sort_helper(planet_query, Planet.name, sort_method)
 
     planets = planet_query.all()
         
