@@ -82,10 +82,29 @@ def read_planets():
         # atr_to_be_sort = Planet.gravity
 
     if is_sort:
-        if is_sort == "asc":
-            planet_query = planet_query.order_by(Planet.name.asc())
-        else: 
+        attribute = is_sort.split(":")[0] 
+        sort_method = is_sort.split(":")[1] 
+
+        # Sort records by client's request 
+        if attribute == "name":
+            if sort_method == "asc": 
+                planet_query = planet_query.order_by(Planet.name.asc()) 
+            else:
+                planet_query = planet_query.order_by(Planet.name.desc()) 
+        elif attribute == "distance":
+            if sort_method == "asc": 
+                planet_query = planet_query.order_by(Planet.distance.asc()) 
+            else:
+                planet_query = planet_query.order_by(Planet.distance.desc()) 
+        elif attribute == "gravity":
+            if sort_method == "asc": 
+                planet_query = planet_query.order_by(Planet.gravity.asc()) 
+            else:
+                planet_query = planet_query.order_by(Planet.gravity.desc()) 
+        elif sort_method == "desc":
             planet_query = planet_query.order_by(Planet.name.desc())
+        else: # Sort by name in ascending order by default 
+            planet_query = planet_query.order_by(Planet.name.asc())
 
     planets = planet_query.all()
         
