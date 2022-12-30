@@ -7,3 +7,4 @@ class Planet(db.Model):
     description = db.Column(db.String)
     size = db.Column(db.Integer)
     distance_from_earth = db.Column(db.Integer)
+    

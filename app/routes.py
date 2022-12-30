@@ -75,3 +75,12 @@ def delete_planet(planet_id):
     return make_response(f"Planet #{planet.id} successfully deleted")
 
 
+# try adding a PATCH request
+@planets_bp.route("/<planet_id>", methods=["PATCH"])
+def patch_planet(planet_id):
+    planet = validate_planet(planet_id)
+    request_body = request.get_json()
+    for key, value in request_body.items():
+        setattr(planet, key, value)
+    db.session.commit()
+    return make_response(f"Planet #{planet.id} successfully updated attribute")
