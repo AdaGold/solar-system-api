@@ -27,13 +27,28 @@ def create_planet():
     )
     db.session.add(new_planet)
     db.session.commit()
-    return make_response(f"Book {new_planet} successfully created", 201)
+    return make_response(f"Planet {new_planet} successfully created", 201)
             
 
 @planets_bp.route("", methods=["GET"])
-def read_all_planets():
+def get_planet():
     planets_response = []
-    planets = Planet.query.all()
+    planet_query = Planet.query
+    name_query = request.args.get("name")
+
+    #case insensitive and partial match
+    if name_query:
+        planet_query = planet_query.filter(Planet.name.ilike(f"%{name_query}%"))
+    
+    sort_query = request.args.get("sort")
+    if sort_query:
+        if sort_query == "desc":
+            planet_query = planet_query.order_by(Planet.size.desc())
+        else: 
+            planet_query = planet_query.order_by(Planet.size.asc())
+
+    planets = planet_query.all()
+
     for planet in planets:
         planets_response.append(
             {
