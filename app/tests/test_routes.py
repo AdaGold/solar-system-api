@@ -1,0 +1,86 @@
+def test_get_planet_by_id_return_200_successful_code(client, saved_two_planets):
+    response = client.get("/planets/1")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body["name"] == "Mars"
+
+
+def test_get_planet_by_not_exist_id_return_404(client):
+    response = client.get("/planets/1")
+    response_body = response.get_json()
+
+    assert response.status_code == 404
+
+def test_get_planet_by_invalid_planet_id_return_400_bad_request_error(client, saved_two_planets): 
+    response = client.get("/planets/hello")
+    response_body = response.get_json()
+
+    assert response.status_code == 400
+    assert response_body == {"message": "Planet_id hello is invalid"}
+
+
+def test_get_all_planets_with_no_records_return_empty_array(client):
+    response = client.get("/planets")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body == []
+
+
+def test_get_all_planets_with_two_records_return_array_with_size_2(client, saved_two_planets):
+    response = client.get("/planets")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert len(response_body) == 2
+    assert response_body[0] == {"id": 1, 
+                                "name": "Mars",
+                                "description": "This is planet: Mars",
+                                "gravity": 3.721,
+                                "distance": 60.81}
+    assert response_body[1] == {"id": 2,
+                                "name": "Jupiter",
+                                "description": "This is planet: Jupiter",
+                                "gravity": 24.79,
+                                "distance": 467.64}
+
+
+def test_create_one_planet_return_201_successfully_created(client):
+    resposne = client.post("/planets",
+                        json={"name": "Venus",
+                                "description": "This is planet: Venus",
+                                "gravity": 9.87,
+                                "distance": 67.685})
+    response_body = resposne.get_json()
+
+    assert resposne.status_code == 201
+    assert response_body == "Planet: Venus created successfully."
+
+
+def test_put_planet_with_id_1_return_200_planet_successfully_replaced(client, saved_two_planets):
+    resposne = client.put("/planets/1",
+                        json={"name": "New Planet",
+                                "description": "This a New Planet",
+                                "gravity": 20.0,
+                                "distance": 55.99})
+    response_body = resposne.get_json()
+
+    assert resposne.status_code == 200
+    assert response_body == "Planet: 1 has been updated successfully."
+
+
+def test_delete_planet_with_id_1_return_200_planet_successfully_deleted(client, saved_two_planets):
+    response = client.delete("planets/1")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body == "Planet: 1 has been deleted successfully."
+
+def test_delete_planet_with_non_exist_id_return_404_not_found_error(client, saved_two_planets):
+    response = client.delete("planets/10")
+    response_body = response.get_json()
+
+    assert response.status_code == 404
+    assert response_body == {"message": "Planet_id 10 not found"}
+
