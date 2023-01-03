@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, abort, make_response, request
+from app.filter_attributes import PLANET_ATTRIBUTES
 from app.models.moon import Moon
 from app.models.planet import Planet
 from app import db
@@ -98,6 +99,9 @@ def display_planets():
 @planets_bp.route("", methods=["POST"])
 def create_planets():
     request_body=request.get_json()
+    for key in PLANET_ATTRIBUTES:
+        if not key in request_body:
+            abort(make_response({"message": f"Bad request: {key} attribute is missing"}, 400))
     new_planet = Planet(
     name=request_body["name"],
     description=request_body["description"],
@@ -118,8 +122,7 @@ def create_planets():
     surface_pressure=request_body["surface_pressure"],
     global_magnetic_feild=request_body["global_magnetic_feild"],
     img=request_body["img"],
-    has_rings=request_body["has_rings"]
-    )
+        has_rings=request_body["has_rings"])
     db.session.add(new_planet)
     db.session.commit()
     return make_response(f"New Planet {new_planet.name} created!", 201)
@@ -158,7 +161,9 @@ def display_planet(planet_id):
 def update_a_planet(planet_id):
     planet = validate_planet(planet_id)
     request_body = request.get_json()
-    
+    for key in PLANET_ATTRIBUTES:
+        if not key in request_body:
+            abort(make_response({"message": f"Bad request: {key} attribute is missing"}, 400))
     planet.name=request_body["name"]
     planet.description=request_body["description"]
     planet.mass=request_body["mass"]
