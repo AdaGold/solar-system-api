@@ -18,6 +18,7 @@ def create_app(test_config=None):
         app.config['JSON_SORT_KEYS'] = False # Don't sort keys alphabetically
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
         app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("SQLALCHEMY_TEST_DATABASE_URI")
+        app.config["Testing"] = True 
     else:
         app.config['JSON_SORT_KEYS'] = False # Don't sort keys alphabetically
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

@@ -19,7 +19,7 @@ def validate_planet_id(planet_id):
 
 def validate_request_body(request_body): 
     if "name" not in request_body or "description" not in request_body or "gravity" \
-        not in request_body or "distance" not in request_body:
+        not in request_body or "distance_from_earth" not in request_body:
 
         abort(make_response("Invalid Request", 400))
 
@@ -46,7 +46,7 @@ def create_planet():
         name = request_body["name"], 
         description = request_body["description"], 
         gravity = request_body["gravity"], 
-        distance = request_body["distance"]
+        distance_from_earth = request_body["distance_from_earth"]
     )
 
     db.session.add(new_planet)
@@ -61,7 +61,7 @@ def read_planets():
 
     # Query planets use name argument 
     name_query = request.args.get("name")
-    distance_query = request.args.get("distance")
+    distance_query = request.args.get("distance_from_earth")
     gravity_query = request.args.get("gravity")
     # Sort argument passed by client 
     is_sort = request.args.get("sort")
@@ -70,7 +70,7 @@ def read_planets():
         planet_query = planet_query.filter_by(name = name_query) 
 
     if distance_query:
-        planet_query = planet_query.filter_by(distance = distance_query)
+        planet_query = planet_query.filter_by(distance_from_earth = distance_query)
 
     if gravity_query:
         planet_query = planet_query.filter_by(gravity = gravity_query)
@@ -90,8 +90,8 @@ def read_planets():
         # Sort records by client's request 
         if attribute == "name":
             planet_query = sort_helper(planet_query, Planet.name, sort_method)
-        elif attribute == "distance":
-            planet_query = sort_helper(planet_query, Planet.distance, sort_method)
+        elif attribute == "distance_from_earth":
+            planet_query = sort_helper(planet_query, Planet.distance_from_earth, sort_method)
         elif attribute == "gravity":
             planet_query = sort_helper(planet_query, Planet.gravity, sort_method)
         else: # If user don't specify any attribute, we would sort by name 
@@ -106,7 +106,7 @@ def read_planets():
             "name": planet.name,
             "description": planet.description,
             "gravity": planet.gravity, 
-            "distance": planet.distance}
+            "distance_from_earth": planet.distance_from_earth}
         )
     return make_response(jsonify(planet_response), 200)
 
@@ -119,7 +119,7 @@ def read_one_planet_by_id(planet_id):
         "name" : planet.name, 
         "description" : planet.description,
         "gravity": planet.gravity, 
-        "distance": planet.distance
+        "distance_from_earth": planet.distance_from_earth
     }, 200)  
 
 @planets_bp.route("/<planet_id>", methods = ["PUT"])
@@ -132,7 +132,7 @@ def update_planet_by_id(planet_id):
     planet.name = request_body["name"]
     planet.description = request_body["description"]
     planet.gravity = request_body["gravity"]
-    planet.distance = request_body["distance"]
+    planet.distance_from_earth = request_body["distance_from_earth"]
 
     db.session.commit() 
 
