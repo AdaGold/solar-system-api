@@ -1,10 +1,9 @@
 from flask import Blueprint, jsonify, abort, make_response, request
 from app.filter_attributes import PLANET_ATTRIBUTES
-from app.models.moon import Moon
 from app.models.planet import Planet
 from app import db
 planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
-moons_bp = Blueprint("moons", __name__, url_prefix="/moons")
+
 
 def validate_planet(planet_id):
     try:
@@ -16,17 +15,6 @@ def validate_planet(planet_id):
         return planet
     abort(make_response({"message":f"Planet with {planet_id} not found"}, 404))
 
-def validate_moon(moon_id):
-    try:
-        moon_id=int(moon_id)
-    except:
-        abort(make_response({"message":f"moon {moon_id} invalid"}))
-    
-    moon = Moon.query.get(moon_id)
-    if moon:
-        return moon
-    
-    abort(make_response({"message": f"moon {moon_id} not found"}))
 
 
 def apply_filter(planet_query):
@@ -195,82 +183,3 @@ def delete_a_planet(planet_id):
     db.session.commit()
 
     return make_response(jsonify(f"Planet {planet.id} successfully deleted"))
-
-
-@planets_bp.route("planets/<planet_id>/moons", methods=["POST"])
-def create_moon(planet_id):
-    planet = validate_planet(planet_id)
-    request_body = request.get_json()
-    new_moon = Moon(
-        name=request_body["name"],
-        description = request_body["description"],
-        image = request_body["img"],
-        planet=planet
-    )
-    db.session.add(new_moon)
-    db.session.commit()
-    return make_response(f"New Moon {new_moon.name} creative", 201)
-
-@planets_bp.route("/<planet_id>/moons", methods=["GET"])
-def get_all_moons_by_planet(planet_id):
-    planet = validate_planet(planet_id)
-    moons_response = []
-    for moon in planet.moons:
-        moons_response.append({
-            "id":moon.id,
-            "title": moon.title,
-            "description": moon.description,
-            "image":moon.image,
-
-        })
-    return jsonify(moons_response)
-    
-@moons_bp.route("", methods=["GET"])
-def get_all_moons():
-    moons = Moon.query.all()
-    moons_response = []
-    for moon in moons:
-        moons_response.append({
-            "id":moon.id,
-            "title": moon.title,
-            "description": moon.description,
-            "image":moon.image,
-        })
-    return jsonify(moons_response)
-
-
-@moons_bp.route("/<moon_id>", methods=["GET"])
-def get_moon_by_id(moon_id):
-    moon=validate_moon(moon_id)
-    
-    return jsonify({
-        "id": moon.id,
-        "name": moon.name,
-        "description": moon.description,
-        "image": moon.image
-    })
-
-@moons_bp.route("/<moon_id>", methods=["PUT"])
-def update_moon(moon_id):
-    moon=validate_moon(moon_id)
-    request_body = request.get_json()
-    moon.name = request_body["name"]
-    moon.description=request_body["description"]
-    moon.image=request_body["img"]
-    moon.planet_id=request_body["planet_id"]
-
-    db.session.commit()
-    return make_response(f"Moon {moon.name} has been update", 204)
-
-
-
-
-
-@moons_bp.route("/<moon_id>", methods=["DELETE"])
-def delete_moon(moon_id):
-    moon=validate_moon(moon_id)
-    
-    db.session.delete(moon)
-    db.session.commit()
-
-    return make_response(f"moon {moon.id} successfully deleted")
