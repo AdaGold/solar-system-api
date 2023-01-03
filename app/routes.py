@@ -130,8 +130,7 @@ def create_planets():
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def display_planet(planet_id):
     planet = validate_planet(planet_id)
-    planet_response = []
-    planet_response.append({
+    planet_response = {
             "id": planet.id,
             "name": planet.name, 
             "description": planet.description,
@@ -152,9 +151,9 @@ def display_planet(planet_id):
             "surface_pressure":planet.surface_pressure,
             "global_magnetic_feild":planet.global_magnetic_feild,
             "img":planet.img,
-            "Has Rings": planet.has_rings,
+        "has_rings": planet.has_rings,
             #"moons":planet.moons
-        })
+    }
     return jsonify(planet_response)
 
 @planets_bp.route("/<planet_id>", methods=["PUT"])
