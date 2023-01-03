@@ -103,56 +103,56 @@ def create_planets():
         if not key in request_body:
             abort(make_response({"message": f"Bad request: {key} attribute is missing"}, 400))
     new_planet = Planet(
-    name=request_body["name"],
-    description=request_body["description"],
-    mass=request_body["mass"],
-    diameter=request_body["diameter"],
-    density=request_body["density"],
-    gravity=request_body["gravity"],
-    escape_velocity=request_body["escape_velocity"],
-    rotation_period=request_body["rotation_period"],
-    day_length=request_body["day_length"],
-    distance_from_sun=request_body["distance_from_sun"],
-    orbital_period=request_body["orbital_period"],
-    orbital_velocity=request_body["orbital_velocity"],
-    orbital_inclination=request_body["orbital_inclination"],
-    orbital_eccentricity=request_body["orbital_eccentricity"],
-    obliquity_to_orbit=request_body["obliquity_to_orbit"],
-    mean_tempurature_c=request_body["mean_tempurature_c"],
-    surface_pressure=request_body["surface_pressure"],
-    global_magnetic_feild=request_body["global_magnetic_feild"],
-    img=request_body["img"],
+        name=request_body["name"],
+        description=request_body["description"],
+        mass=request_body["mass"],
+        diameter=request_body["diameter"],
+        density=request_body["density"],
+        gravity=request_body["gravity"],
+        escape_velocity=request_body["escape_velocity"],
+        rotation_period=request_body["rotation_period"],
+        day_length=request_body["day_length"],
+        distance_from_sun=request_body["distance_from_sun"],
+        orbital_period=request_body["orbital_period"],
+        orbital_velocity=request_body["orbital_velocity"],
+        orbital_inclination=request_body["orbital_inclination"],
+        orbital_eccentricity=request_body["orbital_eccentricity"],
+        obliquity_to_orbit=request_body["obliquity_to_orbit"],
+        mean_tempurature_c=request_body["mean_tempurature_c"],
+        surface_pressure=request_body["surface_pressure"],
+        global_magnetic_feild=request_body["global_magnetic_feild"],
+        img=request_body["img"],
         has_rings=request_body["has_rings"])
     db.session.add(new_planet)
     db.session.commit()
-    return make_response(f"New Planet {new_planet.name} created!", 201)
+    return make_response(jsonify(f"New Planet {new_planet.name} created!"), 201)
 
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def display_planet(planet_id):
     planet = validate_planet(planet_id)
     planet_response = {
-            "id": planet.id,
-            "name": planet.name, 
-            "description": planet.description,
-            "mass": planet.mass,
-            "diameter":planet.diameter,
-            "density": planet.density,
-            "gravity": planet.gravity,
-            "escape_velocity": planet.escape_velocity,
-            "rotation_period": planet.rotation_period,
-            "day_length": planet.day_length,
-            "distance_from_sun":planet.distance_from_sun,
-            "orbital_period": planet.orbital_period,
-            "orbital_velocity" : planet.orbital_velocity,
-            "orbital_inclination": planet.orbital_inclination,
-            "orbital_eccentricity":planet.orbital_eccentricity,
-            "obliquity_to_orbit":planet.obliquity_to_orbit,
-            "mean_tempurature_c":planet.mean_tempurature_c,
-            "surface_pressure":planet.surface_pressure,
-            "global_magnetic_feild":planet.global_magnetic_feild,
-            "img":planet.img,
+        "id": planet.id,
+        "name": planet.name, 
+        "description": planet.description,
+        "mass": planet.mass,
+        "diameter":planet.diameter,
+        "density": planet.density,
+        "gravity": planet.gravity,
+        "escape_velocity": planet.escape_velocity,
+        "rotation_period": planet.rotation_period,
+        "day_length": planet.day_length,
+        "distance_from_sun":planet.distance_from_sun,
+        "orbital_period": planet.orbital_period,
+        "orbital_velocity" : planet.orbital_velocity,
+        "orbital_inclination": planet.orbital_inclination,
+        "orbital_eccentricity":planet.orbital_eccentricity,
+        "obliquity_to_orbit":planet.obliquity_to_orbit,
+        "mean_tempurature_c":planet.mean_tempurature_c,
+        "surface_pressure":planet.surface_pressure,
+        "global_magnetic_feild":planet.global_magnetic_feild,
+        "img":planet.img,
         "has_rings": planet.has_rings,
-            #"moons":planet.moons
+        #"moons":planet.moons
     }
     return jsonify(planet_response)
 
@@ -185,7 +185,7 @@ def update_a_planet(planet_id):
     planet.has_rings=request_body["has_rings"]
 
     db.session.commit()
-    return make_response(f"Planet {planet.id} successfully updated")
+    return make_response(jsonify(f"Planet {planet.id} successfully updated"))
 
 @planets_bp.route("/<planet_id>", methods=["DELETE"])
 def delete_a_planet(planet_id):
@@ -194,7 +194,7 @@ def delete_a_planet(planet_id):
     db.session.delete(planet)
     db.session.commit()
 
-    return make_response(f"Planet {planet.id} successfully deleted")
+    return make_response(jsonify(f"Planet {planet.id} successfully deleted"))
 
 
 @planets_bp.route("planets/<planet_id>/moons", methods=["POST"])
