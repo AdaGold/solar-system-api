@@ -156,3 +156,26 @@ def test_delete_one_nonexistent_planet(client, two_saved_planets):
     #Assert
     assert response.status_code == 404
     assert response_body == {"message": "Planet with 3 not found"}
+
+#tests for moon here to refactor and increase code coverage. 
+
+def test_all_moon_no_records(client):
+    response = client.get("/moons")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert response_body == []
+
+
+
+def test_get_one_moon(client, two_saved_moons):
+    response=client.get("/moons/1")
+    response_body=response.get_json()
+
+    assert response_body == {
+        "id":1,
+        "name":"Test Moon", 
+        "description":"First Moon for Neptune",
+        "image":"pretty_moon.jpg"
+    }

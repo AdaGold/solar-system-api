@@ -243,12 +243,12 @@ def get_all_moons():
 def get_moon_by_id(moon_id):
     moon=validate_moon(moon_id)
     
-    return {
+    return jsonify({
         "id": moon.id,
         "name": moon.name,
         "description": moon.description,
         "image": moon.image
-    }
+    })
 
 @moons_bp.route("/<moon_id>", methods=["PUT"])
 def update_moon(moon_id):

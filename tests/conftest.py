@@ -3,6 +3,7 @@ from app import create_app
 from app import db
 from flask.signals import request_finished
 from app.models.planet import Planet
+from app.models.moon import Moon
 
 
 @pytest.fixture
@@ -53,4 +54,13 @@ def two_saved_planets(app):
 
     db.session.add_all([test_one, test_two])
 
+    db.session.commit()
+
+
+@pytest.fixture
+def two_saved_moons(app, two_saved_planets):
+    moon_one=Moon(name="Test Moon", description="First Moon for Neptune", image="pretty_moon.jpg", planet_id=1)
+    moon_two=Moon(name="2 Test Moon", description="Second Neptune", image="prettiestMoon.jpg", planet_id=1)
+
+    db.session.add_all([moon_one,moon_two])
     db.session.commit()
