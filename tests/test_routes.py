@@ -1,4 +1,7 @@
 import pytest
+from werkzeug.exceptions import HTTPException
+from app.planet_routes import validate_model
+from app.models.planet import Planet 
 
 def test_get_planet_by_id_return_200_successful_code(client, saved_two_planets):
     response = client.get("/planets/1")
@@ -19,7 +22,7 @@ def test_get_planet_by_invalid_planet_id_return_400_bad_request_error(client, sa
     response_body = response.get_json()
 
     assert response.status_code == 400
-    assert response_body == {"message": "Planet_id hello is invalid"}
+    assert response_body == {"message": "Planet hello is invalid"}
 
 
 def test_get_all_planets_with_no_records_return_empty_array(client):
@@ -77,14 +80,13 @@ def test_create_one_planet_no_description(client):
 
     assert response.status_code == 400
 
-# def test_create_one_planet_no_gravity(client):
-#     test_data = {"name": "Mars",
-#                 "description": "This is planet: Venus",
-#                 "distance_from_earth": 67.685
-#                 }
-
-#     with pytest.raises(KeyError, match='gravity'):
-#         response = client.post("/planets", json=test_data)
+def test_create_one_planet_no_gravity(client):
+    test_data = {"name": "Mars",
+                "description": "This is planet: Venus",
+                "distance_from_earth": 67.685
+                }
+    response = client.post("/planets", json = test_data)
+    assert response.status_code == 400 
 
 def test_create_one_planet_with_extra_keys(client, saved_two_planets):
     test_data = {
@@ -126,7 +128,28 @@ def test_delete_planet_with_non_exist_id_return_404_not_found_error(client, save
     response_body = response.get_json()
 
     assert response.status_code == 404
-    assert response_body == {"message": "Planet_id 10 not found"}
+    assert response_body == {"message": "Planet 10 not found"}
 
+def test_validate_model(saved_two_planets):
+    result_planet = validate_model(Planet, 1)
 
+    assert result_planet.id == 1
+    assert result_planet.name == "Mars"
+    assert result_planet.description == "This is planet: Mars"
+    assert result_planet.gravity == 3.721 
+    assert result_planet.distance_from_earth == 60.81
+
+def test_validate_model_missing_record(saved_two_planets):
+    # Act & Assert
+    # Calling `validate_model` without being invoked by a route will
+    # cause an `HTTPException` when an `abort` statement is reached 
+    with pytest.raises(HTTPException):
+        result_planet = validate_model(Planet, "3")
+    
+def test_validate_model_invalid_id(saved_two_planets):
+    # Act & Assert
+    # Calling `validate_model` without being invoked by a route will
+    # cause an `HTTPException` when an `abort` statement is reached 
+    with pytest.raises(HTTPException):
+        result_planet = validate_model(Planet, "invalid_id")
 

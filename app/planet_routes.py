@@ -5,17 +5,17 @@ from app.models.planet import Planet
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 
 #---------------------------------------------- Helper Functions----------------------------------------------
-def validate_planet_id(planet_id):
+def validate_model(cls, model_id):
     try:
-        planet_id = int(planet_id)
+        model_id = int(model_id)
     except: 
-        abort(make_response({"message":f"Planet_id {planet_id} is invalid"}, 400)) 
+        abort(make_response({"message":f"{cls.__name__} {model_id} is invalid"}, 400)) 
 
-    planet = Planet.query.get(planet_id)
+    model = cls.query.get(model_id)
 
-    if not planet:
-        abort(make_response({"message":f"Planet_id {planet_id} not found"}, 404))    
-    return planet 
+    if not model:
+        abort(make_response({"message":f"{cls.__name__} {model_id} not found"}, 404))    
+    return model 
 
 def validate_request_body(request_body): 
 
@@ -102,13 +102,13 @@ def read_planets():
 
 @planets_bp.route("/<planet_id>", methods = ["GET"])
 def read_one_planet_by_id(planet_id): 
-    planet = validate_planet_id(planet_id) 
+    planet = validate_model(Planet, planet_id) 
     #use to_dict function to make code more readable
     return (planet.to_dict(), 200)  
 
 @planets_bp.route("/<planet_id>", methods = ["PUT"])
 def update_planet_by_id(planet_id):
-    planet = validate_planet_id(planet_id) 
+    planet = validate_model(Planet, planet_id) 
 
     request_body = request.get_json() 
     validate_request_body(request_body)
@@ -124,7 +124,7 @@ def update_planet_by_id(planet_id):
 
 @planets_bp.route("/<planet_id>", methods = ["DELETE"])
 def delete_planet_by_id(planet_id): 
-    planet = validate_planet_id(planet_id)  
+    planet = validate_model(Planet, planet_id)  
 
     db.session.delete(planet)
     db.session.commit()
