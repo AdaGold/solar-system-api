@@ -16,6 +16,15 @@ def validate_planet(planet_id):
         abort(make_response({"message": f"Planet {planet_id} is not found"}, 404))
     return planet
 
+
+# make it fail
+"""
+@planets_bp.route("", methods=["GET", "POST"])
+def handle_planets():
+    return make_response("I'm a teapot!", 418)
+"""
+
+
 @planets_bp.route("", methods=["POST"])
 def create_planet():
     request_body = request.get_json()
@@ -99,3 +108,4 @@ def patch_planet(planet_id):
         setattr(planet, key, value)
     db.session.commit()
     return make_response(f"Planet #{planet.id} successfully updated attribute")
+
