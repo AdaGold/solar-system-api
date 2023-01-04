@@ -44,3 +44,34 @@ def test_get_all_planets(client, two_saved_planets):
         "description": "Venus is the hottest planet in the solar system.",
         "is_rocky": True
     }]
+
+def test_create_planet_valid_input(client):
+    test_data = {
+        "name":"Mercury",
+        "description":"Mercury is the smallest planet of our solar system.",
+        "is_rocky": True
+    }
+    response = client.post("/planets", json=test_data)
+    response_body = response.get_json()
+
+    assert response.status_code == 201
+    assert response_body == "Planet Mercury successfully created"
+
+def test_update_planet_valid_input(client,one_saved_planet):
+    test_data = {
+        "name":"Mercury",
+        "description":"Mercury is the smallest planet of our solar system.",
+        "is_rocky": True
+    }
+    response = client.put("/planets/1", json=test_data)
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body == "Planet Mercury successfully updated"
+
+def test_delete_planet_valid_id(client,one_saved_planet):
+    response = client.delete("planets/1")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body == "Planet Mercury successfully deleted"

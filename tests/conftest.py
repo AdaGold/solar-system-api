@@ -39,3 +39,14 @@ def two_saved_planets(app):
     db.session.commit()
     db.session.refresh(Mercury_planet, ["id"])
     db.session.refresh(Venus_planet, ["id"])
+
+@pytest.fixture
+def one_saved_planet(app):
+    Mercury_planet = Planet(
+        name="Mercury",
+        description="Mercury is the smallest planet of our solar system.",
+        is_rocky=True
+    )
+    db.session.add(Mercury_planet)
+    db.session.commit()
+    db.session.refresh(Mercury_planet, ["id"])
