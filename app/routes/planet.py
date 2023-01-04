@@ -58,30 +58,7 @@ def display_planets():
     planet_query = Planet.query
     planet_query = apply_filter(planet_query).all()
     for planet in planet_query:
-        planets_response.append({
-            "id": planet.id,
-            "name": planet.name, 
-            "description": planet.description,
-            "mass": planet.mass,
-            "diameter":planet.diameter,
-            "density": planet.density,
-            "gravity": planet.gravity,
-            "escape_velocity": planet.escape_velocity,
-            "rotation_period": planet.rotation_period,
-            "day_length": planet.day_length,
-            "distance_from_sun":planet.distance_from_sun,
-            "orbital_period": planet.orbital_period,
-            "orbital_velocity" : planet.orbital_velocity,
-            "orbital_inclination": planet.orbital_inclination,
-            "orbital_eccentricity":planet.orbital_eccentricity,
-            "obliquity_to_orbit":planet.obliquity_to_orbit,
-            "mean_tempurature_c":planet.mean_tempurature_c,
-            "surface_pressure":planet.surface_pressure,
-            "global_magnetic_feild":planet.global_magnetic_feild,
-            "img":planet.img,
-            "has_rings": planet.has_rings,
-            #"moons":planet.moons
-        })
+        planets_response.append(planet.to_dict())
     return jsonify(planets_response)
 
 @planets_bp.route("", methods=["POST"])
@@ -118,31 +95,10 @@ def create_planets():
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def display_planet(planet_id):
     planet = validate_planet(planet_id)
-    planet_response = {
-        "id": planet.id,
-        "name": planet.name, 
-        "description": planet.description,
-        "mass": planet.mass,
-        "diameter":planet.diameter,
-        "density": planet.density,
-        "gravity": planet.gravity,
-        "escape_velocity": planet.escape_velocity,
-        "rotation_period": planet.rotation_period,
-        "day_length": planet.day_length,
-        "distance_from_sun":planet.distance_from_sun,
-        "orbital_period": planet.orbital_period,
-        "orbital_velocity" : planet.orbital_velocity,
-        "orbital_inclination": planet.orbital_inclination,
-        "orbital_eccentricity":planet.orbital_eccentricity,
-        "obliquity_to_orbit":planet.obliquity_to_orbit,
-        "mean_tempurature_c":planet.mean_tempurature_c,
-        "surface_pressure":planet.surface_pressure,
-        "global_magnetic_feild":planet.global_magnetic_feild,
-        "img":planet.img,
-        "has_rings": planet.has_rings,
-        #"moons":planet.moons
-    }
-    return jsonify(planet_response)
+    return planet.to_dict()
+
+        
+ 
 
 @planets_bp.route("/<planet_id>", methods=["PUT"])
 def update_a_planet(planet_id):

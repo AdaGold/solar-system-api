@@ -37,6 +37,7 @@ def test_get_all_planets_with_two_records(client, two_saved_planets):
         "global_magnetic_feild": True,
         "img": "https://solarsystem.nasa.gov/resources/611/neptune-full-disk-view/?category=planets_neptune",
         "has_rings": True,
+        "moons": []
     }
     assert response_body[1]["name"] == "number two"
     
@@ -71,6 +72,7 @@ def test_get_one_planet(client, two_saved_planets):
         "global_magnetic_feild": True,
         "img": "https://solarsystem.nasa.gov/resources/611/neptune-full-disk-view/?category=planets_neptune",
         "has_rings": True,
+        "moons": []
     }
 
 def test_create_one_planet(client):
