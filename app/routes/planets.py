@@ -7,7 +7,7 @@ planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 def validate_request_body(request_body):
     if not request_body:
         msg = "An empty or invalid json object was sent."
-        abort(make_response(jsonify({"message":msg}),400))
+        abort(make_response(jsonify({"details":msg}),400))
 
     name = request_body.get("name")
     description = request_body.get("description")

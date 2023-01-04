@@ -78,6 +78,15 @@ def test_create_planet_valid_input(client):
     assert new_planet.description == PLANET_DESCRIPTION
     assert new_planet.is_rocky == PLANET_IS_ROCKY
 
+def test_create_planet_invalid_json(client):
+    response = client.post("/planets", json=None)
+    response_body = response.get_json()
+
+    assert response.status_code == 400
+    assert "details" in response_body
+    assert "An empty or invalid json object was sent." in response_body["details"]
+    assert Planet.query.all() == []
+
 def test_create_planet_no_name_in_body(client):
     test_data = {
         "description":PLANET_DESCRIPTION,
