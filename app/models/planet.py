@@ -24,6 +24,63 @@ class Planet(db.Model):
     img=db.Column(db.String)
     has_rings=db.Column(db.Boolean, default=False, server_default="false")
     moons = db.relationship("Moon", back_populates="planet")
+
+    def to_dict(self):
+        planet_as_dict = {}
+        planet_as_dict["id"] = self.id
+        planet_as_dict["name"] = self.name
+        planet_as_dict["description"] = self.description
+        planet_as_dict["mass"] = self.mass
+        planet_as_dict["diameter"]=self.diameter
+        planet_as_dict["density"] = self.density
+        planet_as_dict["gravity"] = self.gravity
+        planet_as_dict["escape_velocity"] = self.escape_velocity
+        planet_as_dict["rotation_period"] = self.rotation_period
+        planet_as_dict["day_length"] = self.day_length
+        planet_as_dict["distance_from_sun"] = self.distance_from_sun
+        planet_as_dict["orbital_period"] = self.orbital_period
+        planet_as_dict["orbital_velocity"] = self.orbital_velocity
+        planet_as_dict["orbital_inclination"] = self.orbital_inclination
+        planet_as_dict["orbital_eccentricity"] = self.orbital_eccentricity
+        planet_as_dict["obliquity_to_orbit"] = self.obliquity_to_orbit
+        planet_as_dict["mean_tempurature_c"] = self.mean_tempurature_c
+        planet_as_dict["surface_pressure"] = self.surface_pressure
+        planet_as_dict["global_magnetic_feild"] = self.global_magnetic_feild
+        planet_as_dict["img"] = self.img
+        planet_as_dict["has_rings"] = self.has_rings
+        planet_as_dict["moons"] = list(map(lambda moon: moon.to_dict(), self.moons))
+        return planet_as_dict
+
+    @classmethod
+    def from_dict(cls, planets_data):
+        # Moons are optional
+        moons = []
+        if "moons" in planets_data:
+            moons = planets_data["moons"]
+
+        new_planet = Planet(
+            name=planets_data["name"],
+            description=planets_data["description"],
+            mass=planets_data["mass"],
+            diameter=planets_data["diameter"],
+            density=planets_data["density"],
+            gravity=planets_data["gravity"],
+            escape_velocity=planets_data["escape_velocity"],
+            rotation_period=planets_data["rotation_period"],
+            day_length=planets_data["day_length"],
+            distance_from_sun=planets_data["distance_from_sun"],
+            orbital_period=planets_data["orbital_period"],
+            orbital_velocity=planets_data["orbital_velocity"],
+            orbital_inclination=planets_data["orbital_inclination"],
+            orbital_eccentricity=planets_data["orbital_eccentricity"],
+            obliquity_to_orbit=planets_data["obliquity_to_orbit"],
+            mean_tempurature_c=planets_data["mean_tempurature_c"],
+            surface_pressure=planets_data["surface_pressure"],
+            global_magnetic_feild=planets_data["global_magnetic_feild"],
+            img=planets_data["img"],
+            has_rings=planets_data["has_rings"],
+            moons=moons)
+        return new_planet
 #     def __init__(self, id, name, description, mass, diameter, density, gravity, escape_velocity,
 #     rotation_period, day_length, distance_from_sun, orbital_period, orbital_velocity, orbital_inclination, orbital_eccentricity,
 #     obliquity_to_orbit, mean_tempurature_c, surface_pressure, global_magnetic_feild,img,has_rings=False, moons=None):
