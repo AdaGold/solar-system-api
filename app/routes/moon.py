@@ -81,8 +81,8 @@ def update_moon(moon_id):
     return make_response(jsonify(f"Moon {moon.name} has been updated"))
 
 @moons_bp.route("/<moon_id>", methods=["DELETE"])
-def delete_a_planet(moon_id):
-    moon = validate_planet(moon_id)
+def delete_a_moon(moon_id):
+    moon = validate_moon(moon_id)
 
     db.session.delete(moon)
     db.session.commit()
