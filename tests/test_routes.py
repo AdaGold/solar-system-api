@@ -234,3 +234,86 @@ def test_get_one_moon(client, two_saved_moons):
         "description":"First Moon for Neptune",
         "image":"pretty_moon.jpg"
     }
+
+
+def test_get_all_moons_with_two_records(client, two_saved_moons):
+    #Act
+    response = client.get("/moons")
+    response_body = response.get_json()
+
+    #Assert
+    assert response.status_code == 200
+    assert response_body[0] == {
+        "id":1,
+        "name": "Test Moon",
+        "description": "First Moon for Neptune",
+        "image":"pretty_moon.jpg"
+    }
+    assert response_body[1]["name"] == "2 Test Moon"
+    assert len(response_body) == 2
+    
+
+
+def test_get_one_moon(client, two_saved_moons):
+    # Act
+    response = client.get("/moons/1")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert response_body == {
+        
+        "id":1,
+        "name": "Test Moon",
+        "description": "First Moon for Neptune",
+        "image":"pretty_moon.jpg"
+    }
+
+
+
+def test_create_one_moon(client,two_saved_planets, two_saved_moons):
+    # Act
+    response = client.post("planets/1/moons", json={
+        "name": "three moon",
+        "description": "for testing",
+        "image": "best_moon.jpb",
+})
+
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 201
+    assert response_body == "New Moon three moon created!"
+
+def test_update_one_moon(client, two_saved_moons):
+        # Act
+    response = client.put("/moons/2", json={
+        "name": "moon",
+        "description": "Smells bad",
+        "image": "images.img"
+})
+    #Arrange
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 200
+    assert response_body == "Moon moon has been updated"
+
+def test_delete_one_planet(client, two_saved_moons):
+    #Arrange
+    response = client.delete("/moons/2")
+    response_body = response.get_json()
+
+    #Assert
+    assert response.status_code == 200
+    assert response_body == "Planet 2 successfully deleted"
+
+
+
+def test_all_moons_by_planet(client, two_saved_planets, two_saved_moons):
+    response = client.get("/planets/1/moons")
+    response_body = response.get_json()
+
+    # Assert
+    assert len(response_body) == 2
+

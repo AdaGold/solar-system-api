@@ -17,19 +17,23 @@ def validate_moon(moon_id):
     abort(make_response({"message": f"moon {moon_id} not found"}))
 
 
-@planets_bp.route("planets/<planet_id>/moons", methods=["POST"])
+@planets_bp.route("/<planet_id>/moons", methods=["POST"])
 def create_moon(planet_id):
     planet = validate_planet(planet_id)
     request_body = request.get_json()
-    new_moon = Moon(
+    try:
+        new_moon = Moon(
         name=request_body["name"],
         description = request_body["description"],
-        image = request_body["img"],
+        image = request_body["image"],
         planet=planet
     )
+    except KeyError as key_error:
+        abort(make_response({"message": f"Bad request: {key_error.args[0]} attribute is missing"}, 400))
+
     db.session.add(new_moon)
     db.session.commit()
-    return make_response(f"New Moon {new_moon.name} creative", 201)
+    return make_response(jsonify(f"New Moon {new_moon.name} created!"), 201)
 
 @planets_bp.route("/<planet_id>/moons", methods=["GET"])
 def get_all_moons_by_planet(planet_id):
@@ -38,7 +42,7 @@ def get_all_moons_by_planet(planet_id):
     for moon in planet.moons:
         moons_response.append({
             "id":moon.id,
-            "title": moon.title,
+            "name": moon.name,
             "description": moon.description,
             "image":moon.image,
 
@@ -50,12 +54,7 @@ def get_all_moons():
     moons = Moon.query.all()
     moons_response = []
     for moon in moons:
-        moons_response.append({
-            "id":moon.id,
-            "title": moon.title,
-            "description": moon.description,
-            "image":moon.image,
-        })
+        moons_response.append(moon.to_dict())
     return jsonify(moons_response)
 
 
@@ -76,8 +75,17 @@ def update_moon(moon_id):
     request_body = request.get_json()
     moon.name = request_body["name"]
     moon.description=request_body["description"]
-    moon.image=request_body["img"]
-    moon.planet_id=request_body["planet_id"]
+    moon.image=request_body["image"]
 
     db.session.commit()
-    return make_response(f"Moon {moon.name} has been update", 204)
+    return make_response(jsonify(f"Moon {moon.name} has been updated"))
+
+@moons_bp.route("/<moon_id>", methods=["DELETE"])
+def delete_a_planet(moon_id):
+    moon = validate_planet(moon_id)
+
+    db.session.delete(moon)
+    db.session.commit()
+
+    return make_response(jsonify(f"Moon {moon.id} successfully deleted"))
+
