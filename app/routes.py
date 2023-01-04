@@ -108,4 +108,4 @@ def patch_planet(planet_id):
     for key, value in request_body.items():
         setattr(planet, key, value)
     db.session.commit()
-    return make_response(f"Planet #{planet.id} successfully updated attribute")
+    return make_response(jsonify(f"Planet #{planet.id} successfully updated attribute"))
