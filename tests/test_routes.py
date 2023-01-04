@@ -1,3 +1,5 @@
+import pytest
+
 def test_get_planet_by_id_return_200_successful_code(client, saved_two_planets):
     response = client.get("/planets/1")
     response_body = response.get_json()
@@ -56,6 +58,46 @@ def test_create_one_planet_return_201_successfully_created(client):
     assert response.status_code == 201
     assert response_body == "Planet: Venus created successfully."
 
+#####edge cases for create one planet
+def test_create_one_planet_no_name(client):
+    test_data = {"description": "This is planet: Venus",
+                    "gravity": 9.87,
+                    "distance_from_earth": 67.685}
+
+    with pytest.raises(KeyError, match='name'):
+        response = client.post("/planets", json=test_data)
+
+def test_create_one_planet_no_description(client):
+    test_data = {"name": "Mars",
+                    "gravity": 9.87,
+                    "distance_from_earth": 67.685}
+
+    with pytest.raises(KeyError, match='description'):
+        response = client.post("/planets", json=test_data)
+
+def test_create_one_planet_no_gravity(client):
+    test_data = {"name": "Mars",
+                    "description": "This is planet: Venus",
+                    "distance_from_earth": 67.685}
+
+    with pytest.raises(KeyError, match='gravity'):
+        response = client.post("/planets", json=test_data)
+
+def test_create_one_book_with_extra_keys(client, two_saved_books):
+    test_data = {
+        "extra": "some stuff",
+        "name": "Venus",
+        "description": "This is planet: Venus",
+        "gravity": 9.87,
+        "distance_from_earth": 67.685,
+        "another": "last value"
+    }
+
+    response = client.post("/planets", json=test_data)
+    response_body = response.get_json()
+
+    assert response.status_code == 201
+    assert response_body == "Planet Mars successfully created"
 
 def test_put_planet_with_id_1_return_200_planet_successfully_replaced(client, saved_two_planets):
     resposne = client.put("/planets/1",

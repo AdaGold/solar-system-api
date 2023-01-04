@@ -18,3 +18,11 @@ class Planet(db.Model):
         planet_as_dict["distance_from_earth"] = self.distance_from_earth        
 
         return planet_as_dict
+
+    @classmethod
+    def from_dict(cls, planet_data):
+        new_planet = Planet(title=planet_data["name"],
+                        description=planet_data["description"],
+                        gravity = planet_data['gravity'],
+                        distance_from_earth = planet_data['distance_from_earth'])
+        return new_planet

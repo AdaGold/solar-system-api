@@ -1,4 +1,5 @@
 from app.models.planet import Planet
+import pytest
 
 def test_to_dict_no_missing_data():
     # Arrange
@@ -73,3 +74,67 @@ def test_to_dict_missing_description():
     assert result["description"] is None
     assert result["gravity"] == 3.721
     assert result["distance_from_earth"] == 60.81
+
+
+def test_from_dict_returns_book():
+    # Arrange
+    planet_data = {
+        "name": "Mars",
+        "description": "This is planet: Mars",
+        "gravity" : 3.721,
+        "distance_from_earth" : 60.81
+
+    }
+
+    # Act
+    new_planet = Planet.from_dict(planet_data)
+
+    # Assert
+    assert new_planet.name == "Mars"
+    assert new_planet.description == "This is planet: Mars"
+    assert new_planet.gravity == 3.721
+    assert new_planet.distance_from_earth == 60.81
+
+def test_from_dict_with_no_name():
+    # Arrange
+    planet_data = {
+        "description": "This is planet: Mars!",
+        "gravity" : 3.721,
+        "distance_from_earth" : 60.81
+    }
+
+    # Act & Assert
+    with pytest.raises(KeyError, match = 'title'):
+        new_planet = Planet.from_dict(planet_data)
+
+def test_from_dict_with_no_description():
+    # Arrange
+    planet_data = {
+        "name": "Mars",
+        "gravity" : 3.721,
+        "distance_from_earth" : 60.81
+    }
+
+    # Act & Assert
+    with pytest.raises(KeyError, match = 'description'):
+        new_planet = Planet.from_dict(planet_data)
+
+def test_from_dict_with_extra_keys():
+    # Arrange
+    planet_data = {
+        "extra": "some stuff",
+        "name": "Mars",
+        "description": "This is planet: Mars",
+        "gravity" : 3.721,
+        "distance_from_earth" : 60.81,
+        "another": "last value"
+    }
+    
+    # Act
+    new_planet = Planet.from_dict(planet_data)
+
+    # Assert
+    assert new_planet.name == "Mars"
+    assert new_planet.description == "This is planet: Mars"
+    assert new_planet.gravity == 3.721
+    assert new_planet.distance_from_earth == 60.81

@@ -41,13 +41,8 @@ def sort_helper(planet_query, atr = None, sort_method = "asc"):
 def create_planet(): 
     request_body =  request.get_json()
     validate_request_body(request_body)
-        
-    new_planet = Planet(
-        name = request_body["name"], 
-        description = request_body["description"], 
-        gravity = request_body["gravity"], 
-        distance_from_earth = request_body["distance_from_earth"]
-    )
+    #use from_dict function to simplfied code
+    new_planet = Planet.from_dict(request_body)
 
     db.session.add(new_planet)
     db.session.commit() 
