@@ -103,7 +103,6 @@ def test_to_dict_missing_attributes():
 def test_from_dict_returns_planet():
     #Arrange
     test_planet = {
-        "id":1,
         "name": "Neptune",
         "description": "Named for the god of the sea because it is blue",
         "mass": 102,
@@ -139,7 +138,6 @@ def test_from_dict_returns_planet():
 def test_from_dict_with_missing_attributes():
     #Arrange
     complete_attributes = {
-        "id":1,
         "name": "Neptune",
         "description": "Named for the god of the sea because it is blue",
         "mass": 102,

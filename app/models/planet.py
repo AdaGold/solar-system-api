@@ -59,7 +59,6 @@ class Planet(db.Model):
             moons = planets_data["moons"]
 
         new_planet = Planet(
-            id=planets_data["id"],
             name=planets_data["name"],
             description=planets_data["description"],
             mass=planets_data["mass"],
