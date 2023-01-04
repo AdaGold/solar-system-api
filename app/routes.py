@@ -5,16 +5,17 @@ from flask import Blueprint, jsonify, make_response, request, abort
 
 planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
 
-def validate_planet(planet_id):
+def validate_planet(cls, model_id):
     try:
-        planet_id = int(planet_id)
+        model_id = int(model_id)
     except: 
-        abort(make_response({"message": f"Planet {planet_id} invalid"}, 400))
-    planet = Planet.query.get(planet_id)
+        abort(make_response({"message": f"{cls.__name__} {model_id} invalid"}, 400))
 
-    if not planet:
-        abort(make_response({"message": f"Planet {planet_id} is not found"}, 404))
-    return planet
+    model = cls.query.get(model_id)
+
+    if not model:
+        abort(make_response({"message": f"{cls.__name__} {model_id} is not found"}, 404))
+    return model
 
 
 # make it fail

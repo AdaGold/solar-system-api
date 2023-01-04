@@ -1,4 +1,7 @@
 from app.models.planet import Planet
+from werkzeug.exceptions import HTTPException
+from app.routes import validate_model
+import pytest
 
 def test_to_dict_no_missing_data():
     # Arrange
