@@ -101,26 +101,15 @@ def read_planets():
         
     planet_response = [] 
     for planet in planets: 
-        planet_response.append(
-            {"id": planet.id,
-            "name": planet.name,
-            "description": planet.description,
-            "gravity": planet.gravity, 
-            "distance_from_earth": planet.distance_from_earth}
-        )
+        planet_response.append(planet.to_dict())    #use to_dict function to make code more readable
+
     return make_response(jsonify(planet_response), 200)
 
 @planets_bp.route("/<planet_id>", methods = ["GET"])
 def read_one_planet_by_id(planet_id): 
     planet = validate_planet_id(planet_id) 
-
-    return ({
-        "id" : planet.id,
-        "name" : planet.name, 
-        "description" : planet.description,
-        "gravity": planet.gravity, 
-        "distance_from_earth": planet.distance_from_earth
-    }, 200)  
+    #use to_dict function to make code more readable
+    return (planet.to_dict(), 200)  
 
 @planets_bp.route("/<planet_id>", methods = ["PUT"])
 def update_planet_by_id(planet_id):

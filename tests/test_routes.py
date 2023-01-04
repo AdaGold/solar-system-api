@@ -34,27 +34,26 @@ def test_get_all_planets_with_two_records_return_array_with_size_2(client, saved
 
     assert response.status_code == 200
     assert len(response_body) == 2
-    assert response_body[0] == {"id": 1, 
-                                "name": "Mars",
-                                "description": "This is planet: Mars",
-                                "gravity": 3.721,
-                                "distance_from_earth": 60.81}
-    assert response_body[1] == {"id": 2,
-                                "name": "Jupiter",
-                                "description": "This is planet: Jupiter",
-                                "gravity": 24.79,
-                                "distance_from_earth": 467.64}
-
+    assert response_body[0]["id"] == 1 
+    assert response_body[0]["name"]== "Mars"
+    assert response_body[0]["description"] =="This is planet: Mars"
+    assert response_body[0]["gravity"] == 3.721
+    assert response_body[0]["distance_from_earth"] == 60.81
+    assert response_body[1]["id"] == 2 
+    assert response_body[1]["name"]== "Jupiter"
+    assert response_body[1]["description"] == "This is planet: Jupiter"
+    assert response_body[1]["gravity"] == 24.79
+    assert response_body[1]["distance_from_earth"] == 467.64
 
 def test_create_one_planet_return_201_successfully_created(client):
-    resposne = client.post("/planets",
+    response = client.post("/planets",
                         json={"name": "Venus",
                                 "description": "This is planet: Venus",
                                 "gravity": 9.87,
                                 "distance_from_earth": 67.685})
-    response_body = resposne.get_json()
+    response_body = response.get_json()
 
-    assert resposne.status_code == 201
+    assert response.status_code == 201
     assert response_body == "Planet: Venus created successfully."
 
 
@@ -68,6 +67,11 @@ def test_put_planet_with_id_1_return_200_planet_successfully_replaced(client, sa
 
     assert resposne.status_code == 200
     assert response_body == "Planet: 1 has been updated successfully."
+    assert response_body[0]["id"] == 1 
+    assert response_body[0]["name"]== "New Planet"
+    assert response_body[0]["description"] =="This a New Planet"
+    assert response_body[0]["gravity"] == 20.0
+    assert response_body[0]["distance_from_earth"] == 55.99   
 
 
 def test_delete_planet_with_id_1_return_200_planet_successfully_deleted(client, saved_two_planets):
@@ -83,4 +87,6 @@ def test_delete_planet_with_non_exist_id_return_404_not_found_error(client, save
 
     assert response.status_code == 404
     assert response_body == {"message": "Planet_id 10 not found"}
+
+
 
