@@ -31,6 +31,14 @@ def test_get_one_planet_with_no_records(client):
 
     assert response.status_code == 404
     assert response_body == {"message":"Planet id 1 is Not Found" }
+
+def test_get_one_planet_invalid_id(client):
+    response = client.get("/planets/hello")
+    response_body = response.get_json()
+
+    assert response.status_code == 400
+    assert response_body == {"message":"Planet id hello is Invalid" }
+
     
 #3 `GET` `/planets` with valid test data (fixtures) returns a `200` with an array including appropriate test data
 def test_get_all_planets(client, two_saved_planets):
