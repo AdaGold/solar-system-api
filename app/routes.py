@@ -27,7 +27,7 @@ def create_planet():
     )
     db.session.add(new_planet)
     db.session.commit()
-    return make_response(f"Planet {new_planet} successfully created", 201)
+    return make_response(jsonify(f"Planet {new_planet.name} successfully created"), 201)
             
 
 @planets_bp.route("", methods=["GET"])
@@ -53,6 +53,7 @@ def get_planet():
         planets_response.append(
             {
                 "name": planet.name,
+                "id": planet.id,
                 "description": planet.description,
                 "size": planet.size,
                 "distance_from_earth": planet.distance_from_earth
@@ -80,14 +81,14 @@ def update_planet(planet_id):
     planet.distance_from_earth = request_body["distance_from_earth"]
 
     db.session.commit()
-    return make_response(f"Planet #{planet.id} successfully updated")
+    return make_response(jsonify(f"Planet #{planet.id} successfully updated"))
 
 @planets_bp.route("/<planet_id>", methods=["DELETE"])
 def delete_planet(planet_id):
     planet = validate_planet(planet_id)
     db.session.delete(planet)
     db.session.commit()
-    return make_response(f"Planet #{planet.id} successfully deleted")
+    return make_response(jsonify(f"Planet #{planet.id} successfully deleted"))
 
 
 # try adding a PATCH request
@@ -98,4 +99,4 @@ def patch_planet(planet_id):
     for key, value in request_body.items():
         setattr(planet, key, value)
     db.session.commit()
-    return make_response(f"Planet #{planet.id} successfully updated attribute")
+    return make_response(jsonify(f"Planet #{planet.id} successfully updated attribute"))
