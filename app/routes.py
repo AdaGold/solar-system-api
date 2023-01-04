@@ -106,6 +106,10 @@ def patch_planet(planet_id):
     planet = validate_planet(planet_id)
     request_body = request.get_json()
     for key, value in request_body.items():
+        try:
+            getattr(planet, key)
+        except AttributeError:
+            abort(make_response({"message": f"Attribute {key} does not exist"}, 400))
         setattr(planet, key, value)
     db.session.commit()
     return make_response(jsonify(f"Planet #{planet.id} successfully updated attribute"))

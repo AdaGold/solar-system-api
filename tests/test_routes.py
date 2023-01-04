@@ -125,3 +125,23 @@ def test_put_one_planet(client, one_planet):
     #Assert
     assert response.status_code == 200
     assert response_body == f"Planet #1 successfully updated"
+
+def test_patch_one_planet(client, one_planet):
+    # Act
+    response = client.patch(f"/planets/1", json={
+        "distance_from_earth": -1, 
+    })
+    response_body = response.get_json()
+    #Assert
+    assert response.status_code == 200
+    assert response_body == f"Planet #1 successfully updated attribute"
+
+def test_patch_one_planet_with_not_existing_attribute(client, one_planet):
+    # Act
+    response = client.patch(f"/planets/1", json={
+        "distance_from_sun": -1, 
+    })
+    response_body = response.get_json()
+    #Assert
+    assert response.status_code == 400
+    assert response_body == {"message": f"Attribute distance_from_sun does not exist"}
