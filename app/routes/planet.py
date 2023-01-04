@@ -64,30 +64,10 @@ def display_planets():
 @planets_bp.route("", methods=["POST"])
 def create_planets():
     request_body=request.get_json()
-    for key in PLANET_ATTRIBUTES:
-        if not key in request_body:
-            abort(make_response({"message": f"Bad request: {key} attribute is missing"}, 400))
-    new_planet = Planet(
-        name=request_body["name"],
-        description=request_body["description"],
-        mass=request_body["mass"],
-        diameter=request_body["diameter"],
-        density=request_body["density"],
-        gravity=request_body["gravity"],
-        escape_velocity=request_body["escape_velocity"],
-        rotation_period=request_body["rotation_period"],
-        day_length=request_body["day_length"],
-        distance_from_sun=request_body["distance_from_sun"],
-        orbital_period=request_body["orbital_period"],
-        orbital_velocity=request_body["orbital_velocity"],
-        orbital_inclination=request_body["orbital_inclination"],
-        orbital_eccentricity=request_body["orbital_eccentricity"],
-        obliquity_to_orbit=request_body["obliquity_to_orbit"],
-        mean_tempurature_c=request_body["mean_tempurature_c"],
-        surface_pressure=request_body["surface_pressure"],
-        global_magnetic_feild=request_body["global_magnetic_feild"],
-        img=request_body["img"],
-        has_rings=request_body["has_rings"])
+    try:
+        new_planet = Planet.from_dict(request_body)
+    except KeyError as key_error:
+        abort(make_response({"message": f"Bad request: {key_error.args[0]} attribute is missing"}, 400))
     db.session.add(new_planet)
     db.session.commit()
     return make_response(jsonify(f"New Planet {new_planet.name} created!"), 201)
