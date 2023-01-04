@@ -38,7 +38,7 @@ def test_to_dict_missing_id():
     assert result["gravity"] == 3.721
     assert result["distance_from_earth"] == 60.81
 
-def test_to_dict_missing_title():
+def test_to_dict_missing_name():
     # Arrange
     test_data = Planet(id=1,
                 description="This is planet: Mars",
@@ -60,7 +60,6 @@ def test_to_dict_missing_description():
     # Arrange
     test_data = Planet(id = 1,
                     name="Mars",
-                    description="This is planet: Mars",
                     gravity=3.721,
                     distance_from_earth=60.81)
 
@@ -79,11 +78,11 @@ def test_to_dict_missing_description():
 def test_from_dict_returns_book():
     # Arrange
     planet_data = {
+        "id":1,
         "name": "Mars",
         "description": "This is planet: Mars",
         "gravity" : 3.721,
         "distance_from_earth" : 60.81
-
     }
 
     # Act
@@ -104,7 +103,7 @@ def test_from_dict_with_no_name():
     }
 
     # Act & Assert
-    with pytest.raises(KeyError, match = 'title'):
+    with pytest.raises(KeyError, match = 'name'):
         new_planet = Planet.from_dict(planet_data)
 
 def test_from_dict_with_no_description():

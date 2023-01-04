@@ -18,9 +18,9 @@ def validate_planet_id(planet_id):
     return planet 
 
 def validate_request_body(request_body): 
+
     if "name" not in request_body or "description" not in request_body or "gravity" \
         not in request_body or "distance_from_earth" not in request_body:
-
         abort(make_response("Invalid Request", 400))
 
 def sort_helper(planet_query, atr = None, sort_method = "asc"): 

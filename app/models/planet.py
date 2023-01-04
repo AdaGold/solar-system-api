@@ -21,7 +21,7 @@ class Planet(db.Model):
 
     @classmethod
     def from_dict(cls, planet_data):
-        new_planet = Planet(title=planet_data["name"],
+        new_planet = Planet(name=planet_data["name"],
                         description=planet_data["description"],
                         gravity = planet_data['gravity'],
                         distance_from_earth = planet_data['distance_from_earth'])
