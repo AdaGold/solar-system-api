@@ -4,10 +4,33 @@ from app import db
 
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 
+def validate_request_body(request_body):
+    if not request_body:
+        msg = "An empty or invalid json object was sent."
+        abort(make_response(jsonify({"message":msg}),400))
+
+    name = request_body.get("name")
+    description = request_body.get("description")
+    is_rocky = request_body.get("is_rocky")
+
+    if not name:
+        msg = "Request body must include name."
+        abort(make_response(jsonify({"details":msg}),400))
+
+    if not description:
+        msg = "Request body must include description."
+        abort(make_response(jsonify({"details":msg}),400))
+
+    if is_rocky is None:
+        msg = "Request body must include is_rocky."
+        abort(make_response(jsonify({"details":msg}),400))
+
+    return request_body
+
 @planets_bp.route("",methods=["POST"])
 def create_planet():
     request_body = request.get_json()
-    new_planet = Planet.from_dict(request_body)
+    new_planet = Planet.from_dict(validate_request_body(request_body))
 
     db.session.add(new_planet)
     db.session.commit()
@@ -59,6 +82,7 @@ def get_planet(planet_id):
 def update_planet(planet_id):
     planet_info = validate_model(Planet, planet_id)
     request_body = request.get_json()
+    validate_request_body(request_body)
 
     planet_info.name = request_body["name"]
     planet_info.description= request_body["description"]

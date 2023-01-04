@@ -1,3 +1,9 @@
+from app.models.planet import Planet
+
+PLANET_NAME = "Mercury"
+PLANET_DESCRIPTION = "Mercury is the smallest planet of our solar system."
+PLANET_IS_ROCKY = True
+
 def test_get_all_planets_with_no_records(client):
     response = client.get("/planets")
     response_body = response.get_json()
@@ -47,9 +53,9 @@ def test_get_all_planets(client, two_saved_planets):
 
 def test_create_planet_valid_input(client):
     test_data = {
-        "name":"Mercury",
-        "description":"Mercury is the smallest planet of our solar system.",
-        "is_rocky": True
+        "name":PLANET_NAME,
+        "description":PLANET_DESCRIPTION,
+        "is_rocky": PLANET_IS_ROCKY
     }
     response = client.post("/planets", json=test_data)
     response_body = response.get_json()
@@ -57,17 +63,65 @@ def test_create_planet_valid_input(client):
     assert response.status_code == 201
     assert response_body == "Planet Mercury successfully created"
 
+    new_planet = Planet.query.get(1)
+
+    assert new_planet
+    assert new_planet.name == PLANET_NAME
+    assert new_planet.description == PLANET_DESCRIPTION
+    assert new_planet.is_rocky == PLANET_IS_ROCKY
+
+def test_create_planet_no_name_in_body(client):
+    test_data = {
+        "description":PLANET_DESCRIPTION,
+        "is_rocky": PLANET_IS_ROCKY
+    }
+    response = client.post("/planets", json=test_data)
+    response_body = response.get_json()
+
+    assert response.status_code == 400
+    assert "details" in response_body
+    assert "Request body must include name." in response_body["details"]
+    assert Planet.query.all() == []
+
+def test_create_planet_no_description_in_body(client):
+    test_data = {
+        "name":PLANET_NAME,
+        "is_rocky": PLANET_IS_ROCKY
+    }
+
+    response = client.post("/planets", json=test_data)
+    response_body = response.get_json()
+
+    assert response.status_code == 400
+    assert "details" in response_body
+    assert "Request body must include description." in response_body["details"]
+    assert Planet.query.all() == []
+
+def test_create_planet_no_is_rocky_in_body(client):
+    test_data = {
+        "name":PLANET_NAME,
+        "description":PLANET_DESCRIPTION
+    }
+
+    response = client.post("/planets", json=test_data)
+    response_body = response.get_json()
+
+    assert response.status_code == 400
+    assert "details" in response_body
+    assert "Request body must include is_rocky." in response_body["details"]
+    assert Planet.query.all() == []
+
 def test_update_planet_valid_input(client,one_saved_planet):
     test_data = {
-        "name":"Mercury",
-        "description":"Mercury is the smallest planet of our solar system.",
-        "is_rocky": True
+        "name":PLANET_NAME,
+        "description":PLANET_DESCRIPTION,
+        "is_rocky": PLANET_IS_ROCKY
     }
     response = client.put("/planets/1", json=test_data)
     response_body = response.get_json()
 
     assert response.status_code == 200
-    assert response_body == "Planet Mercury successfully updated"
+    assert response_body == f"Planet {PLANET_NAME} successfully updated"
 
 def test_delete_planet_valid_id(client,one_saved_planet):
     response = client.delete("planets/1")
