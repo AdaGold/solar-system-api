@@ -1,4 +1,5 @@
-from app.routes.planet import validate_planet
+from app.routes.planet import validate_model
+from app.models.planet import Planet
 
 NEPTUNE_PLANET = {
         "id":1,
@@ -277,15 +278,12 @@ def test_all_moons_by_planet(client, two_saved_planets, two_saved_moons):
 
     # Assert
     assert len(response_body) == 2
-
-
+ 
 def test_validate_planet(two_saved_planets):
     #Act
-    result_planet = validate_planet(1)
+    result_planet = validate_model(Planet, 1)
     
     #Assert
     for key, value in NEPTUNE_PLANET.items():
         assert getattr(result_planet, key) == value
 
-
-    

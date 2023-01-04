@@ -5,15 +5,15 @@ from app import db
 planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
 
 
-def validate_planet(planet_id):
+def validate_model(cls, model_id):
     try:
-        planet_id = int(planet_id)
+        model_id = int(model_id)
     except:
-        abort(make_response({"message":f"{planet_id} invalid"}, 400))
-    planet = Planet.query.get(planet_id)
-    if planet:
-        return planet
-    abort(make_response({"message":f"Planet with {planet_id} not found"}, 404))
+        abort(make_response({"message":f"{model_id} invalid"}, 400))
+    model = cls.query.get(model_id)
+    if model:
+        return model
+    abort(make_response({"message":f"{cls.__name__} with {model_id} not found"}, 404))
 
 
 
@@ -74,7 +74,7 @@ def create_planets():
 
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def display_planet(planet_id):
-    planet = validate_planet(planet_id)
+    planet = validate_model(Planet, planet_id)
     return planet.to_dict()
 
         
@@ -82,7 +82,7 @@ def display_planet(planet_id):
 
 @planets_bp.route("/<planet_id>", methods=["PUT"])
 def update_a_planet(planet_id):
-    planet = validate_planet(planet_id)
+    planet = validate_model(Planet, planet_id)
     request_body = request.get_json()
     for key in PLANET_ATTRIBUTES:
         if not key in request_body:
@@ -113,7 +113,7 @@ def update_a_planet(planet_id):
 
 @planets_bp.route("/<planet_id>", methods=["DELETE"])
 def delete_a_planet(planet_id):
-    planet = validate_planet(planet_id)
+    planet = validate_model(Planet, planet_id)
 
     db.session.delete(planet)
     db.session.commit()

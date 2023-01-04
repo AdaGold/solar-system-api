@@ -4,7 +4,7 @@ from app import db
 from flask.signals import request_finished
 from app.models.planet import Planet
 from app.models.moon import Moon
-from app.routes.planet import validate_planet
+from app.routes.planet import validate_model
 
 
 @pytest.fixture
@@ -60,7 +60,7 @@ def two_saved_planets(app):
 
 @pytest.fixture
 def two_saved_moons(app, two_saved_planets):
-    planet_one = validate_planet(1)
+    planet_one = validate_model(Planet ,1)
     moon_one=Moon(name="Test Moon", description="First Moon for Neptune", image="pretty_moon.jpg", planet_id=1)
     moon_two=Moon(name="2 Test Moon", description="Second Neptune", image="prettiestMoon.jpg", planet_id = 1)
 
