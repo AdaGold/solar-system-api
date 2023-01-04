@@ -29,7 +29,7 @@ def validate_request_body(request_body):
 
 @planets_bp.route("",methods=["POST"])
 def create_planet():
-    request_body = request.get_json(silent=True)
+    request_body = request.get_json(silent=True)  #the silent=True prevents this function from raising an exception if a bad or incomplete json was send
     new_planet = Planet.from_dict(validate_request_body(request_body))
 
     db.session.add(new_planet)
@@ -81,7 +81,7 @@ def get_planet(planet_id):
 @planets_bp.route("/<planet_id>",methods=["PUT"])
 def update_planet(planet_id):
     planet_info = validate_model(Planet, planet_id)
-    request_body = request.get_json(silent=True)
+    request_body = request.get_json(silent=True)  #the silent=True prevents this function from raising an exception if a bad or incomplete json was send
     validate_request_body(request_body)
 
     planet_info.name = request_body["name"]
