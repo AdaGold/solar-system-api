@@ -75,11 +75,11 @@ def display_planets():
             "orbital_inclination": planet.orbital_inclination,
             "orbital_eccentricity":planet.orbital_eccentricity,
             "obliquity_to_orbit":planet.obliquity_to_orbit,
-            "mean_tempurature":planet.mean_tempurature_c,
+            "mean_tempurature_c":planet.mean_tempurature_c,
             "surface_pressure":planet.surface_pressure,
             "global_magnetic_feild":planet.global_magnetic_feild,
             "img":planet.img,
-            "Has Rings": planet.has_rings,
+            "has_rings": planet.has_rings,
             #"moons":planet.moons
         })
     return jsonify(planets_response)
