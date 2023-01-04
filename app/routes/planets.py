@@ -39,28 +39,29 @@ def get_all_planets():
         planets_response.append(planet.to_dict())
     return jsonify(planets_response)
 
-def validate_planet(planet_id):
+def validate_model(cls, model_id):
+    print(cls, model_id)
     try:
-        id = int(planet_id)
+        model_id = int(model_id)
     except:
-        msg = f"Planet id {planet_id} is Invalid"
+        msg = f"{cls.__name__} id {model_id} is Invalid"
         abort(make_response({"message" : msg },400))
 
-    planet = Planet.query.get(id)    
+    model = cls.query.get(model_id)    
 
-    if planet:
-        return planet
+    if model:
+        return model
 
-    abort(make_response({"message":f"Planet id {planet_id} is Not Found" },404))
+    abort(make_response({"message":f"{cls.__name__} id {model_id} is Not Found" },404))
                 
 @planets_bp.route("/<planet_id>",methods=["GET"])
 def get_planet(planet_id):
-    planet_info = validate_planet(planet_id)
+    planet_info = validate_model(Planet, planet_id)
     return jsonify(planet_info.to_dict())
 
 @planets_bp.route("/<planet_id>",methods=["PUT"])
 def update_planet(planet_id):
-    planet_info = validate_planet(planet_id)
+    planet_info = validate_model(Planet, planet_id)
     request_body = request.get_json()
 
     planet_info.name = request_body["name"]
@@ -73,7 +74,7 @@ def update_planet(planet_id):
 
 @planets_bp.route("/<planet_id>",methods=["DELETE"])
 def delete_planet(planet_id):
-    planet_info = validate_planet(planet_id)
+    planet_info = validate_model(Planet, planet_id)
     
     db.session.delete(planet_info)
     db.session.commit()
