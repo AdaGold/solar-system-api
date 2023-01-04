@@ -88,6 +88,7 @@ def update_planet(planet_id):
     planet.name = request_body["name"]
     planet.description = request_body["description"]
     planet.distance_from_earth = request_body["distance_from_earth"]
+    planet.size = request_body["size"]
 
     db.session.commit()
     return make_response(jsonify(f"Planet #{planet.id} successfully updated"))
