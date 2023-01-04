@@ -40,7 +40,7 @@ def create_planet():
             
 
 @planets_bp.route("", methods=["GET"])
-def get_planet():
+def get_planets():
     planets_response = []
     planet_query = Planet.query
     name_query = request.args.get("name")
