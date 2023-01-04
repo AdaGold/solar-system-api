@@ -299,14 +299,14 @@ def test_update_one_moon(client, two_saved_moons):
     assert response.status_code == 200
     assert response_body == "Moon moon has been updated"
 
-def test_delete_one_planet(client, two_saved_moons):
+def test_delete_one_moon(client, two_saved_moons):
     #Arrange
     response = client.delete("/moons/2")
     response_body = response.get_json()
 
     #Assert
     assert response.status_code == 200
-    assert response_body == "Planet 2 successfully deleted"
+    assert response_body == "Moon 2 successfully deleted"
 
 
 
