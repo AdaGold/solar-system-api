@@ -1,4 +1,5 @@
 from app.models.planet import Planet
+import pytest 
 
 def test_to_dict_no_missing_data():
     #Arrange
@@ -24,6 +25,7 @@ def test_to_dict_no_missing_data():
         global_magnetic_feild=True,
         img="https://solarsystem.nasa.gov/resources/611/neptune-full-disk-view/?category=planets_neptune",
         has_rings=True,
+        moons = []
     )
     #Act
     result = test_planet.to_dict()
@@ -97,4 +99,73 @@ def test_to_dict_missing_attributes():
 
         #Assert
         assert result == expected
-    
+
+def test_from_dict_returns_planet():
+    #Arrange
+    test_planet = {
+        "id":1,
+        "name": "Neptune",
+        "description": "Named for the god of the sea because it is blue",
+        "mass": 102,
+        "diameter": 49528,
+        "density": 1638,
+        "gravity": 11.0,
+        "escape_velocity": 23.5,
+        "rotation_period": 16.1,
+        "day_length": 16.1,
+        "distance_from_sun": 4515,
+        "orbital_period": 59800,
+        "orbital_velocity": 5.4,
+        "orbital_inclination": 1.8,
+        "orbital_eccentricity": 0.01,
+        "obliquity_to_orbit": 28.3,
+        "mean_tempurature_c": -200,
+        "surface_pressure": None,
+        "global_magnetic_feild": True,
+        "img": "https://solarsystem.nasa.gov/resources/611/neptune-full-disk-view/?category=planets_neptune",
+        "has_rings": True,
+        "moons": []
+    }
+
+    #Act
+    new_planet = Planet.from_dict(test_planet)
+
+    #Assert
+    for key, value in test_planet.items():
+        assert getattr(new_planet, key) == value
+
+
+
+def test_from_dict_with_missing_attributes():
+    #Arrange
+    complete_attributes = {
+        "id":1,
+        "name": "Neptune",
+        "description": "Named for the god of the sea because it is blue",
+        "mass": 102,
+        "diameter": 49528,
+        "density": 1638,
+        "gravity": 11.0,
+        "escape_velocity": 23.5,
+        "rotation_period": 16.1,
+        "day_length": 16.1,
+        "distance_from_sun": 4515,
+        "orbital_period": 59800,
+        "orbital_velocity": 5.4,
+        "orbital_inclination": 1.8,
+        "orbital_eccentricity": 0.01,
+        "obliquity_to_orbit": 28.3,
+        "mean_tempurature_c": -200,
+        "surface_pressure": None,
+        "global_magnetic_feild": True,
+        "img": "https://solarsystem.nasa.gov/resources/611/neptune-full-disk-view/?category=planets_neptune",
+        "has_rings": True
+    }
+
+    for attribute in complete_attributes.keys():
+        incomplete_attributes = complete_attributes.copy()
+        del incomplete_attributes[attribute]
+
+        #Act/Assert
+        with pytest.raises(KeyError, match = attribute):
+            new_planet = Planet.from_dict(incomplete_attributes)

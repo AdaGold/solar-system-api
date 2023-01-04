@@ -51,6 +51,37 @@ class Planet(db.Model):
         planet_as_dict["moons"] = list(map(lambda moon: moon.to_dict(), self.moons))
         return planet_as_dict
 
+    @classmethod
+    def from_dict(cls, planets_data):
+        # Moons are optional
+        moons = []
+        if "moons" in planets_data:
+            moons = planets_data["moons"]
+
+        new_planet = Planet(
+            id=planets_data["id"],
+            name=planets_data["name"],
+            description=planets_data["description"],
+            mass=planets_data["mass"],
+            diameter=planets_data["diameter"],
+            density=planets_data["density"],
+            gravity=planets_data["gravity"],
+            escape_velocity=planets_data["escape_velocity"],
+            rotation_period=planets_data["rotation_period"],
+            day_length=planets_data["day_length"],
+            distance_from_sun=planets_data["distance_from_sun"],
+            orbital_period=planets_data["orbital_period"],
+            orbital_velocity=planets_data["orbital_velocity"],
+            orbital_inclination=planets_data["orbital_inclination"],
+            orbital_eccentricity=planets_data["orbital_eccentricity"],
+            obliquity_to_orbit=planets_data["obliquity_to_orbit"],
+            mean_tempurature_c=planets_data["mean_tempurature_c"],
+            surface_pressure=planets_data["surface_pressure"],
+            global_magnetic_feild=planets_data["global_magnetic_feild"],
+            img=planets_data["img"],
+            has_rings=planets_data["has_rings"],
+            moons=moons)
+        return new_planet
 #     def __init__(self, id, name, description, mass, diameter, density, gravity, escape_velocity,
 #     rotation_period, day_length, distance_from_sun, orbital_period, orbital_velocity, orbital_inclination, orbital_eccentricity,
 #     obliquity_to_orbit, mean_tempurature_c, surface_pressure, global_magnetic_feild,img,has_rings=False, moons=None):
