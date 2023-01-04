@@ -166,7 +166,26 @@ def test_incorrect_id_format(client, two_saved_planets):
 def test_create_incomplete_planet(client):
     #Arrange
     response = client.post("/planets", json={
-        "name": "Uranus"})
+        "name": "Uranus",
+        "mass": 86.8,
+        "diameter": 51118,
+        "density": 1270,
+        "gravity": 8.7,
+        "escape_velocity": 21.3,
+        "rotation_period": -17.2,
+        "day_length": 17.2,
+        "distance_from_sun": 2867,
+        "orbital_period": 30589,
+        "orbital_velocity": 6.8,
+        "orbital_inclination": 0.8,
+        "orbital_eccentricity": 0.047,
+        "obliquity_to_orbit": 97.8,
+        "mean_tempurature_c": -195,
+        "surface_pressure": None,
+        "global_magnetic_feild": True,
+        "img": "https://solarsystem.nasa.gov/resources/605/keck-telescope-views-of-uranus/?category=planets_uranus",
+        "has_rings": True
+    })
     response_body = response.get_json()
 
     #Assert
