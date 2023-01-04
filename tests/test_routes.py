@@ -62,7 +62,7 @@ def test_create_one_planet_return_201_successfully_created(client):
     assert response_body == "Planet: Venus created successfully."
 
 #####edge cases for create one planet
-def test_create_one_planet_no_name(client):
+def test_create_one_planet_no_name_return_400(client):
     
     response = client.post("/planets",
                         json={"description": "This is planet: Venus",
@@ -72,7 +72,7 @@ def test_create_one_planet_no_name(client):
     assert response.status_code == 400
 
 
-def test_create_one_planet_no_description(client):
+def test_create_one_planet_no_description_return_400(client):
     response = client.post("/planets",
                     json={"name": "Mars",
                     "gravity": 9.87,
@@ -80,7 +80,7 @@ def test_create_one_planet_no_description(client):
 
     assert response.status_code == 400
 
-def test_create_one_planet_no_gravity(client):
+def test_create_one_planet_no_gravity_return_400(client):
     test_data = {"name": "Mars",
                 "description": "This is planet: Venus",
                 "distance_from_earth": 67.685
@@ -88,7 +88,7 @@ def test_create_one_planet_no_gravity(client):
     response = client.post("/planets", json = test_data)
     assert response.status_code == 400 
 
-def test_create_one_planet_with_extra_keys(client, saved_two_planets):
+def test_create_one_planet_with_extra_keys_return_201(client, saved_two_planets):
     test_data = {
         "extra": "some stuff",
         "name": "Venus",
@@ -115,6 +115,27 @@ def test_put_planet_with_id_1_return_200_planet_successfully_replaced(client, sa
     assert resposne.status_code == 200
     assert response_body == "Planet: 1 has been updated successfully." 
 
+def test_put_non_existing_planet_return_404_not_found_error(client, saved_two_planets):
+    resposne = client.put("/planets/9",
+                        json={"name": "New Planet",
+                                "description": "This a New Planet",
+                                "gravity": 20.0,
+                                "distance_from_earth": 55.99})
+    response_body = resposne.get_json()
+
+    assert resposne.status_code == 404
+    assert response_body == {"message":"Planet 9 not found"}
+
+def test_put_invalid_planet__id_return_400_invalid_error(client, saved_two_planets):
+    resposne = client.put("/planets/invalid_id",
+                        json={"name": "New Planet",
+                                "description": "This a New Planet",
+                                "gravity": 20.0,
+                                "distance_from_earth": 55.99})
+    response_body = resposne.get_json()
+
+    assert resposne.status_code == 400
+    assert response_body == {"message":"Planet invalid_id is invalid"}
 
 def test_delete_planet_with_id_1_return_200_planet_successfully_deleted(client, saved_two_planets):
     response = client.delete("planets/1")
@@ -130,6 +151,13 @@ def test_delete_planet_with_non_exist_id_return_404_not_found_error(client, save
     assert response.status_code == 404
     assert response_body == {"message": "Planet 10 not found"}
 
+def test_delete_planet_with_invalid_id_return_400_invalid_error(client, saved_two_planets):
+    response = client.delete("planets/invalid_id")
+    response_body = response.get_json()
+
+    assert response.status_code == 400
+    assert response_body == {"message": "Planet invalid_id is invalid"}
+
 def test_validate_model(saved_two_planets):
     result_planet = validate_model(Planet, 1)
 
@@ -140,16 +168,12 @@ def test_validate_model(saved_two_planets):
     assert result_planet.distance_from_earth == 60.81
 
 def test_validate_model_missing_record(saved_two_planets):
-    # Act & Assert
     # Calling `validate_model` without being invoked by a route will
     # cause an `HTTPException` when an `abort` statement is reached 
     with pytest.raises(HTTPException):
         result_planet = validate_model(Planet, "3")
     
 def test_validate_model_invalid_id(saved_two_planets):
-    # Act & Assert
-    # Calling `validate_model` without being invoked by a route will
-    # cause an `HTTPException` when an `abort` statement is reached 
     with pytest.raises(HTTPException):
         result_planet = validate_model(Planet, "invalid_id")
 
