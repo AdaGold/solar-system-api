@@ -112,3 +112,16 @@ def test_delete_one_planet(client, one_planet):
     #Assert
     assert response.status_code == 200
     assert response_body == f"Planet #{one_planet.id} successfully deleted"
+
+def test_put_one_planet(client, one_planet):
+    # Act
+    response = client.put(f"/planets/1", json={
+        "description": "Earth is the third planet from the Sun and the only astronomical object known to harbor life.", 
+        "distance_from_earth": 0, 
+        "name": "Earth", 
+        "size": 4,
+    })
+    response_body = response.get_json()
+    #Assert
+    assert response.status_code == 200
+    assert response_body == f"Planet #1 successfully updated"
