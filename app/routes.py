@@ -43,15 +43,15 @@ def handle_planets():
 @planets_bp.route("", methods=["POST"])
 def create_planet():
     request_body = request.get_json()
-    new_planet = Planet(
-        name=request_body["name"],
-        description=request_body["description"],
-        size=request_body["size"],
-        distance_from_earth=request_body["distance_from_earth"]
-    )
+    check_invalid_request = validate_planet(request_body)
+    if check_invalid_request:
+        abort(make_response(jsonify(check_invalid_request), 400))
+    new_planet = Planet.from_dict(request_body)
     db.session.add(new_planet)
     db.session.commit()
-    return make_response(jsonify(f"Planet {new_planet.name} successfully created"), 201)
+    db.session.refresh(new_planet)
+    # return make_response(jsonify(f"Planet {new_planet.name} successfully created"), 201)
+    return new_planet.to_dict(), 201
             
 
 @planets_bp.route("", methods=["GET"])
