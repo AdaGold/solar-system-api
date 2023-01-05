@@ -31,4 +31,9 @@ def create_app(test_config=None):
     from app.routes.planets import planets_bp
     app.register_blueprint(planets_bp)
 
+#Im still here. The only thing to add now is the moons.py to routes
+#Let me know when you do it and then push it so I can work on the same file :)
+    from app.routes.moons import moons_bp   
+    app.register_blueprint(moons_bp)
+
     return app
