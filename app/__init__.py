@@ -25,6 +25,7 @@ def create_app(test_config=None):
 
     #Declaring Models
     from app.models.planet import Planet
+    from app.models.moon import Moon
 
     #Declaring blueprints
     from app.routes.planets import planets_bp
