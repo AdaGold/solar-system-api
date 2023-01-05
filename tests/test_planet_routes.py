@@ -1,8 +1,8 @@
 from app.models.planet import Planet
 
-PLANET_NAME = "Mercury"
-PLANET_DESCRIPTION = "Mercury is the smallest planet of our solar system."
-PLANET_IS_ROCKY = True
+PLANET_NAME = "Jupiter"
+PLANET_DESCRIPTION = "Jupiter is the biggest planet of our solar system."
+PLANET_IS_ROCKY = False
 
 def test_get_all_planets_with_no_records(client):
     response = client.get("/planets")
@@ -69,7 +69,7 @@ def test_create_planet_valid_input(client):
     response_body = response.get_json()
 
     assert response.status_code == 201
-    assert response_body == "Planet Mercury successfully created"
+    assert response_body == f"Planet {PLANET_NAME} successfully created"
 
     new_planet = Planet.query.get(1)
 
@@ -139,6 +139,12 @@ def test_update_planet_valid_input(client,one_saved_planet):
 
     assert response.status_code == 200
     assert response_body == f"Planet {PLANET_NAME} successfully updated"
+
+    updated_planet = Planet.query.get(1)
+
+    assert updated_planet.name == PLANET_NAME
+    assert updated_planet.description == PLANET_DESCRIPTION
+    assert updated_planet.is_rocky == PLANET_IS_ROCKY
 
 def test_delete_planet_valid_id(client,one_saved_planet):
     response = client.delete("planets/1")
