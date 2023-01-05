@@ -16,7 +16,12 @@ class Planet(db.Model):
         planet_as_dict["name"] = self.name
         planet_as_dict["description"] = self.description
         planet_as_dict["gravity"] = self.gravity
-        planet_as_dict["distance_from_earth"] = self.distance_from_earth        
+        planet_as_dict["distance_from_earth"] = self.distance_from_earth  
+
+        moon_names = []
+        for moon in self.moons:
+            moon_names.append(moon.name)
+        planet_as_dict["moons"] = moon_names
 
         return planet_as_dict
 

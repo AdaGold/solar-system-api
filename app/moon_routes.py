@@ -46,9 +46,11 @@ def create_moon_to_planet_by_planet_id(planet_id):
     new_planet = validate_model(Planet, planet_id)
 
     request_body = request.get_json() 
-    new_moon = Moon(name = request_body["name"],
-    planet_id = new_planet.id, 
-    planet = new_planet )
+    new_moon = Moon(
+        name = request_body["name"],
+        planet_id = new_planet.id, 
+        planet = new_planet
+        )
 
     db.session.add(new_moon)
     db.session.commit()
@@ -56,16 +58,9 @@ def create_moon_to_planet_by_planet_id(planet_id):
     return make_response(jsonify(f"Moon {new_moon.name} successfully created to planet {planet_id}"), 201)
 
 @moon_bp.route("/<planet_id>/moons", methods=["GET"])
-def get_book_by_author_id(planet_id): 
+def get_moons_by_planet_id(planet_id): 
     planet = validate_model(Planet, planet_id)
-    moon_response = []
-
-    for moon in planet.moons:
-        moon_response.append(
-            {
-                "id" : moon.id,
-                "name" : moon.name, 
-            }
-        )
-    return make_response(jsonify(moon_response),200) 
+    
+    response = planet.to_dict()
+    return make_response(jsonify(response),200) 
 
