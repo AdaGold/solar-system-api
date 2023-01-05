@@ -25,4 +25,4 @@ class Planet(db.Model):
                         size=planet_data["size"],
                         distance_from_earth=["distance_from_earth"]
                     )
-        return planet_data
+        return new_planet
