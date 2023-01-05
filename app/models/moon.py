@@ -4,6 +4,7 @@ class Moon(db.Model):
     __tablename__='moons'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String)
+    size = db.Column(db.Float)
     description = db.Column(db.String)
     image = db.Column(db.String)
     planet_id = db.Column(db.Integer, db.ForeignKey('planets.id'))
