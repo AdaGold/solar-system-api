@@ -192,7 +192,8 @@ def test_get_one_moon(client, two_saved_moons):
 
     assert response_body == {
         "id":1,
-        "name":"Test Moon", 
+        "name":"Test Moon",
+        "size": 200.5, 
         "description":"First Moon for Neptune",
         "image":"pretty_moon.jpg"
     }
@@ -208,6 +209,7 @@ def test_get_all_moons_with_two_records(client, two_saved_moons):
     assert response_body[0] == {
         "id":1,
         "name": "Test Moon",
+        "size": 200.5,
         "description": "First Moon for Neptune",
         "image":"pretty_moon.jpg"
     }
@@ -227,6 +229,7 @@ def test_get_one_moon(client, two_saved_moons):
         
         "id":1,
         "name": "Test Moon",
+        "size": 200.5,
         "description": "First Moon for Neptune",
         "image":"pretty_moon.jpg"
     }
@@ -237,6 +240,7 @@ def test_create_one_moon(client,two_saved_planets, two_saved_moons):
     # Act
     response = client.post("planets/1/moons", json={
         "name": "three moon",
+        "size": 200.5,
         "description": "for testing",
         "image": "best_moon.jpb",
 })
@@ -251,6 +255,7 @@ def test_update_one_moon(client, two_saved_moons):
         # Act
     response = client.put("/moons/2", json={
         "name": "moon",
+        "size": 100.6,
         "description": "Smells bad",
         "image": "images.img"
 })

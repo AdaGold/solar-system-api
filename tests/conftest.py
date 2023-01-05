@@ -61,8 +61,8 @@ def two_saved_planets(app):
 @pytest.fixture
 def two_saved_moons(app, two_saved_planets):
     planet_one = validate_model(Planet ,1)
-    moon_one=Moon(name="Test Moon", description="First Moon for Neptune", image="pretty_moon.jpg", planet_id=1)
-    moon_two=Moon(name="2 Test Moon", description="Second Neptune", image="prettiestMoon.jpg", planet_id = 1)
+    moon_one=Moon(name="Test Moon", size=200.5, description="First Moon for Neptune", image="pretty_moon.jpg", planet_id=1)
+    moon_two=Moon(name="2 Test Moon", size=100.6, description="Second Neptune", image="prettiestMoon.jpg", planet_id = 1)
 
     db.session.add_all([moon_one,moon_two])
     db.session.commit()

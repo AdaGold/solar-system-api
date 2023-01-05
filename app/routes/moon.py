@@ -13,6 +13,7 @@ def create_moon(planet_id):
     try:
         new_moon = Moon(
         name=request_body["name"],
+        size = request_body["size"],
         description = request_body["description"],
         image = request_body["image"],
         planet=planet
@@ -32,6 +33,7 @@ def get_all_moons_by_planet(planet_id):
         moons_response.append({
             "id":moon.id,
             "name": moon.name,
+            "size": moon.size,
             "description": moon.description,
             "image":moon.image,
 
@@ -54,6 +56,7 @@ def get_moon_by_id(moon_id):
     return jsonify({
         "id": moon.id,
         "name": moon.name,
+        "size": moon.size,
         "description": moon.description,
         "image": moon.image
     })
@@ -63,6 +66,7 @@ def update_moon(moon_id):
     moon=validate_model(Moon, moon_id)
     request_body = request.get_json()
     moon.name = request_body["name"]
+    moon.size = request_body["size"]
     moon.description=request_body["description"]
     moon.image=request_body["image"]
 
