@@ -18,6 +18,20 @@ def validate_planet(cls, model_id):
     return model
 
 
+def validate_planet(planet):
+    invalid_dict = dict()
+    if "name" not in planet or not isinstance(planet["name"], str) or planet["name"] is None:
+        invalid_dict["details"] = "Request body must include name."
+    if "size" not in planet or not isinstance(planet["size"], int) or planet["size"] is None:
+        invalid_dict["details"] = "Request body must include size."
+    if "description" not in planet or not isinstance(planet["description"], str) or \
+        planet["description"] is None:
+        invalid_dict["details"] = "Request body must include description."
+    if "distance_from_earth" not in planet or not isinstance(planet["distance_from_earth"]) or \
+        planet["distance_from_earth"] is None:
+        invalid_dict["details"] = "Request body must include distance_from_earth."
+    return invalid_dict
+
 # make it fail
 """
 @planets_bp.route("", methods=["GET", "POST"])
@@ -73,10 +87,11 @@ def update_planet(planet_id):
     
     planet = validate_planet(planet_id)
     request_body = request.get_json()
-    planet.name = request_body["name"]
-    planet.description = request_body["description"]
-    planet.distance_from_earth = request_body["distance_from_earth"]
-    planet.size = request_body["size"]
+    planet.from_dict(request_body)
+    #planet.name = request_body["name"]
+    #planet.description = request_body["description"]
+    #planet.distance_from_earth = request_body["distance_from_earth"]
+    #planet.size = request_body["size"]
 
     db.session.commit()
     return make_response(jsonify(f"Planet #{planet.id} successfully updated"))
