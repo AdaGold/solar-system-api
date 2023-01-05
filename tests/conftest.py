@@ -1,7 +1,7 @@
 import pytest
 from app import create_app, db
-from flask.signals import request_finished
 from app.models.planet import Planet
+from flask.signals import request_finished
 
 @pytest.fixture
 def app():
