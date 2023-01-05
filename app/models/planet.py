@@ -8,6 +8,7 @@ class Planet(db.Model):
     description = db.Column(db.String)
     gravity = db.Column(db.Float)
     distance_from_earth = db.Column(db.Float)
+    moons = db.relationship("Moon", back_populates = "planet")
 
     def to_dict(self):
         planet_as_dict = {}

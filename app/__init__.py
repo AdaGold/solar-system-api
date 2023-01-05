@@ -11,8 +11,6 @@ load_dotenv()
 
 def create_app(test_config=None):
     app = Flask(__name__)
-    # app.config['JSON_SORT_KEYS'] = False # Don't sort keys alphabetically
-    # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     if test_config: 
         app.config['JSON_SORT_KEYS'] = False # Don't sort keys alphabetically
@@ -28,8 +26,11 @@ def create_app(test_config=None):
     migrate.init_app(app, db)
     
     from app.models.planet import Planet
+    from app.models.moon import Moon
     from .planet_routes import planets_bp 
+    from .moon_routes import moon_bp
 
     app.register_blueprint(planets_bp)  
+    app.register_blueprint(moon_bp)
 
     return app

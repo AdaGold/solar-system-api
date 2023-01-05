@@ -116,6 +116,13 @@ def test_put_planet_with_id_1_return_200_planet_successfully_replaced(client, sa
     assert response_body == "Planet: 1 has been updated successfully." 
 
 def test_put_non_existing_planet_return_404_not_found_error(client, saved_two_planets):
+    # with pytest.raises(HTTPException):
+    #     resposne = client.put("/planets/9",
+    #                     json={"name": "New Planet",
+    #                             "description": "This a New Planet",
+    #                             "gravity": 20.0,
+    #                             "distance_from_earth": 55.99})
+
     resposne = client.put("/planets/9",
                         json={"name": "New Planet",
                                 "description": "This a New Planet",
