@@ -1,12 +1,25 @@
 from flask import Blueprint, jsonify, abort, make_response, request
 from app.models.planet import Planet
 from app.models.moon import Moon
-from app.routes.planets import validate_model
 from app import db
 
 moons_bp = Blueprint("moons_bp", __name__, url_prefix="/moons")
 
-def validate_request_body(request_body):
+def validate_model(cls, model_id):
+    try:
+        model_id = int(model_id)
+    except:
+        msg = f"{cls.__name__} id {model_id} is Invalid"
+        abort(make_response({"message" : msg },400))
+
+    model = cls.query.get(model_id)    
+
+    if model:
+        return model
+
+    abort(make_response({"message":f"{cls.__name__} id {model_id} is Not Found" },404))
+
+def moon_validate_request_body(request_body):
     if not request_body:
         msg = "An empty or invalid json object was sent."
         abort(make_response(jsonify({"details":msg}),400))
@@ -37,7 +50,7 @@ def validate_request_body(request_body):
 @moons_bp.route("",methods=["POST"])
 def create_moon():
     request_body = request.get_json(silent=True)  #the silent=True prevents this function from raising an exception if a bad or incomplete json was send
-    new_moon = Moon.from_dict(validate_request_body(request_body))
+    new_moon = Moon.from_dict(moon_validate_request_body(request_body))
 
     db.session.add(new_moon)
     db.session.commit()
@@ -74,7 +87,7 @@ def get_moon(moon_id):
 def update_moon(moon_id):
     moon_info = validate_model(Moon, moon_id)
     request_body = request.get_json(silent=True)  #the silent=True prevents this function from raising an exception if a bad or incomplete json was send
-    validate_request_body(request_body)
+    moon_validate_request_body(request_body)
 
     moon_info.name = request_body["name"]
     moon_info.description= request_body["description"]
