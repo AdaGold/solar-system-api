@@ -11,6 +11,7 @@ def test_to_dict_no_missing_data():
 
     # Act
     result = test_data.to_dict()
+    print(result)
 
     # Assert
     assert len(result) == 6
@@ -19,6 +20,7 @@ def test_to_dict_no_missing_data():
     assert result["description"] == "This is planet: Mars"
     assert result["gravity"] == 3.721
     assert result["distance_from_earth"] == 60.81
+    assert result["moons"] == []
 
 def test_to_dict_missing_id():
     # Arrange
@@ -37,6 +39,7 @@ def test_to_dict_missing_id():
     assert result["description"] == "This is planet: Mars"
     assert result["gravity"] == 3.721
     assert result["distance_from_earth"] == 60.81
+    assert result["moons"] == []
 
 def test_to_dict_missing_name():
     # Arrange

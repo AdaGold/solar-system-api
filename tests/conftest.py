@@ -3,6 +3,7 @@ from app import create_app
 from app import db
 from flask.signals import request_finished
 from app.models.planet import Planet
+from app.models.moon import Moon
 
 
 @pytest.fixture
@@ -31,14 +32,35 @@ def saved_two_planets(app):
     mars = Planet(name="Mars",
                 description="This is planet: Mars",
                 gravity=3.721,
-                distance_from_earth=60.81)
+                distance_from_earth=60.81,
+                moons = []
+                )
 
     jupiter = Planet(name="Jupiter",
                     description="This is planet: Jupiter",
                     gravity=24.79,
-                    distance_from_earth=467.64)
+                    distance_from_earth=467.64,
+                    moons = [],
+                    )
 
     db.session.add_all([mars, jupiter])
     db.session.commit()
     db.session.refresh(mars, ["id"])
     db.session.refresh(jupiter, ["id"])
+
+
+@pytest.fixture
+def saved_two_moons(app):
+    moon1 = Moon(name="Moon1",
+                planet_id=1,
+                planet="Mars")
+
+    moon2 = Moon(name="Moon2",
+                planet_id=1,
+                planet="Mars")
+
+
+    db.session.add_all([moon1, moon2])
+    db.session.commit()
+    db.session.refresh(moon1, ["id"])
+    db.session.refresh(moon2, ["id"])
