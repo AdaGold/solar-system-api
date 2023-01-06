@@ -51,7 +51,8 @@ def update_moon(moon_id):
 
     moon_info.name = request_body["name"]
     moon_info.description= request_body["description"]
-    moon_info.is_rocky = request_body["is_rocky"]
+    moon_info.size = request_body["size"]
+    moon_info.gravity = request_body["gravity"]
 
     db.session.commit()
     
