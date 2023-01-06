@@ -280,10 +280,28 @@ def test_get_moons_by_planet_id_return_empty_list_of_moons(client, saved_two_pla
     assert response_body["id"] == 1 
     assert response_body["name"] == "Mars"
     assert response_body["description"] == "This is planet: Mars"
-    assert response_body["description"] == "This is planet: Mars"
     assert response_body["gravity"] == 3.721
     assert response_body["distance_from_earth"] == 60.81
     assert response_body["moons"] == []
+
+def test_get_moons_by_planet_id_return_list_of_two_moons(client,saved_two_planets,saved_two_moons):
+    post_response = client.post("/moons/1/moon",
+                            json={"name": "Moon1"
+                            })
+    post_response = client.post("/moons/1/moon",
+                            json={"name": "Moon2"
+                            })
+    response = client.get("moons/1/moons")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body["id"] == 1 
+    assert response_body["name"] == "Mars"
+    assert response_body["description"] == "This is planet: Mars"
+    assert response_body["gravity"] == 3.721
+    assert response_body["distance_from_earth"] == 60.81
+    assert response_body["moons"] == ["Moon1", "Moon2"]
+
 
 def test_get_moons_by_planet_id_return_list_of_moons(client, saved_two_planets):
     post_response = client.post("/moons/1/moon",
@@ -296,7 +314,6 @@ def test_get_moons_by_planet_id_return_list_of_moons(client, saved_two_planets):
     assert response.status_code == 200
     assert response_body["id"] == 1 
     assert response_body["name"] == "Mars"
-    assert response_body["description"] == "This is planet: Mars"
     assert response_body["description"] == "This is planet: Mars"
     assert response_body["gravity"] == 3.721
     assert response_body["distance_from_earth"] == 60.81
