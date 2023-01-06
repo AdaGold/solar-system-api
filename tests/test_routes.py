@@ -302,6 +302,20 @@ def test_get_moons_by_planet_id_return_list_of_two_moons(client,saved_two_planet
     assert response_body["distance_from_earth"] == 60.81
     assert response_body["moons"] == ["Moon1", "Moon2"]
 
+def test_create_moons_by_invalid_planet_id(client, saved_two_planets):
+    response = client.post("/moons/invalid/moon",
+                            json={"name": "Moon1"
+                            })
+    assert response.status_code == 400
+    assert response.get_json() == {"message": "Planet invalid is invalid"}
+
+def test_create_moons_by_a_non_existing_planet_id(client, saved_two_planets):
+    response = client.post("/moons/100/moon",
+                            json={"name": "Moon1"
+                            })
+    assert response.status_code == 404
+    assert response.get_json() == {"message": "Planet 100 not found"}
+
 def test_validate_model_missing_moon_record(saved_two_moons):
     # Calling `validate_model` without being invoked by a route will
     # cause an `HTTPException` when an `abort` statement is reached
