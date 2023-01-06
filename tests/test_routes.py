@@ -223,19 +223,15 @@ def test_get_all_moons_with_no_records_return_empty_array(client):
 
 
 def test_get_all_moons_with_two_records_return_array_with_size_2(client, saved_two_moons):
-    response = client.get("/moons")
+    response = client.get("/moons/all")
     response_body = response.get_json()
 
     assert response.status_code == 200
     assert len(response_body) == 2
     assert response_body[0]["id"] == 1 
     assert response_body[0]["name"]== "Moon1"
-    #assert response_body[0]["planet_id"] ==1
-    #assert response_body[0]["planet"] == "Mars"
     assert response_body[1]["id"] == 2
     assert response_body[1]["name"]== "Moon2"
-    #assert response_body[1]["planet_id"] == 1
-    #assert response_body[1]["planet"] =="Mars"
 
 
 def test_create_one_moon_return_201_successfully_created(client):
@@ -249,7 +245,7 @@ def test_create_one_moon_return_201_successfully_created(client):
     assert response_body == "Moon Moon3 successfully created."
 
 def test_create_one_moon_under_planet_return_201_successfully_created(client,saved_two_planets):
-    response = client.post("/2/moon",
+    response = client.post("moons/2/moon",
                         json= {"name": "Moon3",
                                 "planet": "Jupiter",
                                 "planet_id": 2})
