@@ -7,6 +7,7 @@ class Planet(db.Model):
     description = db.Column(db.String, nullable=False)
     size = db.Column(db.Integer, nullable=False)
     distance_from_earth = db.Column(db.Integer, nullable=False)
+    moons = db.relationship("Moon", back_populates="planet")
     
     def to_dict(self):
         planet_as_dict = {}
@@ -20,9 +21,10 @@ class Planet(db.Model):
     
     @classmethod
     def from_dict(cls, planet_data):
-        new_planet = Planet(name=planet_data["name"],
-                        description=planet_data["description"],
-                        size=planet_data["size"],
-                        distance_from_earth=["distance_from_earth"]
-                    )
+        new_planet = Planet(
+            name=planet_data["name"],
+            description=planet_data["description"],
+            size=planet_data["size"],
+            distance_from_earth=["distance_from_earth"]
+        )
         return new_planet

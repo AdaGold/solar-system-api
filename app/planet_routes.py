@@ -1,43 +1,11 @@
 from app import db
 from app.models.planet import Planet
+from app.models.moon import Moon
+from app.route_helper_funcs import validate_model, validate_moon, validate_planet
 from flask import Blueprint, jsonify, make_response, request, abort
 
 
 planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
-
-def validate_planet(cls, model_id):
-    try:
-        model_id = int(model_id)
-    except: 
-        abort(make_response({"message": f"{cls.__name__} {model_id} invalid"}, 400))
-
-    model = cls.query.get(model_id)
-
-    if not model:
-        abort(make_response({"message": f"{cls.__name__} {model_id} is not found"}, 404))
-    return model
-
-
-def validate_planet(planet):
-    invalid_dict = dict()
-    if "name" not in planet or not isinstance(planet["name"], str) or planet["name"] is None:
-        invalid_dict["details"] = "Request body must include name."
-    if "size" not in planet or not isinstance(planet["size"], int) or planet["size"] is None:
-        invalid_dict["details"] = "Request body must include size."
-    if "description" not in planet or not isinstance(planet["description"], str) or \
-        planet["description"] is None:
-        invalid_dict["details"] = "Request body must include description."
-    if "distance_from_earth" not in planet or not isinstance(planet["distance_from_earth"]) or \
-        planet["distance_from_earth"] is None:
-        invalid_dict["details"] = "Request body must include distance_from_earth."
-    return invalid_dict
-
-# make it fail
-"""
-@planets_bp.route("", methods=["GET", "POST"])
-def handle_planets():
-    return make_response("I'm a teapot!", 418)
-"""
 
 
 @planets_bp.route("", methods=["POST"])
@@ -79,12 +47,12 @@ def get_planets():
 
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def read_one_planet(planet_id):
-    planet = validate_planet(planet_id)
+    planet = validate_model(Planet, planet_id)
     return planet.to_dict()
 
 @planets_bp.route("/<planet_id>", methods=["PUT"])
 def update_planet(planet_id):
-    planet = validate_planet(planet_id)
+    planet = validate_model(Planet, planet_id)
     request_body = request.get_json()
     check_invalid_request = validate_planet(request_body)
     if check_invalid_request:
@@ -100,7 +68,7 @@ def update_planet(planet_id):
 
 @planets_bp.route("/<planet_id>", methods=["DELETE"])
 def delete_planet(planet_id):
-    planet = validate_planet(planet_id)
+    planet = validate_model(Planet, planet_id)
     db.session.delete(planet)
     db.session.commit()
     # return make_response(jsonify(f"Planet #{planet.id} successfully deleted"))
@@ -110,7 +78,7 @@ def delete_planet(planet_id):
 # try adding a PATCH request
 @planets_bp.route("/<planet_id>", methods=["PATCH"])
 def patch_planet(planet_id):
-    planet = validate_planet(planet_id)
+    planet = validate_model(Planet, planet_id)
     request_body = request.get_json()
     for key, value in request_body.items():
         try:
@@ -122,3 +90,33 @@ def patch_planet(planet_id):
     db.session.refresh(planet)
     # return make_response(jsonify(f"Planet #{planet.id} successfully updated attribute"))
     return planet.to_dict()
+
+
+@planets_bp.route("/<planet_id>/moons", methods=["POST"])
+def create_moon_for_a_planet(planet_id):
+    planet = validate_model(Planet, planet_id)
+    request_body = request.get_json()
+    validate_moon_record = validate_moon(request_body)
+    if validate_moon_record:
+        abort(make_response(jsonify(validate_moon_record), 400))
+    new_moon = Moon(
+        name=request_body["name"],
+        description=request_body["description"],
+        radius=request_body["radius"],
+        planet=planet
+    )
+    db.session.add(new_moon)
+    db.session.commit()
+    return new_moon.to_dict(), 200
+
+
+@planets_bp.route("/<planet_id>/moons", methods=["GET"])
+def get_all_moons_of_a_planet(planet_id):
+    planet = validate_model(Planet, planet_id)
+    moons_response = list()
+    for moon in planet.moons:
+        moons_response.append(
+            moon.to_dict()
+        )
+    return jsonify(moons_response)
+
