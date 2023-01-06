@@ -72,7 +72,7 @@ def delete_planet(planet_id):
     db.session.delete(planet)
     db.session.commit()
     # return make_response(jsonify(f"Planet #{planet.id} successfully deleted"))
-    return planet.to_dict()
+    return planet.to_dict(), 200
 
 
 # try adding a PATCH request
