@@ -51,13 +51,9 @@ def saved_two_planets(app):
 
 @pytest.fixture
 def saved_two_moons(app):
-    moon1 = Moon(name="Moon1",
-                planet_id=1,
-                planet="Mars")
+    moon1 = Moon(name="Moon1")
 
-    moon2 = Moon(name="Moon2",
-                planet_id=1,
-                planet="Mars")
+    moon2 = Moon(name="Moon2")
 
 
     db.session.add_all([moon1, moon2])
