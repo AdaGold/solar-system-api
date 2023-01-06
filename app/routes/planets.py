@@ -58,7 +58,7 @@ def get_all_planets():
     for planet in planets:
         planets_response.append(planet.to_dict())
     return jsonify(planets_response)
-              
+
 @planets_bp.route("/<planet_id>",methods=["GET"])
 def get_planet(planet_id):
     planet_info = validate_model(Planet, planet_id)

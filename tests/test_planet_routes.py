@@ -21,7 +21,8 @@ def test_get_one_planet(client, two_saved_planets):
         "id":1,
         "name":"Mercury",
         "description":"Mercury is the smallest planet of our solar system.",
-        "is_rocky":True
+        "is_rocky":True,
+        "moons":[]
     }
 
 #2 `GET` `/planets/1` with no data in test database (no fixture) returns a `404`
@@ -50,13 +51,15 @@ def test_get_all_planets(client, two_saved_planets):
         "id":1,
         "name":"Mercury",
         "description":"Mercury is the smallest planet of our solar system.",
-        "is_rocky":True
+        "is_rocky":True,
+        "moons":[]
     },
     {
         "id": 2,
         "name": "Venus",
         "description": "Venus is the hottest planet in the solar system.",
-        "is_rocky": True
+        "is_rocky": True,
+        "moons": []
     }]
 
 def test_create_planet_valid_input(client):
@@ -186,5 +189,6 @@ def test_get_a_planets_with_a_query_parameter(client, two_saved_planets):
         "id": 2,
         "name": "Venus",
         "description": "Venus is the hottest planet in the solar system.",
-        "is_rocky": True
+        "is_rocky": True,
+        "moons":[]
     }]
