@@ -96,7 +96,7 @@ def read_planets():
         
     planet_response = [] 
     for planet in planets: 
-        planet_response.append(planet.to_dict())    #use to_dict function to make code more readable
+        planet_response.append(planet.to_dict())   #use to_dict function to make code more readable
 
     return make_response(jsonify(planet_response), 200)
 
