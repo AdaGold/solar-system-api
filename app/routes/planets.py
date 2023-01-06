@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, abort, make_response,request
 from app.models.planet import Planet
 from app import db
+from app.routes.helpers import validate_model
 
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 
@@ -57,22 +58,7 @@ def get_all_planets():
     for planet in planets:
         planets_response.append(planet.to_dict())
     return jsonify(planets_response)
-
-def validate_model(cls, model_id):
-    print(cls, model_id)
-    try:
-        model_id = int(model_id)
-    except:
-        msg = f"{cls.__name__} id {model_id} is Invalid"
-        abort(make_response({"message" : msg },400))
-
-    model = cls.query.get(model_id)    
-
-    if model:
-        return model
-
-    abort(make_response({"message":f"{cls.__name__} id {model_id} is Not Found" },404))
-                
+              
 @planets_bp.route("/<planet_id>",methods=["GET"])
 def get_planet(planet_id):
     planet_info = validate_model(Planet, planet_id)
