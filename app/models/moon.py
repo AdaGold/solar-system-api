@@ -16,7 +16,8 @@ class Moon(db.Model):
             "name": self.name,
             "size": self.size,
             "description": self.description,
-            "gravity" : self.gravity
+            "gravity" : self.gravity,
+            "planet" : self.planet
         }
 
     @classmethod

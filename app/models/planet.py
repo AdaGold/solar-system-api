@@ -9,12 +9,13 @@ class Planet(db.Model):
     moons = db.relationship("Moon", back_populates="planet")
 
     def to_dict(self):
-        return {
+        planet_dict =  {
             "id": self.id,
             "name": self.name,
             "description": self.description,
             "is_rocky" : self.is_rocky
         }
+        planet_dict["moons"] = [moon.name for moon in self.moons]
 
     @classmethod
     def from_dict(cls, planet_data):

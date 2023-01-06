@@ -86,3 +86,11 @@ def delete_planet(planet_id):
     db.session.commit()
     
     return make_response(jsonify(f"Planet {planet_info.name} successfully deleted"), 200)
+
+@planets_bp.route("/<planet_id>/moons",methods=["GET"])
+def get_moons_of_planet(planet_id):
+    planet = validate_model(Planet, planet_id)
+
+    moons_response = [moon.to_dict for moon in planet.moons]
+
+    return jsonify(moons_response)
