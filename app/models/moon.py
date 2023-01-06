@@ -10,7 +10,7 @@ class Moon(db.Model):
         return{
             "id" : self.id, 
             "name" : self.name,
-            "planet_id" : self.new_planet.id, 
-            "planet" : self.new_planet
+            "planet_id" : self.planet.id, 
+            "planet" : self.planet.name
         }
         

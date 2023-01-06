@@ -1,4 +1,6 @@
 from app.models.planet import Planet
+from app.models.moon import Moon
+from app.planet_routes import validate_model
 import pytest
 
 def test_to_dict_no_missing_data():
@@ -140,3 +142,9 @@ def test_from_dict_with_extra_keys():
     assert new_planet.description == "This is planet: Mars"
     assert new_planet.gravity == 3.721
     assert new_planet.distance_from_earth == 60.81
+
+def test_validate_moon_model(saved_two_moons):
+    result_moon = validate_model(Moon, 1)
+
+    assert result_moon.id == 1
+    assert result_moon.name == "Moon1"
