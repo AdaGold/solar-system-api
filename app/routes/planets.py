@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, abort, make_response, request
 from app.models.planet import Planet
 from app.models.moon import Moon
+from app.routes.moons import moon_validate_request_body
 from app import db
 
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
@@ -105,7 +106,7 @@ def delete_planet(planet_id):
 def add_new_moons_to_planet(planet_id):
     planet = validate_model(Planet, planet_id)
     request_body = request.get_json(silent=True)  #the silent=True prevents this function from raising an exception if a bad or incomplete json was send
-    new_moon = Moon.from_dict(validate_request_body(request_body))
+    new_moon = Moon.from_dict(moon_validate_request_body(request_body))
     new_moon.planet = planet
 
     db.session.add(new_moon)
