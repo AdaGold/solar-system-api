@@ -27,5 +27,4 @@ class Moon(db.Model):
             description = moon_data["description"],
             gravity = moon_data["gravity"]
         )
-
         return moon

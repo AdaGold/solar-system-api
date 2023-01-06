@@ -1,5 +1,6 @@
-from flask import Blueprint, jsonify, abort, make_response,request
+from flask import Blueprint, jsonify, abort, make_response, request
 from app.models.planet import Planet
+from app.models.moon import Moon
 from app import db
 
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
@@ -59,7 +60,6 @@ def get_all_planets():
     return jsonify(planets_response)
 
 def validate_model(cls, model_id):
-    print(cls, model_id)
     try:
         model_id = int(model_id)
     except:
@@ -100,3 +100,15 @@ def delete_planet(planet_id):
     db.session.commit()
     
     return make_response(jsonify(f"Planet {planet_info.name} successfully deleted"), 200)
+
+@planets_bp.route("/<planet_id>/moons",methods=["POST"])
+def add_new_moons_to_planet(planet_id):
+    planet = validate_model(Planet, planet_id)
+    request_body = request.get_json(silent=True)  #the silent=True prevents this function from raising an exception if a bad or incomplete json was send
+    new_moon = Moon.from_dict(validate_request_body(request_body))
+    new_moon.planet = planet
+
+    db.session.add(new_moon)
+    db.session.commit()
+
+    return make_response(jsonify(f"Moon {new_moon.name} of {new_moon.planet.name} successfully created"), 201)
