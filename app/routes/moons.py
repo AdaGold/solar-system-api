@@ -7,7 +7,9 @@ moons_bp = Blueprint("moons_bp", __name__, url_prefix="/moons")
 
 @moons_bp.route("",methods=["POST"])
 def create_moon():
-    request_body = request.get_json(silent=True)  
+    request_body = request.get_json(silent=True) 
+    required_data = ["name","size","description","gravity"]
+    validate_request_body(request_body, required_data)
     new_moon = Moon.from_dict(request_body)
 
     db.session.add(new_moon)
@@ -42,9 +44,9 @@ def get_moon(moon_id):
 
 @moons_bp.route("/<moon_id>",methods=["PUT"])
 def update_moon(moon_id):
-    required_data = ["name","size","description","gravity"]
     moon_info = validate_model(Moon, moon_id)
-    request_body = request.get_json(silent=True)  
+    request_body = request.get_json(silent=True)
+    required_data = ["name","size","description","gravity"]  
     validate_request_body(request_body,required_data)
 
     moon_info.name = request_body["name"]
