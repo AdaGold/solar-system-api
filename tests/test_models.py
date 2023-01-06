@@ -11,14 +11,16 @@ def test_to_dict_no_missing_data():
 
     # Act
     result = test_data.to_dict()
+    print(result)
 
     # Assert
-    assert len(result) == 5
+    assert len(result) == 6
     assert result["id"] == 1
     assert result["name"] == "Mars"
     assert result["description"] == "This is planet: Mars"
     assert result["gravity"] == 3.721
     assert result["distance_from_earth"] == 60.81
+    assert result["moons"] == []
 
 def test_to_dict_missing_id():
     # Arrange
@@ -31,12 +33,13 @@ def test_to_dict_missing_id():
     result = test_data.to_dict()
 
     # Assert
-    assert len(result) == 5
+    assert len(result) == 6
     assert result["id"] is None
     assert result["name"] == "Mars"
     assert result["description"] == "This is planet: Mars"
     assert result["gravity"] == 3.721
     assert result["distance_from_earth"] == 60.81
+    assert result["moons"] == []
 
 def test_to_dict_missing_name():
     # Arrange
@@ -49,7 +52,7 @@ def test_to_dict_missing_name():
     result = test_data.to_dict()
 
     # Assert
-    assert len(result) == 5
+    assert len(result) == 6
     assert result["id"] == 1
     assert result["name"] is None
     assert result["description"] == "This is planet: Mars"
@@ -67,7 +70,7 @@ def test_to_dict_missing_description():
     result = test_data.to_dict()
 
     # Assert
-    assert len(result) == 5
+    assert len(result) == 6
     assert result["id"] == 1
     assert result["name"] == "Mars"
     assert result["description"] is None

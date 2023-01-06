@@ -4,7 +4,9 @@ from app.models.moon import Moon
 from app.models.planet import Planet 
 from app.planet_routes import validate_model
 
-moon_bp = Blueprint("moon_bp", __name__, url_prefix="/moon")
+moon_bp = Blueprint("moons_bp", __name__, url_prefix="/moons")
+
+
 
 @moon_bp.route("", methods=["POST"])
 def create_new_moon():
@@ -14,10 +16,10 @@ def create_new_moon():
     db.session.add(new_moon)
     db.session.commit()
 
-    return make_response(jsonify(f"Moon {new_moon.name} successfully created"), 201)
+    return make_response(jsonify(f"Moon {new_moon.name} successfully created."), 201)
 
 
-@moon_bp.route("", methods=["GET"])
+@moon_bp.route("/<moon_id>", methods=["GET"])
 def read_moon_by_id(moon_id): 
     moon_response = validate_model(Moon, moon_id)
 
@@ -26,7 +28,7 @@ def read_moon_by_id(moon_id):
         "name" : moon_response.name, 
     }
 
-    return make_response(result_dict, 200) 
+    return make_response(jsonify(result_dict), 200) 
 
 @moon_bp.route("/all", methods=["GET"])
 def read_all_moons(): 
