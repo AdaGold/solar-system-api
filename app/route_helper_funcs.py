@@ -34,7 +34,7 @@ def validate_planet(planet):
     if "description" not in planet or not isinstance(planet["description"], str) or \
         planet["description"] is None:
         invalid_dict["details"] = "Request body must include description."
-    if "distance_from_earth" not in planet or not isinstance(planet["distance_from_earth"]) or \
+    if "distance_from_earth" not in planet or not isinstance(planet["distance_from_earth"], int) or \
         planet["distance_from_earth"] is None:
         invalid_dict["details"] = "Request body must include distance_from_earth."
     return invalid_dict

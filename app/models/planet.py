@@ -25,6 +25,6 @@ class Planet(db.Model):
             name=planet_data["name"],
             description=planet_data["description"],
             size=planet_data["size"],
-            distance_from_earth=["distance_from_earth"]
+            distance_from_earth=planet_data["distance_from_earth"]
         )
         return new_planet
