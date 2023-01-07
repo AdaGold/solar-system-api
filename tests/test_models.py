@@ -8,7 +8,6 @@ def test_to_dict_no_missing_data():
         size=4,
         description="Earth is the third planet from the Sun and the only astronomical object known to harbor life.",
         distance_from_earth=0,
-        id=1 
     )
 
     # Act
