@@ -1,38 +1,18 @@
 from flask import Blueprint, jsonify, abort, make_response, request
 from app.models.planet import Planet
 from app.models.moon import Moon
-from app.routes.moons import moon_validate_request_body
 from app import db
+from app.routes.helpers import validate_model, validate_request_body
+from app.routes.moons import moon_validate_request_body
 
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 
-def validate_request_body(request_body):
-    if not request_body:
-        msg = "An empty or invalid json object was sent."
-        abort(make_response(jsonify({"details":msg}),400))
-
-    name = request_body.get("name")
-    description = request_body.get("description")
-    is_rocky = request_body.get("is_rocky")
-
-    if not name:
-        msg = "Request body must include name."
-        abort(make_response(jsonify({"details":msg}),400))
-
-    if not description:
-        msg = "Request body must include description."
-        abort(make_response(jsonify({"details":msg}),400))
-
-    if is_rocky is None:
-        msg = "Request body must include is_rocky."
-        abort(make_response(jsonify({"details":msg}),400))
-
-    return request_body
+needed_planet_data = ["name","description","is_rocky"]
 
 @planets_bp.route("",methods=["POST"])
 def create_planet():
     request_body = request.get_json(silent=True)  #the silent=True prevents this function from raising an exception if a bad or incomplete json was send
-    new_planet = Planet.from_dict(validate_request_body(request_body))
+    new_planet = Planet.from_dict(validate_request_body(request_body,needed_planet_data))
 
     db.session.add(new_planet)
     db.session.commit()
@@ -60,20 +40,7 @@ def get_all_planets():
         planets_response.append(planet.to_dict())
     return jsonify(planets_response)
 
-def validate_model(cls, model_id):
-    try:
-        model_id = int(model_id)
-    except:
-        msg = f"{cls.__name__} id {model_id} is Invalid"
-        abort(make_response({"message" : msg },400))
 
-    model = cls.query.get(model_id)    
-
-    if model:
-        return model
-
-    abort(make_response({"message":f"{cls.__name__} id {model_id} is Not Found" },404))
-                
 @planets_bp.route("/<planet_id>",methods=["GET"])
 def get_planet(planet_id):
     planet_info = validate_model(Planet, planet_id)
@@ -83,7 +50,7 @@ def get_planet(planet_id):
 def update_planet(planet_id):
     planet_info = validate_model(Planet, planet_id)
     request_body = request.get_json(silent=True)  #the silent=True prevents this function from raising an exception if a bad or incomplete json was send
-    validate_request_body(request_body)
+    validate_request_body(request_body,needed_planet_data)
 
     planet_info.name = request_body["name"]
     planet_info.description= request_body["description"]
@@ -101,6 +68,14 @@ def delete_planet(planet_id):
     db.session.commit()
     
     return make_response(jsonify(f"Planet {planet_info.name} successfully deleted"), 200)
+
+@planets_bp.route("/<planet_id>/moons",methods=["GET"])
+def get_moons_of_planet(planet_id):
+    planet = validate_model(Planet, planet_id)
+
+    moons_response = [moon.to_dict() for moon in planet.moons]
+
+    return make_response(jsonify(moons_response),200)
 
 @planets_bp.route("/<planet_id>/moons",methods=["POST"])
 def add_new_moons_to_planet(planet_id):

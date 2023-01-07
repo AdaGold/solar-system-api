@@ -2,6 +2,7 @@ import pytest
 from app import create_app, db
 from flask.signals import request_finished
 from app.models.planet import Planet
+from app.models.moon import Moon
 
 @pytest.fixture
 def app():
@@ -50,3 +51,24 @@ def one_saved_planet(app):
     db.session.add(Mercury_planet)
     db.session.commit()
     db.session.refresh(Mercury_planet, ["id"])
+
+@pytest.fixture
+def one_planet_with_moon(app):
+    earth = Planet(
+        name="Earth",
+        description="Earth is the only planet with life.",
+        is_rocky=True
+    )
+    db.session.add(earth)
+    db.session.commit()
+    db.session.refresh(earth, ["id"])
+
+    moon = Moon(
+        name = "Moon",
+        size = "2500",
+        description = "The only natural satelite around Earth",
+        gravity = 0.2
+    )
+    moon.planet = earth
+    db.session.add(moon)
+    db.session.commit()
