@@ -18,6 +18,13 @@ def get_all_moon():
 
 @moons_bp.route("/<moon_id>", methods=["GET"])
 def get_moon_by_id(moon_id):
-    moon = validate_model(moon_id)
+    moon = validate_model(Moon, moon_id)
     return moon.to_dict()
 
+
+@moons_bp.route("/<moon_id>", methods=["DELETE"])
+def delete_a_moon(moon_id):
+    moon = validate_model(Moon, moon_id)
+    db.session.delete(moon)
+    db.session.commit()
+    return moon.to_dict(), 200
