@@ -12,7 +12,7 @@ def test_to_dict_no_missing_data():
     result = test_data.to_dict()
 
     # Assert
-    assert len(result) == 4
+    assert len(result) == 5
     assert result["id"] == 1
     assert result["name"] == "Earth"
     assert result["description"] == "The only planet with life in the Solar System"
@@ -29,7 +29,7 @@ def test_to_dict_missing_id():
     result = test_data.to_dict()
 
     # Assert
-    assert len(result) == 4
+    assert len(result) == 5
     assert result["id"] is None
     assert result["name"] == "Earth"
     assert result["description"] == "The only planet with life in the Solar System"
@@ -45,7 +45,7 @@ def test_to_dict_missing_name():
     result = test_data.to_dict()
 
     # Assert
-    assert len(result) == 4
+    assert len(result) == 5
     assert result["id"] == 1
     assert result["name"] == None
     assert result["description"] == "The only planet with life in the Solar System"
@@ -62,7 +62,7 @@ def test_to_dict_missing_is_rocky():
     result = test_data.to_dict()
 
     # Assert
-    assert len(result) == 4
+    assert len(result) == 5
     assert result["id"] == 1
     assert result["name"] == "Earth"
     assert result["description"] == "The only planet with life in the Solar System"

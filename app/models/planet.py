@@ -6,14 +6,18 @@ class Planet(db.Model):
     name = db.Column(db.String, nullable = False)
     description = db.Column(db.Text, nullable = False)
     is_rocky = db.Column(db.Boolean, nullable = False)
+    moons = db.relationship("Moon", back_populates="planet")
 
     def to_dict(self):
-        return {
+        planet_dict =  {
             "id": self.id,
             "name": self.name,
             "description": self.description,
             "is_rocky" : self.is_rocky
         }
+        planet_dict["moons"] = [moon.name for moon in self.moons]
+
+        return planet_dict
 
     @classmethod
     def from_dict(cls, planet_data):

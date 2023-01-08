@@ -25,9 +25,13 @@ def create_app(test_config=None):
 
     #Declaring Models
     from app.models.planet import Planet
+    from app.models.moon import Moon
 
     #Declaring blueprints
     from app.routes.planets import planets_bp
     app.register_blueprint(planets_bp)
+
+    from app.routes.moons import moons_bp   
+    app.register_blueprint(moons_bp)
 
     return app
