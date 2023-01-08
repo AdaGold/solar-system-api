@@ -530,7 +530,7 @@ def test_get_moons_by_planet_id_return_empty_list_of_moons(client, saved_two_pla
     assert response_body["moons"] == []
 
 
-def test_get_moons_by_planet_id_return_list_of_two_moons(client, saved_two_planets, saved_two_moons):
+def test_get_moons_by_planet_id_return_list_of_two_moons(client, saved_two_planets):
     post_response = client.post("/moons/1/moon",
                                 json={"name": "Moon1"
                                       })
