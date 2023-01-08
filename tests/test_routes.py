@@ -146,6 +146,23 @@ def test_get_planets_sort_planets_by_name_desc_order(saved_two_planets, client):
     assert response_body[0]["gravity"] == 3.721
     assert response_body[0]["distance_from_earth"] == 60.81
 
+def test_get_planets_sort_planets_by_distance_from_earth_desc(saved_two_planets, client):
+    data = {"sort": "distance_from_earth:desc"}
+    response = client.get("/planets")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body[1]["id"] == 2
+    assert response_body[1]["name"] == "Jupiter"
+    assert response_body[1]["description"] == "This is planet: Jupiter"
+    assert response_body[1]["gravity"] == 24.79
+    assert response_body[1]["distance_from_earth"] == 467.64
+    assert response_body[0]["id"] == 1
+    assert response_body[0]["name"] == "Mars"
+    assert response_body[0]["description"] == "This is planet: Mars"
+    assert response_body[0]["gravity"] == 3.721
+    assert response_body[0]["distance_from_earth"] == 60.81
+
 
 def test_get_planets_filter_by_planet_name_return_Mars_only(saved_two_planets, client):
     data = {"name": "Mars"}
