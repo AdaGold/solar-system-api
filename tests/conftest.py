@@ -33,7 +33,7 @@ def one_planet(app):
 
     db.session.add(planet)
     db.session.commit()
-    db.session.refresh(planet, ["id"])
+    db.session.refresh(planet)
     return planet
 
 @pytest.fixture

@@ -17,7 +17,6 @@ class Planet(db.Model):
         planet_as_dict["description"] = self.description
         planet_as_dict["size"] = self.size
         planet_as_dict["distance_from_earth"] = self.distance_from_earth
-
         return planet_as_dict
     
     @classmethod

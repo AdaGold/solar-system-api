@@ -76,9 +76,11 @@ def delete_planet(planet_id):
             if moon.planet_id == planet.id:
                 db.session.delete(moon)
                 db.session.commit()
+                # db.session.refresh()
     # delete the planet from db
     db.session.delete(planet)
     db.session.commit()
+    # db.session.refresh(planet)
     # return make_response(jsonify(f"Planet #{planet.id} successfully deleted"))
     return planet.to_dict(), 200
 

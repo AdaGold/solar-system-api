@@ -118,7 +118,7 @@ def test_delete_one_planet(client, one_planet):
 
 def test_put_one_planet(client, one_planet):
     # Act
-    response = client.put(f"/planets/1", json={
+    response = client.put(f"/planets/{one_planet.id}", json={
         "description": "Earth is the third planet from the Sun and the only astronomical object known to harbor life.", 
         "distance_from_earth": 0, 
         "name": "Earth", 
@@ -131,7 +131,7 @@ def test_put_one_planet(client, one_planet):
 
 def test_patch_one_planet(client, one_planet):
     # Act
-    response = client.patch(f"/planets/1", json={
+    response = client.patch(f"/planets/{one_planet.id}", json={
         "distance_from_earth": 1, 
     })
     response_body = response.get_json()
@@ -141,7 +141,7 @@ def test_patch_one_planet(client, one_planet):
 
 def test_patch_one_planet_with_not_existing_attribute(client, one_planet):
     # Act
-    response = client.patch(f"/planets/1", json={
+    response = client.patch(f"/planets/{one_planet.id}", json={
         "distance_from_sun": -1, 
     })
     response_body = response.get_json()
