@@ -405,7 +405,7 @@ def test_delete_planet_with_invalid_id_return_400_invalid_error(client, saved_tw
 
     assert response.status_code == 400
     assert response_body == {"message": "Planet invalid_id is invalid"}
-
+    
 
 def test_validate_model(saved_two_planets):
     result_planet = validate_model(Planet, 1)

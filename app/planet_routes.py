@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, abort, make_response, request 
 from app import db 
 from app.models.planet import Planet 
+from app.models.moon import Moon 
 
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 
@@ -128,6 +129,14 @@ def update_planet_by_id(planet_id):
 @planets_bp.route("/<planet_id>", methods = ["DELETE"])
 def delete_planet_by_id(planet_id): 
     planet = validate_model(Planet, planet_id)  
+
+    # Delete moon when we delete the planet they associate to to avoid having dangling nodes 
+    moons_query = Moon.query.all()
+    if moons_query:
+        for moon in moons_query:
+            if moon.planet_id == planet.id:
+                db.session.delete(moon)
+                db.session.commit()
 
     db.session.delete(planet)
     db.session.commit()
