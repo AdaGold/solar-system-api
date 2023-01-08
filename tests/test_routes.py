@@ -4,6 +4,12 @@ from app.planet_routes import validate_model
 from app.models.planet import Planet
 from app.models.moon import Moon
 
+# ---------------------------------------
+# ---------------------------------------
+# ---------Planet route tests--------------
+# ---------------------------------------
+# ---------------------------------------
+
 
 def test_get_planet_by_id_return_200_successful_code(client, saved_two_planets):
     response = client.get("/planets/1")
@@ -52,6 +58,199 @@ def test_get_all_planets_with_two_records_return_array_with_size_2(client, saved
     assert response_body[1]["description"] == "This is planet: Jupiter"
     assert response_body[1]["gravity"] == 24.79
     assert response_body[1]["distance_from_earth"] == 467.64
+
+
+def test_get_planets_no_param_sort_by_id_asc(saved_two_planets, client):
+    response = client.get("/planets")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body[0]["id"] == 1
+    assert response_body[0]["name"] == "Mars"
+    assert response_body[0]["description"] == "This is planet: Mars"
+    assert response_body[0]["gravity"] == 3.721
+    assert response_body[0]["distance_from_earth"] == 60.81
+    assert response_body[1]["id"] == 2
+    assert response_body[1]["name"] == "Jupiter"
+    assert response_body[1]["description"] == "This is planet: Jupiter"
+    assert response_body[1]["gravity"] == 24.79
+    assert response_body[1]["distance_from_earth"] == 467.64
+
+
+def test_get_planets_sort_desc_param_sort_by_name_desc(saved_two_planets, client):
+    response = client.get("/planets?sort=desc")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body[1]["id"] == 2
+    assert response_body[1]["name"] == "Jupiter"
+    assert response_body[1]["description"] == "This is planet: Jupiter"
+    assert response_body[1]["gravity"] == 24.79
+    assert response_body[1]["distance_from_earth"] == 467.64
+    assert response_body[0]["id"] == 1
+    assert response_body[0]["name"] == "Mars"
+    assert response_body[0]["description"] == "This is planet: Mars"
+    assert response_body[0]["gravity"] == 3.721
+    assert response_body[0]["distance_from_earth"] == 60.81
+
+
+def test_get_planets_sort_desc_param_sort_by_name_asc(saved_two_planets, client):
+    response = client.get("/planets?sort=asc")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body[0]["id"] == 2
+    assert response_body[0]["name"] == "Jupiter"
+    assert response_body[0]["description"] == "This is planet: Jupiter"
+    assert response_body[0]["gravity"] == 24.79
+    assert response_body[0]["distance_from_earth"] == 467.64
+    assert response_body[1]["id"] == 1
+    assert response_body[1]["name"] == "Mars"
+    assert response_body[1]["description"] == "This is planet: Mars"
+    assert response_body[1]["gravity"] == 3.721
+    assert response_body[1]["distance_from_earth"] == 60.81
+
+
+def test_get_planets_sort_by_gravity_desc(saved_two_planets, client):
+    data = {"sort": "gravity:desc"}
+    response = client.get("/planets", query_string=data)
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body[0]["id"] == 2
+    assert response_body[0]["name"] == "Jupiter"
+    assert response_body[0]["description"] == "This is planet: Jupiter"
+    assert response_body[0]["gravity"] == 24.79
+    assert response_body[0]["distance_from_earth"] == 467.64
+    assert response_body[1]["id"] == 1
+    assert response_body[1]["name"] == "Mars"
+    assert response_body[1]["description"] == "This is planet: Mars"
+    assert response_body[1]["gravity"] == 3.721
+    assert response_body[1]["distance_from_earth"] == 60.81
+
+
+def test_get_planets_sort_planets_by_name_desc_order(saved_two_planets, client):
+    data = {"sort": "name:desc"}
+    response = client.get("/planets")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body[1]["id"] == 2
+    assert response_body[1]["name"] == "Jupiter"
+    assert response_body[1]["description"] == "This is planet: Jupiter"
+    assert response_body[1]["gravity"] == 24.79
+    assert response_body[1]["distance_from_earth"] == 467.64
+    assert response_body[0]["id"] == 1
+    assert response_body[0]["name"] == "Mars"
+    assert response_body[0]["description"] == "This is planet: Mars"
+    assert response_body[0]["gravity"] == 3.721
+    assert response_body[0]["distance_from_earth"] == 60.81
+
+
+def test_get_planets_filter_by_planet_name_return_Mars_only(saved_two_planets, client):
+    data = {"name": "Mars"}
+    response = client.get("/planets", query_string=data)
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body[0]["id"] == 1
+    assert response_body[0]["name"] == "Mars"
+    assert response_body[0]["description"] == "This is planet: Mars"
+    assert response_body[0]["gravity"] == 3.721
+    assert response_body[0]["distance_from_earth"] == 60.81
+
+
+def test_get_planets_filter_by_gravity_return_Mars_only(saved_two_planets, client):
+    data = {"gravity": 3.721}
+    response = client.get("/planets", query_string=data)
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body[0]["id"] == 1
+    assert response_body[0]["name"] == "Mars"
+    assert response_body[0]["description"] == "This is planet: Mars"
+    assert response_body[0]["gravity"] == 3.721
+    assert response_body[0]["distance_from_earth"] == 60.81
+
+
+def test_get_planets_filter_by_distance_from_earth_return_Jupiter_only(saved_two_planets, client):
+    data = {"distance_from_earth": 467.64}
+    response = client.get("/planets", query_string=data)
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body[0]["id"] == 2
+    assert response_body[0]["name"] == "Jupiter"
+    assert response_body[0]["description"] == "This is planet: Jupiter"
+    assert response_body[0]["gravity"] == 24.79
+    assert response_body[0]["distance_from_earth"] == 467.64
+
+
+def test_get_planets_filter_by_planet_Jupiter_return_Jupiter_only(saved_two_planets, client):
+    data = {"name": "Jupiter"}
+    response = client.get("/planets", query_string=data)
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body[0]["id"] == 2
+    assert response_body[0]["name"] == "Jupiter"
+    assert response_body[0]["description"] == "This is planet: Jupiter"
+    assert response_body[0]["gravity"] == 24.79
+    assert response_body[0]["distance_from_earth"] == 467.64
+
+
+def test_get_planets_filter_by_planet_Mars_sort_by_id_asc(saved_three_planets_with_duplicate_planet_name, client):
+    data = {"name": "Mars"}
+    response = client.get("/planets", query_string=data)
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body[0]["id"] == 1
+    assert response_body[0]["name"] == "Mars"
+    assert response_body[0]["description"] == "This is planet: Mars"
+    assert response_body[0]["gravity"] == 3.721
+    assert response_body[0]["distance_from_earth"] == 60.81
+    assert response_body[1]["id"] == 2
+    assert response_body[1]["name"] == "Mars"
+    assert response_body[1]["description"] == "This is planet: Mars2"
+    assert response_body[1]["gravity"] == 4.721
+    assert response_body[1]["distance_from_earth"] == 60.81
+
+
+def test_get_planets_filter_by_planet_Mars_sort_by_gravity_asc(saved_three_planets_with_duplicate_planet_name, client):
+    data = {"name": "Mars", "sort": "gravity"}
+    response = client.get("/planets", query_string=data)
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body[0]["id"] == 1
+    assert response_body[0]["name"] == "Mars"
+    assert response_body[0]["description"] == "This is planet: Mars"
+    assert response_body[0]["gravity"] == 3.721
+    assert response_body[0]["distance_from_earth"] == 60.81
+    assert response_body[1]["id"] == 2
+    assert response_body[1]["name"] == "Mars"
+    assert response_body[1]["description"] == "This is planet: Mars2"
+    assert response_body[1]["gravity"] == 4.721
+    assert response_body[1]["distance_from_earth"] == 60.81
+
+
+def test_get_planets_filter_by_planet_Mars_sort_by_gravity_desc(saved_three_planets_with_duplicate_planet_name, client):
+    data = {"name": "Mars", "sort": "gravity:desc"}
+    response = client.get("/planets", query_string=data)
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body[1]["id"] == 1
+    assert response_body[1]["name"] == "Mars"
+    assert response_body[1]["description"] == "This is planet: Mars"
+    assert response_body[1]["gravity"] == 3.721
+    assert response_body[1]["distance_from_earth"] == 60.81
+    assert response_body[0]["id"] == 2
+    assert response_body[0]["name"] == "Mars"
+    assert response_body[0]["description"] == "This is planet: Mars2"
+    assert response_body[0]["gravity"] == 4.721
+    assert response_body[0]["distance_from_earth"] == 60.81
 
 
 def test_create_one_planet_return_201_successfully_created(client):
@@ -126,13 +325,6 @@ def test_put_planet_with_id_1_return_200_planet_successfully_replaced(client, sa
 
 
 def test_put_non_existing_planet_return_404_not_found_error(client, saved_two_planets):
-    # with pytest.raises(HTTPException):
-    #     resposne = client.put("/planets/9",
-    #                     json={"name": "New Planet",
-    #                             "description": "This a New Planet",
-    #                             "gravity": 20.0,
-    #                             "distance_from_earth": 55.99})
-
     resposne = client.put("/planets/9",
                           json={"name": "New Planet",
                                 "description": "This a New Planet",
@@ -233,7 +425,7 @@ def test_get_moon_by_invalid_moon_id_return_400_bad_request_error(client, saved_
 
 
 def test_get_all_moons_with_no_records_return_empty_array(client):
-    response = client.get("/moons/all")
+    response = client.get("/moons")
     response_body = response.get_json()
 
     assert response.status_code == 200
@@ -241,7 +433,7 @@ def test_get_all_moons_with_no_records_return_empty_array(client):
 
 
 def test_get_all_moons_with_two_records_return_array_with_size_2(client, saved_two_moons):
-    response = client.get("/moons/all")
+    response = client.get("/moons")
     response_body = response.get_json()
 
     assert response.status_code == 200
@@ -254,17 +446,18 @@ def test_get_all_moons_with_two_records_return_array_with_size_2(client, saved_t
 
 def test_create_one_moon_return_201_successfully_created(client):
     response = client.post("/moons",
-                        json={"name": "Moon3"})
+                           json={"name": "Moon3"})
     response_body = response.get_json()
 
     assert response.status_code == 201
     assert response_body == "Moon Moon3 successfully created."
 
+
 def test_create_moon_to_planet_by_planet_id(client, saved_two_planets):
     response = client.post("/moons/1/moon",
-                        json={
-                            "name": "planet1_moon"
-                        })
+                           json={
+                               "name": "planet1_moon"
+                           })
     response_body = response.get_json()
 
     assert response.status_code == 201
@@ -272,49 +465,54 @@ def test_create_moon_to_planet_by_planet_id(client, saved_two_planets):
     assert response_body["planet_id"] == 1
     assert response_body["planet"] == "Mars"
 
+
 def test_get_moons_by_planet_id_return_empty_list_of_moons(client, saved_two_planets):
     response = client.get("moons/1/moons")
     response_body = response.get_json()
 
     assert response.status_code == 200
-    assert response_body["id"] == 1 
+    assert response_body["id"] == 1
     assert response_body["name"] == "Mars"
     assert response_body["description"] == "This is planet: Mars"
     assert response_body["gravity"] == 3.721
     assert response_body["distance_from_earth"] == 60.81
     assert response_body["moons"] == []
 
-def test_get_moons_by_planet_id_return_list_of_two_moons(client,saved_two_planets,saved_two_moons):
+
+def test_get_moons_by_planet_id_return_list_of_two_moons(client, saved_two_planets, saved_two_moons):
     post_response = client.post("/moons/1/moon",
-                            json={"name": "Moon1"
-                            })
+                                json={"name": "Moon1"
+                                      })
     post_response = client.post("/moons/1/moon",
-                            json={"name": "Moon2"
-                            })
+                                json={"name": "Moon2"
+                                      })
     response = client.get("moons/1/moons")
     response_body = response.get_json()
 
     assert response.status_code == 200
-    assert response_body["id"] == 1 
+    assert response_body["id"] == 1
     assert response_body["name"] == "Mars"
     assert response_body["description"] == "This is planet: Mars"
     assert response_body["gravity"] == 3.721
     assert response_body["distance_from_earth"] == 60.81
     assert response_body["moons"] == ["Moon1", "Moon2"]
 
+
 def test_create_moons_by_invalid_planet_id(client, saved_two_planets):
     response = client.post("/moons/invalid/moon",
-                            json={"name": "Moon1"
-                            })
+                           json={"name": "Moon1"
+                                 })
     assert response.status_code == 400
     assert response.get_json() == {"message": "Planet invalid is invalid"}
 
+
 def test_create_moons_by_a_non_existing_planet_id(client, saved_two_planets):
     response = client.post("/moons/100/moon",
-                            json={"name": "Moon1"
-                            })
+                           json={"name": "Moon1"
+                                 })
     assert response.status_code == 404
     assert response.get_json() == {"message": "Planet 100 not found"}
+
 
 def test_validate_model_missing_moon_record(saved_two_moons):
     # Calling `validate_model` without being invoked by a route will

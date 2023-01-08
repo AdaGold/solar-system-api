@@ -91,6 +91,9 @@ def read_planets():
             planet_query = sort_helper(planet_query, Planet.gravity, sort_method)
         else: # If user don't specify any attribute, we would sort by name 
             planet_query = sort_helper(planet_query, Planet.name, sort_method)
+    else:
+        # Sort by id asc if no sort param porvided 
+        planet_query = sort_helper(planet_query, Planet.id, "asc")
 
     planets = planet_query.all()
         

@@ -48,6 +48,35 @@ def saved_two_planets(app):
     db.session.refresh(mars, ["id"])
     db.session.refresh(jupiter, ["id"])
 
+@pytest.fixture
+def saved_three_planets_with_duplicate_planet_name(app):
+    mars = Planet(name="Mars",
+                description="This is planet: Mars",
+                gravity=3.721,
+                distance_from_earth=60.81,
+                moons = []
+                )
+
+    mars2 = Planet(name="Mars",
+                description="This is planet: Mars2",
+                gravity=4.721,
+                distance_from_earth=60.81,
+                moons = []
+                )
+
+    jupiter = Planet(name="Jupiter",
+                    description="This is planet: Jupiter",
+                    gravity=24.79,
+                    distance_from_earth=467.64,
+                    moons = [],
+                    )
+
+    db.session.add_all([mars, mars2, jupiter])
+    db.session.commit()
+    db.session.refresh(mars, ["id"])
+    db.session.refresh(mars2, ["id"])
+    db.session.refresh(jupiter, ["id"])
+
 
 @pytest.fixture
 def saved_two_moons(app):

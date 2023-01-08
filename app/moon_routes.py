@@ -30,7 +30,7 @@ def read_moon_by_id(moon_id):
     return make_response(jsonify(result_dict), 200)
 
 
-@moon_bp.route("/all", methods=["GET"])
+@moon_bp.route("", methods=["GET"])
 def read_all_moons():
     all_moon = Moon.query.all()
 
