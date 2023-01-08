@@ -1,4 +1,5 @@
 from app.models.planet import Planet
+from app.models.moon import Moon
 
 
 def test_to_dict_no_missing_data():
@@ -14,8 +15,7 @@ def test_to_dict_no_missing_data():
     result = test_data.to_dict()
 
     # Assert
-    # assert len(result) == 5
-    assert result["id"] == 1
+    assert len(result) == 5
     assert result["name"] == "Earth"
     assert result["description"] == "Earth is the third planet from the Sun and the only astronomical object known to harbor life."
     assert result["size"] == 4

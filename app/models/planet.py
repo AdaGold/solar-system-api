@@ -7,6 +7,7 @@ class Planet(db.Model):
     description = db.Column(db.String, nullable=False)
     size = db.Column(db.Integer, nullable=False)
     distance_from_earth = db.Column(db.Integer, nullable=False)
+
     moons = db.relationship("Moon")
     
     def to_dict(self):

@@ -105,7 +105,7 @@ def test_create_one_planet(client):
 
     #Assert
     assert response.status_code == 201
-    # assert response_body == "Planet Venus successfully created"
+    assert response_body["size"] == 6
 
 def test_delete_one_planet(client, one_planet):
     #Act
@@ -114,7 +114,7 @@ def test_delete_one_planet(client, one_planet):
 
     #Assert
     assert response.status_code == 200
-    # assert response_body == f"Planet #{one_planet.id} successfully deleted"
+    assert response_body == f"Planet #{one_planet.id} successfully deleted"
 
 def test_put_one_planet(client, one_planet):
     # Act
@@ -127,17 +127,17 @@ def test_put_one_planet(client, one_planet):
     response_body = response.get_json()
     #Assert
     assert response.status_code == 200
-    # assert response_body == f"Planet #1 successfully updated"
+    assert response_body["size"] == 4
 
 def test_patch_one_planet(client, one_planet):
     # Act
     response = client.patch(f"/planets/1", json={
-        "distance_from_earth": -1, 
+        "distance_from_earth": 1, 
     })
     response_body = response.get_json()
     #Assert
     assert response.status_code == 200
-    # assert response_body == f"Planet #1 successfully updated attribute"
+    assert response_body["distance_from_earth"] == 1
 
 def test_patch_one_planet_with_not_existing_attribute(client, one_planet):
     # Act
