@@ -69,6 +69,13 @@ def update_planet(planet_id):
 @planets_bp.route("/<planet_id>", methods=["DELETE"])
 def delete_planet(planet_id):
     planet = validate_model(Planet, planet_id)
+    # if a planet is deleted, all it's moons will be deleted too
+    moons_query = Moon.query.all()
+    for moon in moons_query:
+        if moon.planet_id == planet.id:
+            db.session.delete(moon)
+            db.session.commit()
+    # delete the planet from db
     db.session.delete(planet)
     db.session.commit()
     # return make_response(jsonify(f"Planet #{planet.id} successfully deleted"))
@@ -103,7 +110,7 @@ def create_moon_for_a_planet(planet_id):
         name=request_body["name"],
         description=request_body["description"],
         radius=request_body["radius"],
-        planet=planet
+        planet_id=planet.id
     )
     db.session.add(new_moon)
     db.session.commit()
