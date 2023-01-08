@@ -94,7 +94,6 @@ def test_get_planets_sort_desc_param_sort_by_name_desc(saved_two_planets, client
     assert response_body[1]["distance_from_earth"] == 467.64
 
 
-
 def test_get_planets_sort_desc_param_sort_by_name_asc(saved_two_planets, client):
     response = client.get("/planets?sort=asc")
     response_body = response.get_json()
@@ -147,6 +146,7 @@ def test_get_planets_sort_planets_by_name_desc_order(saved_two_planets, client):
     assert response_body[0]["gravity"] == 3.721
     assert response_body[0]["distance_from_earth"] == 60.81
 
+
 def test_get_planets_sort_by_distance_from_earth_asc(saved_two_planets, client):
     data = {"sort": "distance_from_earth:asc"}
     response = client.get("/planets", query_string=data)
@@ -163,6 +163,7 @@ def test_get_planets_sort_by_distance_from_earth_asc(saved_two_planets, client):
     assert response_body[0]["description"] == "This is planet: Mars"
     assert response_body[0]["gravity"] == 3.721
     assert response_body[0]["distance_from_earth"] == 60.81
+
 
 def test_get_planets_sort_planets_by_distance_from_earth_desc(saved_two_planets, client):
     data = {"sort": "distance_from_earth:desc"}
@@ -290,10 +291,10 @@ def test_get_planets_filter_by_planet_Mars_sort_by_gravity_desc(saved_three_plan
 
 def test_create_one_planet_return_201_successfully_created(client):
     response = client.post("/planets",
-                            json={"name": "Venus",
-                                "description": "This is planet: Venus",
-                                "gravity": 9.87,
-                                "distance_from_earth": 67.685})
+                           json={"name": "Venus",
+                                 "description": "This is planet: Venus",
+                                 "gravity": 9.87,
+                                 "distance_from_earth": 67.685})
     response_body = response.get_json()
 
     assert response.status_code == 201
@@ -305,27 +306,27 @@ def test_create_one_planet_return_201_successfully_created(client):
 def test_create_one_planet_no_name_return_400(client):
 
     response = client.post("/planets",
-                            json={"description": "This is planet: Venus",
-                                "gravity": 9.87,
-                                "distance_from_earth": 67.685})
+                           json={"description": "This is planet: Venus",
+                                 "gravity": 9.87,
+                                 "distance_from_earth": 67.685})
 
     assert response.status_code == 400
 
 
 def test_create_one_planet_no_description_return_400(client):
     response = client.post("/planets",
-                            json={"name": "Mars",
-                                "gravity": 9.87,
-                                "distance_from_earth": 67.685})
+                           json={"name": "Mars",
+                                 "gravity": 9.87,
+                                 "distance_from_earth": 67.685})
 
     assert response.status_code == 400
 
 
 def test_create_one_planet_no_gravity_return_400(client):
     test_data = {"name": "Mars",
-                "description": "This is planet: Venus",
-                "distance_from_earth": 67.685
-                }
+                 "description": "This is planet: Venus",
+                 "distance_from_earth": 67.685
+                 }
     response = client.post("/planets", json=test_data)
     assert response.status_code == 400
 
@@ -349,7 +350,7 @@ def test_create_one_planet_with_extra_keys_return_201(client, saved_two_planets)
 
 def test_put_planet_with_id_1_return_200_planet_successfully_replaced(client, saved_two_planets):
     resposne = client.put("/planets/1",
-                            json={"name": "New Planet",
+                          json={"name": "New Planet",
                                 "description": "This a New Planet",
                                 "gravity": 20.0,
                                 "distance_from_earth": 55.99})
@@ -361,7 +362,7 @@ def test_put_planet_with_id_1_return_200_planet_successfully_replaced(client, sa
 
 def test_put_non_existing_planet_return_404_not_found_error(client, saved_two_planets):
     resposne = client.put("/planets/9",
-                            json={"name": "New Planet",
+                          json={"name": "New Planet",
                                 "description": "This a New Planet",
                                 "gravity": 20.0,
                                 "distance_from_earth": 55.99})
@@ -373,7 +374,7 @@ def test_put_non_existing_planet_return_404_not_found_error(client, saved_two_pl
 
 def test_put_invalid_planet__id_return_400_invalid_error(client, saved_two_planets):
     resposne = client.put("/planets/invalid_id",
-                            json={"name": "New Planet",
+                          json={"name": "New Planet",
                                 "description": "This a New Planet",
                                 "gravity": 20.0,
                                 "distance_from_earth": 55.99})
@@ -405,7 +406,23 @@ def test_delete_planet_with_invalid_id_return_400_invalid_error(client, saved_tw
 
     assert response.status_code == 400
     assert response_body == {"message": "Planet invalid_id is invalid"}
-    
+
+
+def test_delete_exist_planet_associate_moons_also_delete(client, saved_two_planets):
+    create_moon_to_planet = client.post("/moons/1/moon",
+                                        json={"name": "Moon1"
+                                    })
+    delete_planet = client.delete("/planets/1")
+    delete_planet_response_body = delete_planet.get_json()
+
+    get_moons = client.get("/moons")
+    get_moons_response_body = get_moons.get_json()
+
+    assert delete_planet.status_code == 200 
+    assert delete_planet_response_body == "Planet: 1 has been deleted successfully."
+    assert get_moons.status_code == 200 
+    assert get_moons_response_body == []
+
 
 def test_validate_model(saved_two_planets):
     result_planet = validate_model(Planet, 1)
@@ -481,7 +498,7 @@ def test_get_all_moons_with_two_records_return_array_with_size_2(client, saved_t
 
 def test_create_one_moon_return_201_successfully_created(client):
     response = client.post("/moons",
-                        json={"name": "Moon3"})
+                           json={"name": "Moon3"})
     response_body = response.get_json()
 
     assert response.status_code == 201
@@ -490,8 +507,8 @@ def test_create_one_moon_return_201_successfully_created(client):
 
 def test_create_moon_to_planet_by_planet_id(client, saved_two_planets):
     response = client.post("/moons/1/moon",
-                            json={
-                            "name": "planet1_moon"})
+                           json={
+                               "name": "planet1_moon"})
     response_body = response.get_json()
 
     assert response.status_code == 201
@@ -516,10 +533,10 @@ def test_get_moons_by_planet_id_return_empty_list_of_moons(client, saved_two_pla
 def test_get_moons_by_planet_id_return_list_of_two_moons(client, saved_two_planets, saved_two_moons):
     post_response = client.post("/moons/1/moon",
                                 json={"name": "Moon1"
-                                    })
+                                      })
     post_response = client.post("/moons/1/moon",
                                 json={"name": "Moon2"
-                                    })
+                                      })
     response = client.get("moons/1/moons")
     response_body = response.get_json()
 
@@ -534,16 +551,16 @@ def test_get_moons_by_planet_id_return_list_of_two_moons(client, saved_two_plane
 
 def test_create_moons_by_invalid_planet_id(client, saved_two_planets):
     response = client.post("/moons/invalid/moon",
-                            json={"name": "Moon1"
-                                })
+                           json={"name": "Moon1"
+                                 })
     assert response.status_code == 400
     assert response.get_json() == {"message": "Planet invalid is invalid"}
 
 
 def test_create_moons_by_a_non_existing_planet_id(client, saved_two_planets):
     response = client.post("/moons/100/moon",
-                            json={"name": "Moon1"
-                                })
+                           json={"name": "Moon1"
+                                 })
     assert response.status_code == 404
     assert response.get_json() == {"message": "Planet 100 not found"}
 
