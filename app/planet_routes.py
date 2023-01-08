@@ -71,10 +71,11 @@ def delete_planet(planet_id):
     planet = validate_model(Planet, planet_id)
     # if a planet is deleted, all it's moons will be deleted too
     moons_query = Moon.query.all()
-    for moon in moons_query:
-        if moon.planet_id == planet.id:
-            db.session.delete(moon)
-            db.session.commit()
+    if moons_query:
+        for moon in moons_query:
+            if moon.planet_id == planet.id:
+                db.session.delete(moon)
+                db.session.commit()
     # delete the planet from db
     db.session.delete(planet)
     db.session.commit()

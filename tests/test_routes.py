@@ -114,7 +114,7 @@ def test_delete_one_planet(client, one_planet):
 
     #Assert
     assert response.status_code == 200
-    assert response_body == f"Planet #{one_planet.id} successfully deleted"
+    assert response_body["id"] == one_planet.id
 
 def test_put_one_planet(client, one_planet):
     # Act
