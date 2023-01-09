@@ -216,3 +216,17 @@ def test_get_planet_moons_given_planet_id(client, one_planet_with_moon):
     assert response_body[0]["size"] == 2500
     assert response_body[0]["description"] == "The only natural satelite around Earth"
     assert response_body[0]["gravity"] == 0.2
+
+def test_get_all_planets_wiht_desc_sort(client, three_saved_planets):
+    response = client.get("/planets?sort=desc")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body[0]["name"] == "Venus"
+
+def test_get_all_planets_wiht_asc_sort(client, three_saved_planets):
+    response = client.get("/planets?sort=asc")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body[0]["name"] == "Earth"
