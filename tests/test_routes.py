@@ -498,7 +498,7 @@ def test_get_all_moons_with_two_records_return_array_with_size_2(client, saved_t
 
 def test_create_one_moon_return_201_successfully_created(client):
     response = client.post("/moons",
-                           json={"name": "Moon3"})
+                        json={"name": "Moon3"})
     response_body = response.get_json()
 
     assert response.status_code == 201
@@ -508,7 +508,7 @@ def test_create_one_moon_return_201_successfully_created(client):
 def test_create_moon_to_planet_by_planet_id(client, saved_two_planets):
     response = client.post("/moons/1/moon",
                            json={
-                               "name": "planet1_moon"})
+                            "name": "planet1_moon"})
     response_body = response.get_json()
 
     assert response.status_code == 201
@@ -533,10 +533,10 @@ def test_get_moons_by_planet_id_return_empty_list_of_moons(client, saved_two_pla
 def test_get_moons_by_planet_id_return_list_of_two_moons(client, saved_two_planets):
     post_response = client.post("/moons/1/moon",
                                 json={"name": "Moon1"
-                                      })
+                                    })
     post_response = client.post("/moons/1/moon",
                                 json={"name": "Moon2"
-                                      })
+                                    })
     response = client.get("moons/1/moons")
     response_body = response.get_json()
 
@@ -550,17 +550,13 @@ def test_get_moons_by_planet_id_return_list_of_two_moons(client, saved_two_plane
 
 
 def test_create_moons_by_invalid_planet_id(client, saved_two_planets):
-    response = client.post("/moons/invalid/moon",
-                           json={"name": "Moon1"
-                                 })
+    response = client.post("/moons/invalid/moon", json={"name": "Moon1"})
     assert response.status_code == 400
     assert response.get_json() == {"message": "Planet invalid is invalid"}
 
 
 def test_create_moons_by_a_non_existing_planet_id(client, saved_two_planets):
-    response = client.post("/moons/100/moon",
-                           json={"name": "Moon1"
-                                 })
+    response = client.post("/moons/100/moon",json={"name": "Moon1"})
     assert response.status_code == 404
     assert response.get_json() == {"message": "Planet 100 not found"}
 
