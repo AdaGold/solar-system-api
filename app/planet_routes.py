@@ -1,7 +1,7 @@
 from app import db
 from app.models.planet import Planet
 from app.models.moon import Moon
-from app.route_helper_funcs import validate_model, validate_moon, validate_planet
+from app.route_helper_funcs import validate_model, validate_moon, validate_planet, validate_attribute
 from flask import Blueprint, jsonify, make_response, request, abort
 
 
@@ -18,7 +18,6 @@ def create_planet():
     db.session.add(new_planet)
     db.session.commit()
     db.session.refresh(new_planet)
-    # return make_response(jsonify(f"Planet {new_planet.name} successfully created"), 201)
     return new_planet.to_dict(), 201
             
 
@@ -63,7 +62,6 @@ def update_planet(planet_id):
     planet.size = request_body["size"]
     db.session.commit()
     db.session.refresh(planet)
-    #return make_response(jsonify(f"Planet #{planet.id} successfully updated"))
     return planet.to_dict()
 
 @planets_bp.route("/<planet_id>", methods=["DELETE"])
@@ -90,15 +88,9 @@ def delete_planet(planet_id):
 def patch_planet(planet_id):
     planet = validate_model(Planet, planet_id)
     request_body = request.get_json()
-    for key, value in request_body.items():
-        try:
-            getattr(planet, key)
-        except AttributeError:
-            abort(make_response({"message": f"Attribute {key} does not exist"}, 400))
-        setattr(planet, key, value)
+    planet = validate_attribute(planet, request_body)
     db.session.commit()
     db.session.refresh(planet)
-    # return make_response(jsonify(f"Planet #{planet.id} successfully updated attribute"))
     return planet.to_dict()
 
 

@@ -38,3 +38,13 @@ def validate_planet(planet):
         planet["distance_from_earth"] is None:
         invalid_dict["details"] = "Request body must include distance_from_earth."
     return invalid_dict
+
+
+def validate_attribute(record, request_body):
+    for key, value in request_body.items():
+        try:
+            getattr(record, key)
+        except AttributeError:
+            abort(make_response({"message": f"Attribute {key} does not exist."}, 400))
+        setattr(record, key, value)
+    return record

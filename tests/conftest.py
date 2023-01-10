@@ -1,6 +1,7 @@
 import pytest
 from app import create_app, db
 from app.models.planet import Planet
+from app.models.moon import Moon
 from flask.signals import request_finished
 
 @pytest.fixture
@@ -61,3 +62,35 @@ def many_planets(app):
     db.session.commit()
     #db.session.refresh(planets, ["id"])
     return planets
+
+
+@pytest.fixture
+def one_moon(app):
+    moon = Moon(
+        name="moon",
+        description="The Moon is Earth's only natural satellite.",
+        radius=1737
+    )
+
+    db.session.add(moon)
+    db.session.commit()
+    db.session.refresh(moon)
+    return moon
+
+
+@pytest.fixture
+def many_moons(app):
+    phobos = Moon(
+                    name="Phobos", 
+                    radius=11,
+                    description="Phobos is the innermost and larger of the two natural satellites of Mars, the other being Deimos.",
+                    )
+    deimos = Moon(
+                    name="Deimos", 
+                    radius=6,
+                    description="Deimos is the smaller and outermost of the two natural satellites of Mars, the other being Phobos.",
+                    )
+    moons = [phobos, deimos]
+    db.session.add_all(moons)
+    db.session.commit()
+    return moons

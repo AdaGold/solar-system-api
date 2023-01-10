@@ -1,5 +1,3 @@
-from app.models.planet import Planet
-
 
 def test_get_planets_optional_query_empty_db_returns_empty_list(client):
     # Act
@@ -147,4 +145,51 @@ def test_patch_one_planet_with_not_existing_attribute(client, one_planet):
     response_body = response.get_json()
     #Assert
     assert response.status_code == 400
-    assert response_body == {"message": f"Attribute distance_from_sun does not exist"}
+    assert response_body == {"message": f"Attribute distance_from_sun does not exist."}
+
+def test_create_one_moon_with_planet_id(client, one_moon, one_planet):
+    #Act
+    response = client.post(f"/planets/{one_planet.id}/moons", json={
+        "name": one_moon.name,
+        "description": one_moon.description,
+        "radius": one_moon.radius
+    })
+    response_body = response.get_json()
+
+    #Assert
+    assert response.status_code == 200
+    assert response_body["radius"] == 1737
+
+
+def test_get_moons_by_planet_id(client, one_planet):
+    #Act
+    response = client.get(f"/planets/{one_planet.id}/moons")
+    response_body = response.get_json()
+    #Assert
+    assert response.status_code == 200
+    assert len(response_body) == 0
+
+
+def test_get_all_moons(client):
+    #Act
+    response = client.get("/moons")
+    response_body = response.get_json()
+    #Assert
+    assert response.status_code == 200
+    assert len(response_body) == 0
+
+def test_delete_one_moon(client, one_moon):
+    #Act
+    response = client.delete(f"/moons/{one_moon.id}")
+    response_body = response.get_json()
+    #Assert
+    assert response.status_code == 200
+    assert response_body["id"] == one_moon.id
+
+def test_get_one_moons(client, one_moon):
+    #Act
+    response = client.get(f"/moons/{one_moon.id}")
+    response_body = response.get_json()
+    #Assert
+    assert response.status_code == 200
+    assert response_body["id"] == one_moon.id

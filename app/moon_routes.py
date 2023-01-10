@@ -7,6 +7,7 @@ from flask import Blueprint, jsonify, make_response, request, abort
 moons_bp = Blueprint("moons", __name__, url_prefix="/moons")
 
 
+# return all the existing moons and the planet_id it associate with
 @moons_bp.route("", methods=["GET"])
 def get_all_moon():
     moons = Moon.query.all()
