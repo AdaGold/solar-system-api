@@ -217,16 +217,79 @@ def test_get_planet_moons_given_planet_id(client, one_planet_with_moon):
     assert response_body[0]["description"] == "The only natural satelite around Earth"
     assert response_body[0]["gravity"] == 0.2
 
-def test_get_all_planets_wiht_desc_sort(client, three_saved_planets):
+def test_get_all_planets_with_desc_sort(client, three_saved_planets):
     response = client.get("/planets?sort=desc")
     response_body = response.get_json()
 
     assert response.status_code == 200
     assert response_body[0]["name"] == "Venus"
 
-def test_get_all_planets_wiht_asc_sort(client, three_saved_planets):
+def test_get_all_planets_with_asc_sort(client, three_saved_planets):
     response = client.get("/planets?sort=asc")
     response_body = response.get_json()
 
     assert response.status_code == 200
     assert response_body[0]["name"] == "Earth"
+
+def test_create_another_moon_no_description_in_body(client, one_planet_with_moon):
+    test_data = {}
+
+    response = client.post("/planets/1/moons", json=test_data)
+    response_body = response.get_json()
+
+    assert response.status_code == 400
+    assert "details" in response_body
+    assert 'An empty or invalid json object was sent.' in response_body["details"]
+
+def test_create_another_moon_with_no_name(client, one_planet_with_moon):
+    test_data = { 
+        "size" : "1000",
+        "description" : "This not a acutal moon.",
+        "gravity" : 0.5}
+
+    response = client.post("/planets/1/moons", json=test_data)
+    response_body = response.get_json()
+
+    assert response.status_code == 400
+    assert "details" in response_body
+    assert 'Request body must include name.' in response_body["details"]
+
+def test_create_another_moon_with_no_description(client, one_planet_with_moon):
+    test_data = { 
+        "name" : "Noon",
+        "size" : "1000",
+        "gravity" : 0.5}
+
+    response = client.post("/planets/1/moons", json=test_data)
+    response_body = response.get_json()
+
+    assert response.status_code == 400
+    assert "details" in response_body
+    assert 'Request body must include description.' in response_body["details"]
+
+def test_create_another_moon_with_no_size(client, one_planet_with_moon):
+    test_data = { 
+        "name" : "Noon",
+        "description" : "This not a acutal moon.",
+        "gravity" : 0.5}
+    
+    response = client.post("/planets/1/moons", json=test_data)
+    response_body = response.get_json() 
+
+    assert response.status_code == 400
+    assert "details" in response_body
+    assert 'Request body must include size.' in response_body["details"]
+
+def test_create_another_moon_with_no_gravity(client, one_planet_with_moon):
+    test_data = { 
+        "name" : "Noon",
+        "size" : "1000",
+        "description" : "This not a acutal moon.",
+        }
+    
+    response = client.post("/planets/1/moons", json=test_data)
+    response_body = response.get_json()
+
+    assert response.status_code == 400
+    assert "details" in response_body
+    assert 'Request body must include gravity' in response_body["details"]

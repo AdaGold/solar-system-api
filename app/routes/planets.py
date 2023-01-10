@@ -3,7 +3,7 @@ from app.models.planet import Planet
 from app.models.moon import Moon
 from app import db
 from app.routes.helpers import validate_model, validate_request_body
-from app.routes.moons import moon_validate_request_body
+from app.routes.moons import required_attributes
 
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 
@@ -81,7 +81,7 @@ def get_moons_of_planet(planet_id):
 def add_new_moons_to_planet(planet_id):
     planet = validate_model(Planet, planet_id)
     request_body = request.get_json(silent=True)  #the silent=True prevents this function from raising an exception if a bad or incomplete json was send
-    new_moon = Moon.from_dict(moon_validate_request_body(request_body))
+    new_moon = Moon.from_dict(validate_request_body(request_body,required_attributes))
     new_moon.planet = planet
 
     db.session.add(new_moon)

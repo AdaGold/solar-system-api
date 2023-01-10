@@ -65,7 +65,7 @@ def one_planet_with_moon(app):
 
     moon = Moon(
         name = "Moon",
-        size = "2500",
+        size = 2500,
         description = "The only natural satelite around Earth",
         gravity = 0.2
     )
@@ -112,7 +112,7 @@ def one_planet_with_two_moons(app):
 
     one_moon = Moon(
         name = "Phobos",
-        size = "14",
+        size = 14,
         description = "It flies around Mars three times in one Martian day.",
         gravity = 0.0057
     )
@@ -120,7 +120,7 @@ def one_planet_with_two_moons(app):
     
     two_moon = Moon(
         name = "Deimos",
-        size = "8",
+        size = 8,
         description = "It is further from Mars, so each orbit around the planet takes a little over one day.",
         gravity = 0.003
     )
