@@ -18,6 +18,7 @@ def test_get_one_moon_with_records(client, one_planet_with_two_moons):
 
     assert response.status_code == 200
     assert response_body["name"] == "Phobos" 
+    assert response_body["planet"] == "Mars" 
 
 def test_get_one_moon_with_moon_name_query(client, one_planet_with_two_moons):
     response = client.get("moons?moon_name=Phobos")

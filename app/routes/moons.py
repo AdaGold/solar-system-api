@@ -31,8 +31,10 @@ def get_all_moons():
                 
 @moons_bp.route("/<moon_id>",methods=["GET"])
 def get_moon(moon_id):
-    moon_info = validate_model(Moon, moon_id)
-    return jsonify(moon_info.to_dict())
+    moon = validate_model(Moon, moon_id)
+    moon_info = moon.to_dict()
+    moon_info["planet"] = moon.planet.name
+    return jsonify(moon_info)
 
 @moons_bp.route("/<moon_id>",methods=["PUT"])
 def update_moon(moon_id):
