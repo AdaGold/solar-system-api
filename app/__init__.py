@@ -12,14 +12,13 @@ load_dotenv()
 def create_app(test_config=None):
     app = Flask(__name__)
 
+    app.config['JSON_SORT_KEYS'] = False # Don't sort keys alphabetically
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
     if test_config: 
-        app.config['JSON_SORT_KEYS'] = False # Don't sort keys alphabetically
-        app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
         app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("SQLALCHEMY_TEST_DATABASE_URI")
         app.config["Testing"] = True 
     else:
-        app.config['JSON_SORT_KEYS'] = False # Don't sort keys alphabetically
-        app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
         app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("SQLALCHEMY_DATABASE_URI")
 
     db.init_app(app)
@@ -27,8 +26,8 @@ def create_app(test_config=None):
     
     from app.models.planet import Planet
     from app.models.moon import Moon
-    from .planet_routes import planets_bp 
-    from .moon_routes import moon_bp
+    from .routes.planet_routes import planets_bp 
+    from .routes.moon_routes import moon_bp
 
     app.register_blueprint(planets_bp)  
     app.register_blueprint(moon_bp)

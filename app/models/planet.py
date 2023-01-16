@@ -21,14 +21,17 @@ class Planet(db.Model):
         moon_names = []
         for moon in self.moons:
             moon_names.append(moon.name)
-        planet_as_dict["moons"] = moon_names
+        planet_as_dict["moons"] = [moon.name for moon in self.moons]
 
         return planet_as_dict
 
     @classmethod
     def from_dict(cls, planet_data):
-        new_planet = Planet(name=planet_data["name"],
-                        description=planet_data["description"],
-                        gravity = planet_data['gravity'],
-                        distance_from_earth = planet_data['distance_from_earth'])
+        new_planet = Planet(
+            name=planet_data["name"],
+            description=planet_data["description"],
+            gravity = planet_data['gravity'],
+            distance_from_earth = planet_data['distance_from_earth']
+        )
+        
         return new_planet

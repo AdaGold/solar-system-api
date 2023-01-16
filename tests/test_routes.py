@@ -1,6 +1,6 @@
 import pytest
 from werkzeug.exceptions import HTTPException
-from app.planet_routes import validate_model
+from app.routes.planet_routes import validate_model
 from app.models.planet import Planet
 from app.models.moon import Moon
 
@@ -306,18 +306,18 @@ def test_create_one_planet_return_201_successfully_created(client):
 def test_create_one_planet_no_name_return_400(client):
 
     response = client.post("/planets",
-                           json={"description": "This is planet: Venus",
-                                 "gravity": 9.87,
-                                 "distance_from_earth": 67.685})
+                        json={"description": "This is planet: Venus",
+                                "gravity": 9.87,
+                                "distance_from_earth": 67.685})
 
     assert response.status_code == 400
 
 
 def test_create_one_planet_no_description_return_400(client):
     response = client.post("/planets",
-                           json={"name": "Mars",
-                                 "gravity": 9.87,
-                                 "distance_from_earth": 67.685})
+                        json={"name": "Mars",
+                                "gravity": 9.87,
+                                "distance_from_earth": 67.685})
 
     assert response.status_code == 400
 
@@ -507,7 +507,7 @@ def test_create_one_moon_return_201_successfully_created(client):
 
 def test_create_moon_to_planet_by_planet_id(client, saved_two_planets):
     response = client.post("/moons/1/moon",
-                           json={
+                        json={
                             "name": "planet1_moon"})
     response_body = response.get_json()
 

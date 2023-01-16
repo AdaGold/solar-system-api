@@ -5,38 +5,6 @@ from app.models.moon import Moon
 
 planets_bp = Blueprint("planets_bp", __name__, url_prefix="/planets")
 
-#---------------------------------------------- Helper Functions----------------------------------------------
-def validate_model(cls, model_id):
-    try:
-        model_id = int(model_id)
-    except: 
-        abort(make_response({"message":f"{cls.__name__} {model_id} is invalid"}, 400)) 
-
-    model = cls.query.get(model_id)
-
-    if not model:
-        abort(make_response({"message":f"{cls.__name__} {model_id} not found"}, 404))    
-    return model 
-
-def validate_request_body(request_body): 
-
-    if "name" not in request_body or "description" not in request_body or "gravity" \
-        not in request_body or "distance_from_earth" not in request_body:
-        abort(make_response("Invalid Request", 400))
-
-def sort_helper(planet_query, atr = None, sort_method = "asc"): 
-    if sort_method == "asc" and atr: 
-        planet_query = planet_query.order_by(atr.asc())
-    elif sort_method == "desc" and atr: 
-        planet_query = planet_query.order_by(atr.desc())
-    elif sort_method == "desc": 
-        planet_query = planet_query.order_by(Planet.name.desc())
-    else:
-        #Sort by name in ascending order by default 
-        planet_query = planet_query.order_by(Planet.name.asc())
-
-    return planet_query
-
 # ---------------------------------------------- Route Functions ----------------------------------------------
 @planets_bp.route("", methods = ["POST"])
 def create_planet(): 
@@ -84,9 +52,7 @@ def read_planets():
             abort(make_response("Too many parameters", 400))
 
         # Sort records by client's request 
-        if attribute == "name":
-            planet_query = sort_helper(planet_query, Planet.name, sort_method)
-        elif attribute == "distance_from_earth":
+        if attribute == "distance_from_earth":
             planet_query = sort_helper(planet_query, Planet.distance_from_earth, sort_method)
         elif attribute == "gravity":
             planet_query = sort_helper(planet_query, Planet.gravity, sort_method)
@@ -142,3 +108,36 @@ def delete_planet_by_id(planet_id):
     db.session.commit()
 
     return make_response(jsonify(f"Planet: {planet_id} has been deleted successfully."), 200) 
+
+
+#---------------------------------------------- Helper Functions----------------------------------------------
+def validate_model(cls, model_id):
+    try:
+        model_id = int(model_id)
+    except: 
+        abort(make_response({"message":f"{cls.__name__} {model_id} is invalid"}, 400)) 
+
+    model = cls.query.get(model_id)
+
+    if not model:
+        abort(make_response({"message":f"{cls.__name__} {model_id} not found"}, 404))    
+    return model 
+
+def validate_request_body(request_body): 
+
+    if "name" not in request_body or "description" not in request_body or "gravity" \
+        not in request_body or "distance_from_earth" not in request_body:
+        abort(make_response("Invalid Request", 400))
+
+def sort_helper(planet_query, atr = None, sort_method = "asc"): 
+    if sort_method == "asc" and atr: 
+        planet_query = planet_query.order_by(atr.asc())
+    elif sort_method == "desc" and atr: 
+        planet_query = planet_query.order_by(atr.desc())
+    elif sort_method == "desc": 
+        planet_query = planet_query.order_by(Planet.name.desc())
+    else:
+        #Sort by name in ascending order by default 
+        planet_query = planet_query.order_by(Planet.name.asc())
+
+    return planet_query

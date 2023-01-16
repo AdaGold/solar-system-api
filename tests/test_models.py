@@ -1,6 +1,6 @@
 from app.models.planet import Planet
 from app.models.moon import Moon
-from app.planet_routes import validate_model
+from app.routes.planet_routes import validate_model
 import pytest
 
 def test_to_dict_no_missing_data():
