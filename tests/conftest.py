@@ -35,7 +35,7 @@ def one_saved_planet():
 @pytest.fixture
 def all_planets():
     planets = [
-        Planet(name="Mercury", description="The smallest and fastest planet", rings=False),
+        Planet(name="Mercury", description="The smallest planet", rings=False),
         Planet(name="Venus", description="The hottest planet", rings=False),
         Planet(name="Earth", description="The blue marble", rings=False),
         Planet(name="Mars", description="The red planet", rings=False),
