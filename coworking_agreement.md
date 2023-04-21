@@ -21,5 +21,5 @@ Talk through each section with your partner. Add notes on what you discussed and
 *Other co-working agreements that were not captured in the above sections.*
 
 ## Signatures
-______________ _______________
-Date: _________
+____Elizabeth_____ __Alyssa Nguyen_____________
+Date: ___4/21/2023______
