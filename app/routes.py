@@ -9,15 +9,15 @@ class Planet:
 
     
 planets = [
-    Planet(1, "Mercury", "Smallest"),
-    Planet(2, "Venus", "NA"),
-    Planet(3, "Mars", "NA"),
-    Planet(4, "Earth", "Blue Planet"),
-    Planet(5, "Jupiter", "NA"),
-    Planet(6, "Saturn", "NA"),
-    Planet(7, "Uranus", "NA"),
-    Planet(8, "Neptune", "NA"),
-    Planet(9, "Pluto", "NA")
+    Planet(1, "Mercury", "The Morning star"),
+    Planet(2, "Venus", "The Evening star"),
+    Planet(3, "Mars", "The Red planet"),
+    Planet(4, "Earth", "The Blue Planet"),
+    Planet(5, "Jupiter", "The Giant Planet"),
+    Planet(6, "Saturn", "The Ringed Planet"),
+    Planet(7, "Uranus", "The Ice Giant"),
+    Planet(8, "Neptune", "Big Blue"),
+    Planet(9, "Pluto", "The Minor Planet")
     ]
 
 bp = Blueprint("planets", __name__, url_prefix="/planets")
