@@ -8,8 +8,8 @@ class Planet:
         self.position_from_sun = position_from_sun 
 
 planets = [
-        Planet(1, "mercury", "smallest in our solar system", 1)
-        Planet(2, "venus", "hottest planet in our solar system", 2)
+        Planet(1, "mercury", "smallest in our solar system", 1),
+        Planet(2, "venus", "hottest planet in our solar system", 2),
         Planet(3, "earth", "humans live here", 3)
     ]
 
