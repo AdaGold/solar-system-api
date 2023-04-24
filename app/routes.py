@@ -6,6 +6,11 @@ class Planet:
         self.name = name
         self.description = description
 
+    def to_dict(self):
+        return {"id": self.id,
+            "name" : self.name,
+            "description": self.description}
+
 planets = [
     Planet(1, "Earth", "Solid"),
     Planet(2, "Mars", "Solid"),
@@ -17,23 +22,17 @@ planet_bp = Blueprint("planet_blue_print", __name__, url_prefix="/planets")
 def get_planet():
     all_planets = []
     for planet in planets:
-        planet_dic = {"id" : planet.id,
-                      "name" : planet.name,
-                      "description" : planet.description}
+        planet_dic = planet.to_dict()
         all_planets.append(planet_dic)
     return jsonify(all_planets)
 
-planet_bp = Blueprint("planet_blue_print", __name__, url_prefix="/planets")
+
 @planet_bp.route("/<planet_id>", methods=["GET"])
 def get_one_planet(planet_id):
-    planet = valid_id(planet_id)
-    return {"id": planet.id,
-            "name" : planet.name,
-            "description": planet.description}
-    #return f"This {id} not found", 404
-    #abort(make_response({"message":f"id {planet_id} not found"}, 404))
+    planet = validate_id(planet_id)
+    return planet.to_dict()
 
-def valid_id(planet_id):
+def validate_id(planet_id):
     try:
         planet_id = int(planet_id)
     except:
