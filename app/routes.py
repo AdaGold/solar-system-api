@@ -1,4 +1,4 @@
-from flask import Blueprint, abort, make_response
+from flask import Blueprint, jsonify, abort, make_response
 
 class Planet:
     def __init__(self, id, name, description, color):
@@ -32,7 +32,8 @@ planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
 def handle_planets():
     result_list = []
     for planet in planets:
-        return result_list.append(planet.make_planet_dict())
+        result_list.append(planet.make_planet_dict())
+    return jsonify(result_list)
 
 def validate_planet(planet_id):
     try:
