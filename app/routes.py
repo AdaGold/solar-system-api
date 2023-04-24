@@ -56,8 +56,10 @@ def handle_planet(id):
 
 @planet_bp.route("", methods=["GET"])
 def handle_planets():
-    results = []
-    for planet in planets:
-        results.append(planet.make_dict())
+    # results = []
+    # for planet in planets:
+    #     results.append(planet.make_dict())
+
+    results = [planet.make_dict() for planet in planets]
 
     return jsonify(results)
