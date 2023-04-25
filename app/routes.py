@@ -9,13 +9,11 @@ class Planet:
     
     def make_dict(self):
         return dict(
-            id=self.id,
-            name=self.name,
-            description=self.description
+            id = self.id,
+            name = self.name,
+            description = self.description
             )
         
-
-    
 planets = [
     Planet(1, "Mercury", "The Morning star"),
     Planet(2, "Venus", "The Evening star"),
@@ -30,35 +28,30 @@ planets = [
 
 planet_bp = Blueprint("planets", __name__, url_prefix="/planets")
 
-
-def validate_planet_id(id):
+def validate_planet_id(planet_id):
     try:
-        id = int(id)
+        planet_id = int(planet_id)
     except:
-        abort(make_response({"message": "The id {id} invalid"}, 400))
+        abort(make_response({"message": f"The id {planet_id} invalid"}, 400))
 
     for planet in planets:
-        if planet.id == id:
+        if planet.id == planet_id:
             return planet
     
-    abort(make_response({"message": "The id {id} not found"}, 404))
+    abort(make_response({"message": f"The id {planet_id} not found"}, 404))
 
 
 
-@planet_bp.route("/<id>", methods=["GET"])
-def handle_planet(id):
+@planet_bp.route("/<planet_id>", methods=["GET"])
+def handle_planet(planet_id):
 
-    planet = validate_planet_id(id)
+    planet = validate_planet_id(planet_id)
 
     return planet.make_dict()
 
-    
 
 @planet_bp.route("", methods=["GET"])
 def handle_planets():
-    # results = []
-    # for planet in planets:
-    #     results.append(planet.make_dict())
 
     results = [planet.make_dict() for planet in planets]
 
