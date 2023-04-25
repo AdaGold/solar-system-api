@@ -32,7 +32,8 @@ def handle_planets():
             num_moons=planet.num_moons
         ))
 
-        return jsonify(results)
+    return jsonify(results)
+
 
 
 
