@@ -13,8 +13,7 @@ class Planet:
             name = self.name,
             description = self.description,
             num_moons = self.num_moons
-        )
-    
+        )    
 
 planets = [
     Planet(1,"mercury", "terrestrial",0),
@@ -22,10 +21,21 @@ planets = [
     Planet(3,"earth", "terrestrial",1),
     Planet(4,"mars", "terrestrial",2),
     Planet(5,"jupiter", "gas giant",95),
-    Planet(6,"mercury", "gas giant",83),
+    Planet(6,"saturn", "gas giant",83),
     Planet(7,"uranus", "ice giant",27),
     Planet(8,"neptune", "ice giant",14)
 ]
+
+def validate_planet(planet_id):
+    try:
+        planet_id = int(planet_id)
+    except ValueError:
+        abort(make_response({"message": f"planet {planet_id} is invalid. Find a planet in our solar system!"}, 400))
+
+    for planet in planets:
+        if planet.id == planet_id:
+            return planet
+    abort(make_response({"message": f"planet {planet_id} is not found. Find a planet in our solar system!"}, 404))
 
 planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
 
@@ -34,27 +44,13 @@ def handle_planets():
     results = []
 
     for planet in planets:
-        results.append(dict(
-            id=planet.id,
-            name=planet.name,
-            description=planet.description,
-            num_moons=planet.num_moons
-        ))
-
+        results.append(planet.planet_dict())
     return jsonify(results)
-
-def validate_planet(planet_id):
-    try:
-        planet_id == int(planet_id)
-    except:
-        abort(make_response({"message": f"planet{planet_id} invalid. Find a planet in our solar system!"}, 400))
-
-    for planet in planets:
-        if planet.id == planet_id:
-            return planet
-    abort(make_response({"message": f"planet{planet_id} not found. Find a planet in our solar system!"}, 404))
+    
 
 @planets_bp.route("/<planet_id>",methods=["GET"])
 def handle_planet(planet_id):
     planet = validate_planet(planet_id)
+
     return planet.planet_dict()
+
