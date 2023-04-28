@@ -17,3 +17,5 @@ class Planet(db.Model):
 
     def to_string(self):
         return f"{self.id}: {self.name} Description {self.description} "
+    
+    
