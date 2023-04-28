@@ -44,10 +44,10 @@ def validate_planet(id):
 def handle_planets():
     result_list = []
     for planet in planets:
-        result_list.append(planet.make_planet_dict())
+        result_list.append(planet.make_dict())
     return jsonify(result_list)
 
 @bp.route("/<id>", methods=["GET"])
 def handle_planet(id):
     planet = validate_planet(id)
-    return planet.make_planet_dict()
+    return planet.make_dict()
