@@ -7,12 +7,12 @@ class Planet:
         self.description = description
         self.color = color
 
-    def make_planet_dict(self):
+    def make_dict(self):
         return dict(
             id=self.id,
             name=self.name,
             description=self.description,
-            color=self.color
+            color=self.color,
         )
 
 planets = [
@@ -26,28 +26,28 @@ planets = [
     Planet(8, "Neptune", "8th planet from the Sun", "aqua"),
 ]
 
-planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
+bp = Blueprint("planets", __name__, url_prefix="/planets")
 
-def validate_planet(planet_id):
+def validate_planet(id):
     try:
-        planet_id = int(planet_id)
+        id = int(id)
     except:
-        abort(make_response({"message": f"Planet {planet_id} is invalid."}, 400))
+        abort(make_response({"message": f"Planet {id} is invalid."}, 400))
 
     for planet in planets:
-        if planet.id == planet_id:
+        if planet.id == id:
             return planet
 
-    abort(make_response({"message": f"Planet {planet_id} not found."}, 404))
+    abort(make_response({"message": f"Planet {id} not found."}, 404))
     
-@planets_bp.route("", methods=["GET"])
+@bp.route("", methods=["GET"])
 def handle_planets():
     result_list = []
     for planet in planets:
         result_list.append(planet.make_planet_dict())
     return jsonify(result_list)
 
-@planets_bp.route("/<planet_id>", methods=["GET"])
-def handle_planet(planet_id):
-    planet = validate_planet(planet_id)
+@bp.route("/<id>", methods=["GET"])
+def handle_planet(id):
+    planet = validate_planet(id)
     return planet.make_planet_dict()
