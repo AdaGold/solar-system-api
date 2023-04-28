@@ -2,9 +2,6 @@ from app import db
 from flask import Blueprint, jsonify, abort, make_response, request
 from app.models.planet import Planet
 
-
-
-
 # class Planet:
 #     def __init__(self, id, name, description, position_from_sun):
 #         self.id = id
@@ -34,6 +31,19 @@ def create_planet():
     return make_response(f"Planet {new_planet.name} successfully created", 201)
 
 
+@planets_bp.route("", methods=["GET"])
+def get_planets():
+    planets = Planet.query.all()
+    planets_response = []
+    for planet in planets:
+        planets_response.append(dict(
+            id=planet.id,
+            name=planet.name,
+            description=planet.description,
+            position_from_sun=planet.position_from_sun
+            )
+        )
+    return jsonify(planets_response)
 
 # @planets_bp.route("", methods=["GET"])
 # def get_planets():
