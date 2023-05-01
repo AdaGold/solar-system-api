@@ -46,13 +46,14 @@ def read_one_planet(id):
 def update_planet(id):
     planet = validate_planet(id)
     
-    request_body = request.get_json()
+    planet.update(request.get_json())
 
-    planet.name = request_body["name"]
-    planet.description=request_body["description"]
-    planet.color=request_body["color"]
+    #request_body = request.get_json()
 
-    
+    # planet.name = request_body["name"]
+    # planet.description=request_body["description"]
+    # planet.color=request_body["color"]
+
     db.session.commit()
     
     return make_response (f"Planet #{id} successfully updated")
