@@ -35,10 +35,38 @@ def validate_planet(id):
     if not planet:    
         abort(make_response({"message":f"Planet {id} not found"}, 404))
     return planet 
+
 @planets_bp.route("/<id>", methods=["GET"])
-def handle_planet(id):
+def read_one_planet(id):
     planet = validate_planet(id)
     planet = Planet.query.get(id)
     return planet.planet_to_dict()
+
+@planets_bp.route("/<id>", methods=["PUT"])
+def update_planet(id):
+    planet = validate_planet(id)
+    
+    request_body = request.get_json()
+
+    planet.name = request_body["name"]
+    planet.description=request_body["description"]
+    planet.color=request_body["color"]
+
+    
+    db.session.commit()
+    
+    return make_response (f"Planet #{id} successfully updated")
         
     
+@planets_bp.route("/<id>", methods=["DELETE"])
+def delete_planet(id):
+    planet= validate_planet(id)
+
+    db.session.delete(planet)
+    db.session.commit()
+
+    return make_response (f"Planet #{id} successfully updated")
+
+
+
+
