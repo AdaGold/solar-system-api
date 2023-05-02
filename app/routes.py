@@ -3,26 +3,31 @@ from app.models.planet import Planet
 from flask import Blueprint, jsonify, abort, make_response, request
 
 planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
+
 @planets_bp.route("", methods = ["GET"])
 def read_all_planets():
-    planets = Planet.query.all()
     planets_response = []
-    for planet in planets:
-        planets_response.append(planet.planet_to_dict())
+    query_params = request.args.to_dict()
+
+    if query_params:
+        query_params = {k.lower(): v.title() for k, v in query_params.items()}
+        planets = Planet.query.filter_by(**query_params).all()
+    else:
+        planets = Planet.query.all()
+
+    planets_response = [planet.planet_to_dict() for planet in planets]
     return jsonify(planets_response)
 
 @planets_bp.route("", methods = ["POST"])
 def create_planets():
     request_body = request.get_json()
-    if "name" not in request_body or "description" not in request_body:
-        return make_response("Invalid Requesrt", 400)
-    new_planet = Planet(
-                    name=request_body["name"],
-                    description=request_body["description"],
-                    color=request_body["color"])
+    try:
+        new_planet = Planet.create_new_planet(request_body)
+    except ValueError:
+        return make_response("Invalid request", 400)
     db.session.add(new_planet)
     db.session.commit()
-
+     # create var for make response 
     return make_response(f"Planet {new_planet.name} successfully created", 201)
 
 def validate_planet(id):
@@ -46,18 +51,12 @@ def read_one_planet(id):
 def update_planet(id):
     planet = validate_planet(id)
     
-    request_body = request.get_json()
+    planet.update(request.get_json())
 
-    planet.name = request_body["name"]
-    planet.description=request_body["description"]
-    planet.color=request_body["color"]
-
-    
     db.session.commit()
     
-    return make_response (f"Planet #{id} successfully updated")
-        
-    
+    return make_response(f"Planet #{id} successfully updated")
+          
 @planets_bp.route("/<id>", methods=["DELETE"])
 def delete_planet(id):
     planet= validate_planet(id)
@@ -65,8 +64,7 @@ def delete_planet(id):
     db.session.delete(planet)
     db.session.commit()
 
-    return make_response (f"Planet #{id} successfully updated")
-
+    return make_response (f"Planet #{id} successfully deleted", 200)
 
 
 
