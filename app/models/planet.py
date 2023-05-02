@@ -8,6 +8,12 @@ class Planet(db.Model):
     color = db.Column(db.String)
     # __tablename__ = "planets"
 
+    
+    def update(id, planet_to_dict):
+        for key, value in planet_to_dict.items():
+            setattr(id,key,value)
+        
+    
     def planet_to_dict(self):
         return {
         "id": self.id,
