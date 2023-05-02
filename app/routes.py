@@ -23,10 +23,25 @@ def validate_planet(planet_id):
 def create_planet():
     request_body = request.get_json() 
     new_planet = Planet (
-        name=request_body["name"],
-        description=request_body["description"],
-        distance=request_body["distance"]
-        )
+            name=request_body["name"],
+            description=request_body["description"],
+            distance=request_body["distance"]
+            )
+    
+    # if request_body.get("id"):
+    #     new_planet = Planet (
+    #         id = request_body["id"],
+    #         name=request_body["name"],
+    #         description=request_body["description"],
+    #         distance=request_body["distance"]
+    #         )
+    # else: 
+    #     new_planet = Planet (
+    #         name=request_body["name"],
+    #         description=request_body["description"],
+    #         distance=request_body["distance"]
+    #         )
+
     db.session.add(new_planet)
     db.session.commit()
 
