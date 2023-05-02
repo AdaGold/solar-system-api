@@ -11,15 +11,14 @@ def read_all_planets():
         planets_response.append(planet.planet_to_dict())
     return jsonify(planets_response)
 
+
 @planets_bp.route("", methods = ["POST"])
 def create_planets():
     request_body = request.get_json()
-    if "name" not in request_body or "description" not in request_body:
-        return make_response("Invalid Requesrt", 400)
-    new_planet = Planet(
-                    name=request_body["name"],
-                    description=request_body["description"],
-                    color=request_body["color"])
+    try:
+        new_planet = Planet.create_new_planet(request_body)
+    except ValueError:
+        return make_response("Invalid request", 400)
     db.session.add(new_planet)
     db.session.commit()
 
