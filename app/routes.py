@@ -18,6 +18,7 @@ def read_all_planets():
     planets_response = [planet.planet_to_dict() for planet in planets]
     return jsonify(planets_response)
 
+
 @planets_bp.route("", methods = ["POST"])
 def create_planets():
     request_body = request.get_json()
