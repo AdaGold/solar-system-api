@@ -9,11 +9,10 @@ def handle_planets():
     new_planet = Planet(name=request_body["name"], 
                         description=request_body["description"], 
                         number_of_moons = request_body["number_of_moons"])
-
     db.session.add(new_planet)
     db.session.commit()
-
     return make_response(f"Planet {new_planet.name} successfully created", 201)
+
 
 @planet_bp.route("", methods=["GET"])
 def get_all_planets():
@@ -21,46 +20,35 @@ def get_all_planets():
     planets = Planet.query.all()
     for planet in planets:
         planets_response.append(
-            {
-                "id": planet.id,
-                "name": planet.name,
-                "description": planet.description,
-                "number_of_moons": planet.number_of_moons
-            }
+            create_body(planet)
         )
     return jsonify(planets_response)
-#==============
+
+
 @planet_bp.route("/<id>", methods=["GET"])
 def get_one_planet(id):
     planet = validate_id(id)
-    return {"id": planet.id,
-                "name": planet.name,
-                "description": planet.description,
-                "number_of_moons": planet.number_of_moons}
+    return create_body(planet)
+
 
 @planet_bp.route("/<planet_id>", methods=["PUT"])
 def update_planet(planet_id):
     planet = validate_id(planet_id)
-
     request_body = request.get_json()
-
     planet.name = request_body["name"]
     planet.description = request_body["description"]
     planet.number_of_moons = request_body["number_of_moons"]
-
     db.session.commit()
-
     return make_response(f"planet #{planet.id} successfully updated")
 
 
 @planet_bp.route("/<planet_id>", methods=["DELETE"])
 def delete_planet(planet_id):
     planet = validate_id(planet_id)
-
     db.session.delete(planet)
     db.session.commit()
-
     return make_response(f"Planet #{planet.id} successfully deleted")
+
 
 def validate_id(id):
     try:
@@ -73,6 +61,14 @@ def validate_id(id):
         abort(make_response(f"id {id} not found!", 404))
     return planet
 
+
+def create_body(planet):
+    return {
+                "id": planet.id,
+                "name": planet.name,
+                "description": planet.description,
+                "number_of_moons": planet.number_of_moons
+            }
 
 #=============================
 # {
