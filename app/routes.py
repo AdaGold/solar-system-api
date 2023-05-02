@@ -81,8 +81,9 @@ def update_planet(id):
 
     request_body = request.get_json()
 
-    for attr in planet:
-        planet[attr] = request_body[attr]
+    planet.name = request_body["name"]
+    planet.description = request_body["description"]
+    planet.color= request_body["color"]
     
     db.session.commit()
 
