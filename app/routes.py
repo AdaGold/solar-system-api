@@ -36,13 +36,7 @@ def get_planets():
     planets = Planet.query.all()
     planets_response = []
     for planet in planets:
-        planets_response.append(dict(
-            id=planet.id,
-            name=planet.name,
-            description=planet.description,
-            position_from_sun=planet.position_from_sun
-            )
-        )
+        planets_response.append(make_planet_dict(planet))
     return jsonify(planets_response)
 
 # @planets_bp.route("", methods=["GET"])
@@ -57,26 +51,31 @@ def get_planets():
 #         })
 #     return jsonify(planets_response)
 
-# def validate_planet(planet_id):
-#     try:
-#         planet_id = int(planet_id)
-#     except:
-#         abort(make_response({"message": f"planet {planet_id} is invalid"}, 400))
+# Helper functions
+def make_planet_dict(planet):
+    return dict(
+        id=planet.id,
+        name=planet.name,
+        description=planet.description,
+        position_from_sun=planet.position_from_sun
+    )
+
+def validate_planet(planet_id):
+    try:
+        planet_id = int(planet_id)
+    except:
+        abort(make_response({"message": f"planet {planet_id} is invalid"}, 400))
     
-#     for planet in planets:
-#         if planet.id == planet_id:
-#             return planet
-        
-#     abort(make_response({"message": f"planet not found"}, 404))
+    planet = Planet.query.get(planet_id)
 
-# @planets_bp.route("/<planet_id>", methods=["GET"])
-# def handle_planet(planet_id):
-#     planet = validate_planet(planet_id)
+    if not planet:
+        abort(make_response({"message": f"planet not found"}, 404))
 
-#     return dict(
-#         id=planet.id,
-#         name=planet.name,
-#         description=planet.description,
-#         position_from_sun=planet.position_from_sun
-#     )
+    return planet
+
+@planets_bp.route("/<planet_id>", methods=["GET"])
+def get_one_planet(planet_id):
+    planet = validate_planet(planet_id)
+
+    return make_planet_dict(planet)
 
