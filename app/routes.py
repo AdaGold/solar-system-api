@@ -5,6 +5,13 @@ from flask import Blueprint, jsonify, abort, make_response, request
 planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
 
 #helper functions
+def to_dict(planet):
+    return ({"id": planet.id,
+            "name": planet.name,
+            "description": planet.description,
+            "distance": planet.distance})
+
+
 def validate_planet(planet_id):
     try:
         planet_id = int(planet_id)
@@ -52,23 +59,15 @@ def read_all_planets():
         planets = Planet.query.all()
         planets_response = []
         for planet in planets:
-            planets_response.append({
-                "id": planet.id,
-                "name": planet.name,
-                "description": planet.description,
-                "distance": planet.distance
-            })
+            planets_response.append(
+                to_dict(planet)
+            )
         return jsonify(planets_response)
 
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def read_one_planet(planet_id):
     planet = validate_planet(planet_id)
-    return {
-            "id": planet.id,
-            "name": planet.name,
-            "description": planet.description,
-            "distance":planet.distance
-            }
+    return to_dict(planet)
 
 @planets_bp.route("/<planet_id>", methods=["PUT"])
 def update_planet(planet_id):
