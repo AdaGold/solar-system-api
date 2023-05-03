@@ -45,3 +45,10 @@ def test_create_one_book(client):
     #Assert
     assert response.status_code == 201
     assert response_body == "Planet New Planet successfully created"
+
+def test_planets_with_no_data_returns_404_status_code(client):
+    response = client.get("/planets/1")
+    response_body = response.get_json()
+
+    assert response_body == {"message": "Planet 1 not found"}
+    assert response.status_code == 404
