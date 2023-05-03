@@ -1,6 +1,5 @@
 import pytest
-from app import create_app
-from app import db
+from app import create_app, db
 from flask.signals import request_finished
 from app.models.planet import Planet
 
@@ -25,7 +24,7 @@ def client(app):
     return app.test_client()
 
 @pytest.fixture
-def one_saved_planets(app):
+def one_planet(app):
     # Arrange
     dolphini_planet = Planet(name="Dolphini", description="Exoplanet", distance= "100 billion miles")
     
