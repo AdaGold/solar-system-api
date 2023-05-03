@@ -32,7 +32,7 @@ def test_get_planet_by_id(client, two_saved_planets):
         "color": "Yellow"
     }
 
-def test_create_one_book(client):
+def test_create_one_planet(client):
     # Act
     response = client.post("/planets", json={
         "name": "New Planet",

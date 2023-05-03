@@ -29,7 +29,9 @@ def create_planets():
     db.session.add(new_planet)
     db.session.commit()
      # create var for make response 
-    return make_response(jsonify(f"Planet {new_planet.name} successfully created"), 201)
+
+    message = f"Planet {new_planet.name} successfully created"
+    return make_response(jsonify(message), 201)
 
 def validate_planet(id):
     try:
@@ -55,8 +57,8 @@ def update_planet(id):
     planet.update(request.get_json())
 
     db.session.commit()
-    
-    return make_response(jsonify(f"Planet #{id} successfully updated"))
+    message = f"Planet #{id} successfully updated"
+    return make_response(jsonify(message))
           
 @planets_bp.route("/<id>", methods=["DELETE"])
 def delete_planet(id):
@@ -65,7 +67,8 @@ def delete_planet(id):
     db.session.delete(planet)
     db.session.commit()
 
-    return make_response(jsonify(f"Planet #{id} successfully deleted"), 200)
+    message = f"Planet #{id} successfully deleted"
+    return make_response(jsonify(message), 200)
 
 
 
