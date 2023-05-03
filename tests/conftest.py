@@ -36,3 +36,20 @@ def one_planet(app):
     db.session.commit()
 
     return planet
+
+@pytest.fixture
+def two_planets(app):
+    planet_one = Planet(
+            name = "Mars",
+            description = "3rd planet from the Sun",
+            color = "red"
+            )
+    planet_two = Planet(
+            name = "Venus",
+            description = "2nd planet from the Sun",
+            color = "orange"
+            )
+    db.session.add_all([planet_one, planet_two])
+    db.session.commit()
+
+    return planet_one, planet_two
