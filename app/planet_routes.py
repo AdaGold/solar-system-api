@@ -1,29 +1,10 @@
 from flask import Blueprint, jsonify, make_response, abort, request
 from app.models.planet import Planet
+from app.helpers import validate_model, apply_filters
 from app import db
 
 planet_bp = Blueprint("planets", __name__, url_prefix="/planets")
 
-
-# helper functions
-
-def validate_model(cls, id):
-    try:
-        id = int(id)
-    except:
-        message = "The {cls.__name__} {id} is invalid"
-        abort(make_response({"message": message}, 400))
-
-    model = cls.query.get(id)
-    
-    if not model:
-        message = "The {cls.__name__} {id} not found"
-        abort(make_response({"message": message}, 404))
-
-    return model
-
-
-# Request functions
 
 #POST Planets
 @planet_bp.route("", methods=["POST"])
@@ -45,19 +26,30 @@ def create_planet():
 # GET Planets 
 @planet_bp.route("", methods=["GET"])
 def get_all_planets():
+
+    query_params = {
+        'name': request.args.get('name'),
+        'description': request.args.get('description')
+    }
+    #this is the old code for comparison, now all query params are stored in a variable is used/
+    #as an arguement in the apply_filters helper function
+    #feel free to delete all of this!
+    #check out the helps . py file to confirm !
     
-    name_query = request.args.get("name")
-    description_query = request.args.get("description")
+    # name_query = request.args.get("name")
+    # description_query = request.args.get("description")
 
-    if name_query:
-        planets = Planet.query.filter_by(name = name_query)
-    else:
-        planets = Planet.query.all()
 
-    if description_query:
-        planets = Planet.query.filter_by(description = description_query)
-    else:
-        planets = Planet.query.all()
+    planets = apply_filters(Planet, query_params).all()
+    # if name_query:
+    #     planets = Planet.query.filter_by(name = name_query)
+    # else:
+    #     planets = Planet.query.all()
+
+    # if description_query:
+    #     planets = Planet.query.filter_by(description = description_query)
+    # else:
+    #     planets = Planet.query.all()
         
     results = [planet.to_dict() for planet in planets]
     

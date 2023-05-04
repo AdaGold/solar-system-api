@@ -1,6 +1,6 @@
 from app.models.planet import Planet
 
-def test_get_all_cats_returns_empty_list_when_db_is_empty(client):
+def test_get_all_planets_returns_empty_list_when_db_is_empty(client):
     #act
     response = client.get("/planets")
 
@@ -18,7 +18,6 @@ def test_get_one_planet_returns_seeded_planet(client, one_planet):
     assert response_body["description"] == one_planet.description
 
 def test_create_planet_happy_path(client):
-    #arrange, a lil bit
     EXPECTED_PLANET = {
         "name":"magicland",
         "description":"I want to live here"
