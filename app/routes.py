@@ -33,27 +33,6 @@ def create_planets():
     except KeyError as e:
         abort(make_response("Invalid request. Missing required value: {e}"), 400)
 
-# def validate_model(cls, id):
-#     try:
-#         id = int(id)
-#     except:
-#         abort(make_response(jsonify({"message":f"{cls.__name__} {id} invaid"}), 400))
-    
-#     model = cls.query.get(id)
-#     if not model:    
-#         abort(make_response(jsonify({"message":f"{cls.__name__} {id} not found"}), 404))
-#     return model
-# def validate_model(id):
-#     try:
-#         id = int(id)
-#     except:
-#         abort(make_response(jsonify({"message":f"Planet {id} invaid"}), 400))
-    
-#     planet = Planet.query.get(id)
-#     if not planet:    
-#         abort(make_response(jsonify({"message":f"Planet {id} not found"}), 404))
-#     return planet 
-
 @planets_bp.route("/<id>", methods=["GET"])
 def read_one_planet(id):
     planet = validate_model(Planet, id)

@@ -21,6 +21,10 @@ class Planet(db.Model):
         "description": self.description,
         "color": self.color }
     
+    def __str__(self):
+        return f'An object of type {self.__class__.__name__} with id {self.id}.'
+
+    
     @classmethod 
     def create_new_planet(cls, request_data):
         if "name" not in request_data or "description" not in request_data:
@@ -31,11 +35,6 @@ class Planet(db.Model):
             color=request_data.get("color") 
         )
     
-    def update(id, planet_to_dict):
-        for key, value in planet_to_dict.items():
-            setattr(id,key,value)
 
-    def to_string(self):
-        return f"{self.id}: {self.name} Description {self.description} "
-    
+
     
