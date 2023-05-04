@@ -7,7 +7,6 @@ import os
 db = SQLAlchemy()
 migrate = Migrate()
 
-
 def create_app(test_config=None):
     app = Flask(__name__)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -18,8 +17,6 @@ def create_app(test_config=None):
     else:
         app.config['TESTING'] = True
         app.config['SQLALCHEMY_TEST_DATABASE_URI'] = os.environ.get("SQLALCHEMY_TEST_DATABASE_URI")
-
-
 
     db.init_app(app)
     migrate.init_app(app, db)

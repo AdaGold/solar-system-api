@@ -1,35 +1,35 @@
 from app import db
 
 class Planet(db.Model):
+
     id = db.Column(
         db.Integer, 
         primary_key=True, 
         autoincrement=True)
+    
     name = db.Column(
         db.String,
         nullable = False)
+    
     description = db.Column(
         db.String,
         nullable = False) 
-
-
-
-# class Planet:
-
-#     def __init__(self, id, name, description):
-#         self.id = id
-#         self.name = name
-#         self.description = description
     
-#     def make_dict(self):
-#         return dict(
-#             id=self.id,
-#             name=self.name,
-#             description=self.description
-#             )
-        
-
+    def to_dict(self):
+        return dict(
+            id = self.id,
+            name = self.name,
+            description = self.description
+        )
     
+    @classmethod
+    def from_dict(cls, planet_data):
+        return cls(
+            name = planet_data["name"],
+            description = planet_data["desription"]
+        )
+    
+ 
 # planets = [
 #     Planet(1, "Mercury", "The Morning star"),
 #     Planet(2, "Venus", "The Evening star"),
