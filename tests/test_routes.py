@@ -1,14 +1,5 @@
 from app.models.planet import Planet
 
-
-def test_read_all_planets_return_empty_list_when_db_is_empty(client):
-    # Act
-    response = client.get("/planets")
-    
-    # Assert
-    assert response.status_code == 200
-    assert response.get_json() == []
-
 # WAVE 6 TEST 1
 def test_read_one_planet_returns_seeded_planet(client, one_planet):
     # Act 
@@ -29,6 +20,7 @@ def test_empty_database_returns_404(client):
 
     # ASSERT
     assert response.status_code == 404
+    assert response_body == {"message": f"Planet with id 1 was not found"}
 
 
 # WAVE 6 TEST 3
@@ -73,3 +65,12 @@ def test_create_planet_returns_201(client):
     assert EXPECTED_PLANET['name'] == actual_planet.name
     assert EXPECTED_PLANET['description'] == actual_planet.description
     assert EXPECTED_PLANET['color'] == actual_planet.color
+
+
+def test_read_all_planets_return_empty_list_when_db_is_empty(client):
+    # Act
+    response = client.get("/planets")
+    
+    # Assert
+    assert response.status_code == 200
+    assert response.get_json() == []

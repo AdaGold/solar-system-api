@@ -21,10 +21,16 @@ def validate_model(cls, id):
 
 @bp.route("", methods=["GET"])
 def read_all_planets():
-    planets = Planet.query.all()
+    # planets = Planet.query.all()
     planets_list = []
-    for planet in planets:
-        planets_list.append(planet.make_dict())
+    # for planet in planets:
+    #     planets_list.append(planet.make_dict())
+    color_param = request.args.get("color")
+    if color_param:
+        planets = Planet.query.filter_by(color=color_param)
+    else:
+        planets = Planet.query.all()
+    planets_list = [planet.make_dict() for planet in planets]
 
     return jsonify(planets_list), 200   
 

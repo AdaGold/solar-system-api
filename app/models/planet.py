@@ -6,7 +6,7 @@ class Planet(db.Model):
     description = db.Column(db.String)
     color = db.Column(db.String)
 
-    # WAVE 5 _______
+
     @classmethod
     def from_dict(cls, data_dict):
         return cls(
@@ -14,9 +14,7 @@ class Planet(db.Model):
             description = data_dict["description"],
             color = data_dict["color"]
         )
-    #___________________
 
-    
     def make_dict(self):
         return dict(
             id=self.id,
