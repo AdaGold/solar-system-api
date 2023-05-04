@@ -47,7 +47,3 @@ def two_saved_planets(app):
     db.session.add_all([ocean_planet, minion_planet])
     db.session.commit()
 
-# @pytest.fixture
-# def empty_list(app):
-#     empty_list = []
-#     return empty_list

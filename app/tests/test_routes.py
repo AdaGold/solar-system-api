@@ -52,3 +52,26 @@ def test_planets_with_no_data_returns_404_status_code(client):
 
     assert response_body == {"message": "Planet 1 not found"}
     assert response.status_code == 404
+
+def test_update_planet_successfully(client,two_saved_planets):
+    planet_id = 1
+    updated_planet_data = {
+        "name": "Updated planet name",
+        "description": "I'm updated",
+        "color": "Fusha"
+    }
+    response = client.put(f"planets/1", json=updated_planet_data)
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body == f"Planet #{planet_id} successfully updated"
+def test_delete_planet_successfully(client, two_saved_planets):
+    planet_id = 1
+    response = client.delete(f"planets/{planet_id}")
+    response_body = response.get_json()
+
+    assert response.status_code == 200
+    assert response_body == f"Planet #{planet_id} successfully deleted"
+
+    response = client.get(f"/planets/{planet_id}")
+    assert response.status_code == 404
