@@ -5,6 +5,7 @@ from app.models.planet import Planet
 
 planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
 
+
 @planets_bp.route("", methods=["POST"])
 def create_planet():
     request_body = request.get_json()
@@ -29,9 +30,7 @@ def get_planets():
     else:
         planets = Planet.query.all()
     
-    planets_response = []
-    for planet in planets:
-        planets_response.append(make_planet_dict(planet))
+    planets_response = [planet.make_dict() for planet in planets]
     return jsonify(planets_response)
 
 
@@ -39,7 +38,7 @@ def get_planets():
 def get_one_planet(planet_id):
     planet = validate_planet(planet_id)
 
-    return make_planet_dict(planet)
+    return planet.make_dict()
 
 
 @planets_bp.route("/<planet_id>", methods=["PUT"])
@@ -55,6 +54,7 @@ def update_planet(planet_id):
 
     return make_response(f"Planet #{planet.id} successfully updated")
 
+
 @planets_bp.route("/<planet_id>", methods=["DELETE"])
 def delete_planet(planet_id):
     planet = validate_planet(planet_id)
@@ -64,15 +64,8 @@ def delete_planet(planet_id):
 
     return make_response(f"Planet #{planet.id} successfully deleted")
 
-# Helper functions
-def make_planet_dict(planet):
-    return dict(
-        id=planet.id,
-        name=planet.name,
-        description=planet.description,
-        position_from_sun=planet.position_from_sun
-    )
 
+# Helper functions
 def validate_planet(planet_id):
     try:
         planet_id = int(planet_id)

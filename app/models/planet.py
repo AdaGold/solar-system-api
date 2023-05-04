@@ -6,3 +6,13 @@ class Planet(db.Model):
     description = db.Column(db.String)
     position_from_sun = db.Column(db.Integer)
 
+    def make_dict(self):
+        return dict(
+            id=self.id,
+            name=self.name,
+            description=self.description,
+            position_from_sun=self.position_from_sun
+            )
+
+
+
