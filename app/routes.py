@@ -6,18 +6,18 @@ from flask import Blueprint, jsonify, abort, make_response, request
 bp = Blueprint("planets", __name__, url_prefix="/planets")
 
 # ______________________________________________
-def validate_planet(id):
+def validate_model(cls, id):
     try:
         id = int(id)
     except:
         abort(make_response({"message": f"Planet {id} is invalid."}, 400))
 
-    planet = Planet.query.get(id)
+    model = cls.query.get(id)
 
-    if not planet:
-        abort(make_response({"message": f"Planet {id} not found."}, 404))
+    if not model:
+        abort(make_response({"message": f"{cls.__name__} with id {id} was not found"}, 404))
 
-    return planet
+    return model
 
 @bp.route("", methods=["GET"])
 def read_all_planets():
@@ -30,7 +30,7 @@ def read_all_planets():
 
 @bp.route("/<id>", methods=["GET"])
 def read_one_planet(id):
-    planet = validate_planet(id)
+    planet = validate_model(Planet, id)
     
     return jsonify(planet.make_dict()), 200
 
@@ -41,7 +41,7 @@ def create_planet():
         if "name" not in request_body or "description" not in request_body or "color" not in request_body:
             return make_response("Invalid Request", 400)
 
-        new_planet = Planet.make_dict(request_body)
+        new_planet = Planet.from_dict(request_body)
 
         db.session.add(new_planet)
         db.session.commit()
@@ -52,7 +52,7 @@ def create_planet():
     
 @bp.route("/<id>", methods=["PUT"])
 def update_planet(id):
-    planet = validate_planet(id)
+    planet = validate_model(Planet, id)
 
     request_body = request.get_json()
 
@@ -68,7 +68,7 @@ def update_planet(id):
 
 @bp.route("/<id>", methods=["DELETE"])
 def delete_planet(id):
-    planet = validate_planet(id)
+    planet = validate_model(Planet, id)
 
     db.session.delete(planet)
     db.session.commit()

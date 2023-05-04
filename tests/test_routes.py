@@ -1,5 +1,6 @@
 from app.models.planet import Planet
 
+
 def test_read_all_planets_return_empty_list_when_db_is_empty(client):
     # Act
     response = client.get("/planets")
@@ -29,7 +30,8 @@ def test_empty_database_returns_404(client):
     # ASSERT
     assert response.status_code == 404
 
-# WAVE 6 TEST 3: REFACTOR TO USE A LOOP
+
+# WAVE 6 TEST 3
 def test_valid_data_returns_data_and_200(client, two_planets):
     # ACT
     response = client.get("/planets")
