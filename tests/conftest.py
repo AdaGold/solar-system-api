@@ -25,7 +25,6 @@ def client(app):
 
 @pytest.fixture
 def one_planet(app):
-    # Arrange
     dolphini_planet = Planet(name="Dolphini", description="Exoplanet", distance= "100 billion miles")
     
 
