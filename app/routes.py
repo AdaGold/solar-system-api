@@ -5,7 +5,7 @@ from flask import Blueprint, jsonify, abort, make_response, request
 
 bp = Blueprint("planets", __name__, url_prefix="/planets")
 
-# ______________________________________________
+
 def validate_model(cls, id):
     try:
         id = int(id)
@@ -21,10 +21,9 @@ def validate_model(cls, id):
 
 @bp.route("", methods=["GET"])
 def read_all_planets():
-    # planets = Planet.query.all()
+
     planets_list = []
-    # for planet in planets:
-    #     planets_list.append(planet.make_dict())
+
     color_param = request.args.get("color")
     if color_param:
         planets = Planet.query.filter_by(color=color_param)
