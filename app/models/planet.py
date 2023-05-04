@@ -22,10 +22,10 @@ class Planet(db.Model):
         "color": self.color }
     
     @classmethod 
-    def create_new_planet(self, request_data):
+    def create_new_planet(cls, request_data):
         if "name" not in request_data or "description" not in request_data:
             return make_response("Invalid Requesrt", 400)
-        return self(
+        return cls(
             name=request_data["name"].title(),
             description=request_data["description"],
             color=request_data.get("color") 

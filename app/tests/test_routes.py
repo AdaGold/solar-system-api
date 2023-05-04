@@ -75,3 +75,10 @@ def test_delete_planet_successfully(client, two_saved_planets):
 
     response = client.get(f"/planets/{planet_id}")
     assert response.status_code == 404
+
+def test_deleting_non_existing_planet_returns_planet_not_found(client):
+    response = client.delete(f"planets/1")
+    response_body = response.get_json()
+
+    assert response.status_code == 404
+    assert response_body == {"message": "Planet 1 not found"}

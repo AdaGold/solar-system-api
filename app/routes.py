@@ -24,35 +24,45 @@ def create_planets():
     request_body = request.get_json()
     try:
         new_planet = Planet.create_new_planet(request_body)
-    except ValueError:
-        return make_response("Invalid request", 400)
-    db.session.add(new_planet)
-    db.session.commit()
-     # create var for make response 
+        db.session.add(new_planet)
+        db.session.commit()
 
-    message = f"Planet {new_planet.name} successfully created"
-    return make_response(jsonify(message), 201)
+        message = f"Planet {new_planet.name} successfully created"
+        return make_response(jsonify(message), 201)
 
-def validate_planet(id):
-    try:
-        id = int(id)
-    except:
-        abort(make_response(jsonify({"message":f"Planet {id} invaid"}), 400))
+    except KeyError as e:
+        abort(make_response("Invalid request. Missing required value: {e}"), 400)
+
+# def validate_model(cls, id):
+#     try:
+#         id = int(id)
+#     except:
+#         abort(make_response(jsonify({"message":f"{cls.__name__} {id} invaid"}), 400))
     
-    planet = Planet.query.get(id)
-    if not planet:    
-        abort(make_response(jsonify({"message":f"Planet {id} not found"}), 404))
-    return planet 
+#     model = cls.query.get(id)
+#     if not model:    
+#         abort(make_response(jsonify({"message":f"{cls.__name__} {id} not found"}), 404))
+#     return model
+# def validate_model(id):
+#     try:
+#         id = int(id)
+#     except:
+#         abort(make_response(jsonify({"message":f"Planet {id} invaid"}), 400))
+    
+#     planet = Planet.query.get(id)
+#     if not planet:    
+#         abort(make_response(jsonify({"message":f"Planet {id} not found"}), 404))
+#     return planet 
 
 @planets_bp.route("/<id>", methods=["GET"])
 def read_one_planet(id):
-    planet = validate_planet(id)
+    planet = validate_model(Planet, id)
     planet = Planet.query.get(id)
-    return planet.planet_to_dict()
+    return jsonify(planet.planet_to_dict()), 200
 
 @planets_bp.route("/<id>", methods=["PUT"])
 def update_planet(id):
-    planet = validate_planet(id)
+    planet = validate_model(Planet, id)
     
     planet.update(request.get_json())
 
@@ -62,13 +72,26 @@ def update_planet(id):
           
 @planets_bp.route("/<id>", methods=["DELETE"])
 def delete_planet(id):
-    planet= validate_planet(id)
+    planet= validate_model(Planet, id)
 
     db.session.delete(planet)
     db.session.commit()
 
     message = f"Planet #{id} successfully deleted"
     return make_response(jsonify(message), 200)
+def validate_model(cls, id):
+     try:
+         id = int(id)
+     except:
+         message = f"{cls.__name__} {id} is invalid"
+         abort(make_response({"message": message}, 400))
 
+     model = cls.query.get(id)
+
+     if not model:
+         message = f"{cls.__name__} {id} not found"
+         abort(make_response({"message": message}, 404))
+
+     return model
 
 
