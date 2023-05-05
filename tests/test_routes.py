@@ -21,7 +21,6 @@ def test_read_one_planet(client, two_saved_planets):
         "num_moons": 0
         }
 
-'''REQUIRED TEST NOT PASSING'''    
 def test_create_planet(client):
     #Act
     response = client.post("/planets", json={
@@ -81,7 +80,6 @@ def test_read_all_planets_with_name_query_matching_one(client, two_saved_planets
         "num_moons": 0
     }
 
-'''REQUIRED TESTS NOT PASSING'''
 def test_read_one_planet_id_not_found(client, two_saved_planets):
     # Act
     response = client.get("/planets/3")
