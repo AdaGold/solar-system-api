@@ -20,7 +20,8 @@ def test_read_one_planet(client, two_saved_planets):
         "description":"rocky",
         "num_moons": 0
         }
-    
+
+'''REQUIRED TEST NOT PASSING'''    
 def test_create_planet(client):
     #Act
     response = client.post("/planets", json={
@@ -28,9 +29,8 @@ def test_create_planet(client):
         "description": "Cool new planet!",
         "num_moons": 5
     })
-    response_body = response.get_json()
+    response_body = response.get_data(as_text=True)
 
-    #Assert
     assert response.status_code == 201
     assert response_body == "Planet New Planet successfully created"
     
@@ -81,6 +81,7 @@ def test_read_all_planets_with_name_query_matching_one(client, two_saved_planets
         "num_moons": 0
     }
 
+'''REQUIRED TESTS NOT PASSING'''
 def test_read_one_planet_id_not_found(client, two_saved_planets):
     # Act
     response = client.get("/planets/3")
@@ -97,4 +98,4 @@ def test_read_one_planet_id_invalid(client, two_saved_planets):
 
     # Assert
     assert response.status_code == 400
-    assert response_body == {"message":"planet dagon is invalid. Find a planet in our solar system!"}
+    assert response_body == {"message":"Planet dagon is invalid. Find a planet in our solar system!"}

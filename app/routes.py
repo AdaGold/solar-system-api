@@ -35,14 +35,14 @@ def validate_model(cls, model_id):
     try:
         model_id = int(model_id)
     except: #ValueError:
-        abort(make_response(jsonify({"message": f" {cls.__name__} {model_id} is invalid. Find a planet in our solar system!"}, 400)))
+        abort(make_response({"message": f"{cls.__name__} {model_id} is invalid. Find a planet in our solar system!"}, 400))
 
     # for planet in planets:
     #     if planet.id == planet_id:
     #         return planet
     model = cls.query.get(model_id)
     if not model:
-        abort(make_response(jsonify({"message": f"{cls.__name__} {model_id} is not found. Find a planet in our solar system!"}, 404)))
+        abort(make_response({"message": f"{cls.__name__} {model_id} is not found. Find a planet in our solar system!"}, 404))
     return model
 
 #refactored
@@ -58,7 +58,7 @@ def create_planet():
     db.session.add(new_planet)
     db.session.commit()
 
-    return make_response(jsonify(f"Planet {new_planet.name} successfully created", 201))
+    return make_response(f"Planet {new_planet.name} successfully created", 201)
 
 #refactored
 @planets_bp.route("", methods=["GET"])
