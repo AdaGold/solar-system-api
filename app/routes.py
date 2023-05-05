@@ -2,46 +2,70 @@ from flask import Blueprint, jsonify, make_response, abort, request
 from app import db
 from app.models.planet import Planet
 
+# Post a record
 planet_bp = Blueprint("planet_blue_print", __name__, url_prefix="/planets")
 @planet_bp.route("", methods=["POST"])
-def handle_planets():
-    request_body = request.get_json()
-    new_planet = Planet(name=request_body["name"], 
-                        description=request_body["description"], 
-                        number_of_moons = request_body["number_of_moons"])
-    db.session.add(new_planet)
-    db.session.commit()
-    return make_response(f"Planet {new_planet.name} successfully created", 201)
+def create_planets():
+    try:
+        request_body = request.get_json()
+        new_planet = Planet.from_dict(request_body)
+        # (name=request_body["name"], 
+        #                     # description=request_body["description"], 
+        #                     number_of_moons = request_body["number_of_moons"])
+        db.session.add(new_planet)
+        db.session.commit()
+        return make_response(jsonify(f"Planet {new_planet.name} successfully created"), 201)
+    except(KeyError):
+        return make_response(jsonify("Something is wrong!"), 400)
 
-
+# Get all the records
 @planet_bp.route("", methods=["GET"])
 def get_all_planets():
-    planets_response = []
     planets = Planet.query.all()
-    for planet in planets:
-        planets_response.append(
-            create_body(planet)
-        )
-    return jsonify(planets_response)
+    return jsonify([planet.to_dict() for planet in planets])
 
-
+# Get one record
 @planet_bp.route("/<id>", methods=["GET"])
 def get_one_planet(id):
     planet = validate_id(id)
-    return create_body(planet)
+    return planet.to_dict(), 200
 
-
+# Replace one record
 @planet_bp.route("/<planet_id>", methods=["PUT"])
-def update_planet(planet_id):
+def replace_planet(planet_id):  
+    planet = validate_id(planet_id)
+    try:
+        request_body = request.get_json()
+        planet.name = request_body["name"]
+        planet.description = request_body["description"]
+        planet.number_of_moons = request_body["number_of_moons"]
+        db.session.commit()
+        return make_response(jsonify(f"planet #{planet.id} successfully replaced"))
+    except(KeyError):
+        return make_response(jsonify("incomplete information"), 400)
+
+# Update one record
+@planet_bp.route("/<planet_id>", methods=["PATCH"])
+def update_planet(planet_id):  
     planet = validate_id(planet_id)
     request_body = request.get_json()
-    planet.name = request_body["name"]
-    planet.description = request_body["description"]
-    planet.number_of_moons = request_body["number_of_moons"]
+    flag = False
+    if request_body.get("name"):
+        flag = True
+        planet.name = request_body["name"]
+    if request_body.get("description"):
+        flag = True
+        planet.description = request_body["description"]
+    if request_body.get("number_of_moons"):
+        flag = True
+        planet.number_of_moons = request_body["number_of_moons"]
     db.session.commit()
-    return make_response(f"planet #{planet.id} successfully updated")
+    if flag:
+        return make_response(jsonify(f"planet #{planet.id} successfully updated"))
+    else:
+        return make_response(jsonify(f"nothing was updated"))
 
-
+# Delete one record  
 @planet_bp.route("/<planet_id>", methods=["DELETE"])
 def delete_planet(planet_id):
     planet = validate_id(planet_id)
@@ -49,28 +73,19 @@ def delete_planet(planet_id):
     db.session.commit()
     return make_response(f"Planet #{planet.id} successfully deleted")
 
-
+# Helper function
 def validate_id(id):
     try:
         id = int(id)
     except:
-        abort(make_response(f"this is not a valid id: {id}", 400))
+        abort(make_response({"message" :f"this is not a valid id: {id}"}, 400))
     
     planet = Planet.query.get(id)
     if not planet:
         abort(make_response(f"id {id} not found!", 404))
     return planet
 
-
-def create_body(planet):
-    return {
-                "id": planet.id,
-                "name": planet.name,
-                "description": planet.description,
-                "number_of_moons": planet.number_of_moons
-            }
-
-#=============================
+#============================= ###########################################################
 # {
 # "name" : "Jupiter",
 # "description": "King of the Roman gods, aka Zeus.",
