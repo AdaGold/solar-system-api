@@ -6,13 +6,13 @@ def validate_model(cls, id):
     try:
         id = int(id)
     except:
-        message = f"The {cls.__name__} {id} is invalid"
+        message = f"{cls.__name__} {id} is invalid"
         abort(make_response({"message": message}, 400))
 
     model = cls.query.get(id)
     
     if not model:
-        message = f"The {cls.__name__} {id} not found"
+        message = f"{cls.__name__} {id} not found"
         abort(make_response({"message": message}, 404))
 
     return model

@@ -69,7 +69,7 @@ def test_get_one_book_id_not_found(client, two_saved_planets):
 
     # Assert
     assert response.status_code == 404
-    assert response_body == {"message": "The Planet 3 not found"}
+    assert response_body == {"message": "Planet 3 not found"}
 
 def test_get_one_book_id_invalid(client, two_saved_planets):
     # Act
@@ -78,7 +78,7 @@ def test_get_one_book_id_invalid(client, two_saved_planets):
 
     # Assert
     assert response.status_code == 400
-    assert response_body == {"message":"The Planet needsleep is invalid"}
+    assert response_body == {"message":"Planet needsleep is invalid"}
 
 
 def test_create_one_planet_happy_path(client):
