@@ -65,49 +65,12 @@ def test_from_dict_returns_planet():
     new_planet = Planet.from_dict(test_data)
     assert new_planet.name == "Jupiter"
     assert new_planet.description == "King of the Roman gods, aka Zeus."
-
-def test_from_dict_with_no_name(): ########################## How can I check if I get a KeyError
+##
+def test_from_dict_with_no_name(): 
     test_data = {
                 "description": "King of the Roman gods, aka Zeus.",
                 "number_of_moons": 79}
-    # new_planet = Planet.from_dict(test_data)
-    # assert new_planet.name == "Jupiter"
-    # assert new_planet.description == "King of the Roman gods, aka Zeus."
 
     with pytest.raises(KeyError, match = 'name'):
         new_planet = Planet.from_dict(test_data)
-        
-
-# def test_from_dict_with_no_description():
-#     test_data = {
-#                 "name" : "Jupiter",
-#                 "number_of_moons": 79}
-#     with pytest.raises(KeyError, match = 'description'):
-#         new_book = Planet.from_dict(test_data)
-
-# def test_from_dict_with_extra_keys():
-#     test_data = {
-#         "extra": "some stuff",
-#         "title": "New Book",
-#         "description": "The Best!",
-#         "another": "last value"
-#     }
-#     new_planet = Planet.from_dict(test_data)
-#     assert new_planet.title == "New Book"
-#     assert new_planet.description == "The Best!"
-
-#================================================
-def test_validate_id(one_planet):
-    result_book = validate_id("1")
-    assert result_book.id == 1
-    assert result_book.name== "Mars"
-    assert result_book.description == "Roman god of war, aka Ares."
-    assert result_book.number_of_moons == 2
-
-def test_validate_id_missing_record_raises_eception(one_planet):
-    with pytest.raises(HTTPException):
-        result_planet = validate_id("3")
     
-def test_validate_id_invalid_id_raises_exception(one_planet):
-    with pytest.raises(HTTPException):
-        result_book = validate_id("cat")

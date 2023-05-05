@@ -9,9 +9,6 @@ def create_planets():
     try:
         request_body = request.get_json()
         new_planet = Planet.from_dict(request_body)
-        # (name=request_body["name"], 
-        #                     # description=request_body["description"], 
-        #                     number_of_moons = request_body["number_of_moons"])
         db.session.add(new_planet)
         db.session.commit()
         return make_response(jsonify(f"Planet {new_planet.name} successfully created"), 201)
@@ -85,27 +82,8 @@ def validate_id(id):
         abort(make_response(f"id {id} not found!", 404))
     return planet
 
-#============================= ###########################################################
-# {
-# "name" : "Jupiter",
-# "description": "King of the Roman gods, aka Zeus.",
-# "number_of_moons": 79}
-
-#  {
-# "name" : "Mars",
-# "description": "Roman god of war, aka Ares.",
-# "number_of_moons": 2}
-
-# Name, Description, Moons
-# Jupiter,"King of the Roman gods, aka Zeus.",79
-# Mars,"Roman god of war, aka Ares.",2
-# Venus,"Roman goddess of love, aka Aphrodite.",0
-# Earth,"A variation on the word ""ground"" in several languages.",1
-# Neptune,"Roman god of the sea aka, Poseidon.",14
-# Saturn,"Jupiter's father and titan aka, Chronos.",62
-# Uranus,"Greek personificatino of the sky or heavens, aka Caelus.",27
-# Mercury,"Roman god of travellers, aka Hermes.",0
-
+#============================= ########################################################### Should I delete?
+#Part 1 and 2, I didn't know if we should delete this part or not
 
 # class Planet:
 #     def __init__(self, id, name, description):
