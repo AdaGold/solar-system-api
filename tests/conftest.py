@@ -10,7 +10,7 @@ def app():
     @request_finished.connect_via(app)
     def expire_session(sender, response, **extra):
         db.session.remove()
-#everytime a request finishes, i need you to remove database
+
     with app.app_context():
         db.create_all()
         yield app
@@ -32,3 +32,20 @@ def one_planet(app):
     db.session.add(planet)
     db.session.commit()
     return planet
+
+@pytest.fixture
+def two_saved_planets(app):
+    test_planet_1 = Planet(
+                    name = "Tatooine",
+                    description = "Teenage"
+    )
+    test_planet_2 = Planet (
+                    name = "Hoth", 
+                    description = "You're a cold as ice"
+                    )
+    test_planets = [test_planet_1, test_planet_2]
+
+    db.session.add_all(test_planets)
+    db.session.commit()
+
+    return test_planets

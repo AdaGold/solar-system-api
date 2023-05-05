@@ -28,28 +28,11 @@ def create_planet():
 def get_all_planets():
 
     query_params = {
-        'name': request.args.get('name'),
-        'description': request.args.get('description')
+        "name": request.args.get("name"),
+        "description": request.args.get("description")
     }
-    #this is the old code for comparison, now all query params are stored in a variable is used/
-    #as an arguement in the apply_filters helper function
-    #feel free to delete all of this!
-    #check out the helps . py file to confirm !
     
-    # name_query = request.args.get("name")
-    # description_query = request.args.get("description")
-
-
     planets = apply_filters(Planet, query_params).all()
-    # if name_query:
-    #     planets = Planet.query.filter_by(name = name_query)
-    # else:
-    #     planets = Planet.query.all()
-
-    # if description_query:
-    #     planets = Planet.query.filter_by(description = description_query)
-    # else:
-    #     planets = Planet.query.all()
         
     results = [planet.to_dict() for planet in planets]
     
