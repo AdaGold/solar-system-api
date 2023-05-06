@@ -32,6 +32,20 @@ def test_get_all_planets_returns_list_of_planets_when_db_has_two_records(client,
     assert response_body[1]["description"] == two_planets[1].description
     assert response_body[1]["number_of_moons"] == two_planets[1].number_of_moons
 
+def test_get_planets_filtered_by_name_returns_expected_planets(client, one_planet):
+    response= client.get(f"/planets")
+    response_body = response.get_json()
+    assert response.status_code == 200
+    assert response_body[0]["id"]== one_planet.id
+    assert response_body[0]["name"] == one_planet.name
+    assert response_body[0]["description"] == one_planet.description
+    assert response_body[0]["number_of_moons"] == one_planet.number_of_moons
+    assert response_body[0] == {"id": one_planet.id,
+                            "name": one_planet.name,
+                            "description" : one_planet.description,
+                            "number_of_moons" : one_planet.number_of_moons
+                            }
+
 # get one planet
 def test_get_one_planet_returns_seeded_planet(client, one_planet):
     response = client.get(f"/planets/{one_planet.id}")
@@ -59,7 +73,7 @@ def test_get_one_planet_with_not_exsistance_id_returns_not_found(client):
     response = client.get(f"/planets/1")
     response_body = response.get_data(as_text=True)
     assert response.status_code == 404
-    assert response_body == "id 1 not found!"
+    assert response_body == "Planet 1 not found!"
 
 # create a planet
 def test_create_one_planet_returns_successfully_created(client):
@@ -135,7 +149,7 @@ def test_replace_one_planet_with_not_exsistance_id_returns_not_found(client):
     response = client.put(f"/planets/1")
     response_body = response.get_data(as_text=True)
     assert response.status_code == 404
-    assert response_body == "id 1 not found!"
+    assert response_body == "Planet 1 not found!"
 
 # Update a planet
 def test_update_planet_returns_seeded_planet(client, one_planet):
@@ -179,7 +193,7 @@ def test_update_one_planet_with_not_exsistance_id_returns_not_found(client):
     response = client.patch(f"/planets/1")
     response_body = response.get_data(as_text=True)
     assert response.status_code == 404
-    assert response_body == "id 1 not found!"
+    assert response_body == "Planet 1 not found!"
 
 # Delete a planet
 def test_delete_one_planet_returns_successfylly_deleted(client, one_planet):
@@ -199,5 +213,5 @@ def test_delete_one_planet_with_not_exsistance_id_returns_not_found(client):
     response = client.delete(f"/planets/1")
     response_body = response.get_data(as_text=True)
     assert response.status_code == 404
-    assert response_body == "id 1 not found!"
+    assert response_body == "Planet 1 not found!"
 

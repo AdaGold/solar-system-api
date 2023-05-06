@@ -66,11 +66,26 @@ def test_from_dict_returns_planet():
     assert new_planet.name == "Jupiter"
     assert new_planet.description == "King of the Roman gods, aka Zeus."
 ##
-def test_from_dict_with_no_name(): 
+def test_from_dict_with_no_name(): #####################################
     test_data = {
                 "description": "King of the Roman gods, aka Zeus.",
                 "number_of_moons": 79}
 
     with pytest.raises(KeyError, match = 'name'):
         new_planet = Planet.from_dict(test_data)
+
+# chek validate_id helper function
+def test_validate_model(two_planets):
+    result_planet = validate_id(Planet, 1)
+    assert result_planet.id == 1
+    assert result_planet.name == "Jupiter"
+    assert result_planet.description == "King of the Roman gods, aka Zeus."
+
+def test_validate_model_missing_record(two_planets):
+    with pytest.raises(HTTPException):
+        result_book = validate_id(Planet, "3")
+    
+def test_validate_model_invalid_id(two_planets):
+    with pytest.raises(HTTPException):
+        result_book = validate_id(Planet, "cat")
     

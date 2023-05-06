@@ -18,19 +18,23 @@ def create_planets():
 # Get all the records
 @planet_bp.route("", methods=["GET"])
 def get_all_planets():
-    planets = Planet.query.all()
+    query_params = request.args.get("name")
+    if query_params:
+        planets = Planet.query.filter_by(title=query_params)
+    else:
+        planets = Planet.query.all()
     return jsonify([planet.to_dict() for planet in planets])
 
 # Get one record
 @planet_bp.route("/<id>", methods=["GET"])
 def get_one_planet(id):
-    planet = validate_id(id)
+    planet = validate_id(Planet, id)
     return planet.to_dict(), 200
 
 # Replace one record
 @planet_bp.route("/<planet_id>", methods=["PUT"])
 def replace_planet(planet_id):  
-    planet = validate_id(planet_id)
+    planet = validate_id(Planet, planet_id)
     try:
         request_body = request.get_json()
         planet.name = request_body["name"]
@@ -44,7 +48,7 @@ def replace_planet(planet_id):
 # Update one record
 @planet_bp.route("/<planet_id>", methods=["PATCH"])
 def update_planet(planet_id):  
-    planet = validate_id(planet_id)
+    planet = validate_id(Planet, planet_id)
     request_body = request.get_json()
     flag = False
     if request_body.get("name"):
@@ -65,21 +69,21 @@ def update_planet(planet_id):
 # Delete one record  
 @planet_bp.route("/<planet_id>", methods=["DELETE"])
 def delete_planet(planet_id):
-    planet = validate_id(planet_id)
+    planet = validate_id(Planet, planet_id)
     db.session.delete(planet)
     db.session.commit()
     return make_response(f"Planet #{planet.id} successfully deleted")
 
 # Helper function
-def validate_id(id):
+def validate_id(cls, id):
     try:
         id = int(id)
     except:
         abort(make_response({"message" :f"this is not a valid id: {id}"}, 400))
     
-    planet = Planet.query.get(id)
+    planet = cls.query.get(id)
     if not planet:
-        abort(make_response(f"id {id} not found!", 404))
+        abort(make_response(f"{cls.__name__} {id} not found!", 404))
     return planet
 
 #============================= ########################################################### Should I delete?
