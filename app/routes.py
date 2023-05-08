@@ -1,5 +1,6 @@
 from app import db 
 from app.models.planet import Planet
+from app.models.moon import Moon
 from flask import Blueprint, jsonify, abort, make_response, request
 
 planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
@@ -54,6 +55,16 @@ def get_all_planets():
     results = [planet.to_dict() for planet in planets]
     return jsonify(results)
 
+@planets_bp.route("<planet_id>/moons", methods=["GET"])
+def read_moons(planet_id):
+    planet = validate_model(Planet, planet_id)
+
+    planet_response = []
+    for moon in planet.moons:
+        planet_response.append(moon.to_dict())
+
+    return(jsonify(planet_response))
+
 
 
 @planets_bp.route("/<planet_id>", methods=["GET"])
@@ -84,3 +95,17 @@ def delete_planet(planet_id):
     return make_response(f"Planet #{planet_id} succesfully deleted")
 
 
+@planets_bp.route("<planet_id>/moons", methods=["POST"])
+def create_moon(planet_id):
+    planet = validate_model(Planet, planet_id)
+    request_body = request.get_json()
+    try:
+        new_moon = Moon.from_dict(request_body)
+        new_moon.planet = planet
+
+        db.session.add(new_moon)
+        db.session.commit()
+
+        return make_response(jsonify(f"Moon {new_moon.name} cared by {planet.name} successfully created"), 201)
+    except KeyError as e:
+        abort(make_response({"message": f"missing required value: {e}"}, 400))
