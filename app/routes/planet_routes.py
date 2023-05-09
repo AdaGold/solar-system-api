@@ -31,7 +31,8 @@ def create_planets():
         return make_response(jsonify(message), 201)
 
     except KeyError as e:
-        abort(make_response("Invalid request. Missing required value: {e}"), 400)
+        abort(make_response(f"Invalid request. Missing required value: {e}"), 400)
+
 
 @planets_bp.route("/<id>", methods=["GET"])
 def read_one_planet(id):
