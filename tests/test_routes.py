@@ -50,7 +50,7 @@ def test_create_planet_returns_201(client):
     EXPECTED_PLANET = dict(
         name = "Neptune",
         description = "8th planet from the Sun",
-        color = "Aqua"
+        color = "Aqua",
         )
     
     # Act
@@ -65,6 +65,8 @@ def test_create_planet_returns_201(client):
     assert EXPECTED_PLANET['name'] == actual_planet.name
     assert EXPECTED_PLANET['description'] == actual_planet.description
     assert EXPECTED_PLANET['color'] == actual_planet.color
+
+
 
 
 def test_read_all_planets_return_empty_list_when_db_is_empty(client):

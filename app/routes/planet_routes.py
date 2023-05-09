@@ -1,25 +1,12 @@
 from app import db
 from app.models.planet import Planet
-from flask import Blueprint, jsonify, abort, make_response, request
+from flask import Blueprint, jsonify, make_response, request
+from .routes_helpers import validate_model
 
 
-bp = Blueprint("planets", __name__, url_prefix="/planets")
+planet_bp = Blueprint("planets", __name__, url_prefix="/planets")
 
-
-def validate_model(cls, id):
-    try:
-        id = int(id)
-    except:
-        abort(make_response({"message": f"Planet {id} is invalid."}, 400))
-
-    model = cls.query.get(id)
-
-    if not model:
-        abort(make_response({"message": f"{cls.__name__} with id {id} was not found"}, 404))
-
-    return model
-
-@bp.route("", methods=["GET"])
+@planet_bp.route("", methods=["GET"])
 def read_all_planets():
 
     planets_list = []
@@ -33,13 +20,13 @@ def read_all_planets():
 
     return jsonify(planets_list), 200   
 
-@bp.route("/<id>", methods=["GET"])
+@planet_bp.route("/<id>", methods=["GET"])
 def read_one_planet(id):
     planet = validate_model(Planet, id)
     
     return jsonify(planet.make_dict()), 200
 
-@bp.route("", methods=["POST"])
+@planet_bp.route("", methods=["POST"])
 def create_planet():
     if request.method == "POST":
         request_body = request.get_json()
@@ -55,7 +42,7 @@ def create_planet():
             f"Planet {new_planet.name} successfully created", 201
         )
     
-@bp.route("/<id>", methods=["PUT"])
+@planet_bp.route("/<id>", methods=["PUT"])
 def update_planet(id):
     planet = validate_model(Planet, id)
 
@@ -71,7 +58,7 @@ def update_planet(id):
         f"Planet #{id} successfully updated", 200
     )
 
-@bp.route("/<id>", methods=["DELETE"])
+@planet_bp.route("/<id>", methods=["DELETE"])
 def delete_planet(id):
     planet = validate_model(Planet, id)
 
