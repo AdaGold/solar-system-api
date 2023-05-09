@@ -6,6 +6,8 @@ class Planet(db.Model):
     name = db.Column(db.String)
     description = db.Column(db.String)
     color = db.Column(db.String)
+    moon_id = db.Column(db.Integer, db.ForeignKey('moon.moon_id'))
+    moon = db.relationship("Moon", back_populates="planets")
     # __tablename__ = "planets"
 
     
@@ -21,7 +23,8 @@ class Planet(db.Model):
         "id": self.id,
         "name": self.name,
         "description": self.description,
-        "color": self.color }
+        "color": self.color,
+        "moon_id": self.moon_id }
     
     def __str__(self):
         return f'An object of type {self.__class__.__name__} with id {self.id}.'
@@ -33,7 +36,8 @@ class Planet(db.Model):
         return cls(
             name=request_data["name"].title(),
             description=request_data["description"],
-            color=request_data.get("color") 
+            color=request_data.get("color"),
+            moon_id=request_data.get("moon_id") 
         )
     
 
