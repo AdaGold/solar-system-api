@@ -1,5 +1,6 @@
 from app import db
 from app.models.planet import Planet
+from app.models.moon import Moon
 from flask import Blueprint, jsonify, abort, make_response, request
 
 planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
@@ -73,5 +74,38 @@ def validate_model(cls, id):
          abort(make_response({"message": message}, 404))
 
      return model
+
+@planets_bp.route("/<id>/moons", methods=["POST"])
+def create_moon(id):
+    planet = validate_model(Planet, id)
+    request_body = request.get_json()
+    new_moon = Moon(
+        name=request_body["name"]
+    )
+
+    db.session.add(new_moon)
+    db.session.commit()
+    add_moon_to_planet(new_moon.moon_id, planet)
+
+    return make_response(jsonify(f"Moon {new_moon.name} successfully created"), 201)
+
+def add_moon_to_planet(moon_id, planet):
+    planet.moon_id = moon_id
+    db.session.commit()
+@planets_bp.route("/<id>/moons", methods=["GET"])
+def read_moons(id):
+    planet = validate_model(Planet, id)
+    moons_response = []
+    for id in str(planet.id):
+        moons_response.append(
+            {
+            "moon_id": int(id),
+            }
+        )
+    return jsonify(moons_response)
+# def handle_moon_from_planet():
+
+
+
 
 
