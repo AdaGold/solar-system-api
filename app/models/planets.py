@@ -1,9 +1,9 @@
 class Planet:
-
     def __init__(self, id, name, description):
         self.id = id
         self.name = name
         self.description = description
+        
 
 planets = [
     Planet(1, "Mercury", "Smallest planet and closest to the Sun."),

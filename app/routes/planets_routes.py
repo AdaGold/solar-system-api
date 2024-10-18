@@ -1,7 +1,10 @@
 from flask import Blueprint
 from app.models.planets import planets
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> fe0c62ab7223aeadaa935a37f34bd348e8280491
 planet_bp = Blueprint("planet_bp", __name__, url_prefix="/planets")
 
 @planet_bp.get("")
@@ -14,6 +17,7 @@ def get_all_planets():
             description=planet.description    
         ))
         
+<<<<<<< HEAD
     return planets_response
 
 
@@ -21,3 +25,6 @@ def get_all_planets():
 
 
 
+=======
+    return planets_response
+>>>>>>> fe0c62ab7223aeadaa935a37f34bd348e8280491
