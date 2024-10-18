@@ -12,16 +12,5 @@ def get_all_planets():
             name=planet.name,
             description=planet.description    
         ))
-        
-<<<<<<< HEAD
+    
     return planets_response
-
-
-
-
-
-
-=======
-    return planets_response
-
-
