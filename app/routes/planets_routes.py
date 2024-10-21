@@ -20,11 +20,7 @@ def get_all_planets():
 def get_one_planet(planet_id):
     planet = validate_palnet(planet_id)
 
-    return {
-        "id": planet.id,
-        "name": planet.name,
-        "description": planet.description,
-    }
+    return planet.to_dict(planet_id)
 
 
 def validate_palnet(planet_id):
