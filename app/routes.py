@@ -1,9 +1,9 @@
 from flask import Blueprint, abort, make_response
 from .models import planets
 
-planets_bp = Blueprint('planets', __name__)
+planets_bp = Blueprint('planets', __name__, url_prefix="/planets")
 
-@planets_bp.route('/planets', methods=['GET'])
+@planets_bp.get("")
 def get_planets():
     planets_reponse = []
     for planet in planets:
@@ -21,13 +21,14 @@ def get_planets():
 @planets_bp.get("/<planet_id>")
 def get_one_planet(planet_id):
     planet = validate_planet(planet_id)
+    return planet.to_dict(),200
 
-    return {
-        "id": planet.id,
-        "name": planet.name,
-        "description": planet.description,
-        "color": planet.color
-    }
+    # return {
+    #     "id": planet.id,
+    #     "name": planet.name,
+    #     "description": planet.description,
+    #     "color": planet.color
+    # }
 
 def validate_planet(planet_id):
     try:
