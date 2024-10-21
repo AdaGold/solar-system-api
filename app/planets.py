@@ -5,6 +5,14 @@ class Planet:
         self.description = description
         self.moons = moons
 
+    def to_dict(self):
+        return {
+            "id": self.id, 
+            "name": self.name,
+            "description": self.description,
+            "moons": self.moons
+        }
+
 planets = [
     Planet(1, "Mercury", "Small, hot, fast", []),
     Planet(2, "Venus", "Thick atmosphere", []),
