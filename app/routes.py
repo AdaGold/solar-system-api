@@ -24,7 +24,7 @@ def get_one_planet(planet_id):
 
     return {
         "id": planet.id,
-        "name": planet.title,
+        "name": planet.name,
         "description": planet.description,
         "color": planet.color
     }
