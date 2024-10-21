@@ -1,10 +1,10 @@
 from flask import Blueprint, abort, make_response
-from .models.planet import planets
+from ..models.planet import planets
 
-solar_system_bp = Blueprint("solar_system_bp", __name__, url_prefix="/solar-system")
+solar_system_bp = Blueprint("solar_system_bp", __name__, url_prefix="/planets")
 
 @solar_system_bp.get("")
-def get_all_list():
+def get_all_planets():
     results_list = []
     for planet in planets:
         results_list.append(dict(
@@ -16,7 +16,7 @@ def get_all_list():
 
     return results_list
 
-@solar_system_bp.get("/planets/<planet_id>")
+@solar_system_bp.get("/<planet_id>")
 def get_one_planet(planet_id):
     planet = validate_planet(planet_id)
 
