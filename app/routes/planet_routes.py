@@ -46,3 +46,25 @@ def get_all_planets():
     planets = db.session.scalars(query)
 
     return [planet.to_dict() for planet in planets]
+
+@planets_bp.get('/<planet_id>')
+def get_one_planet(planet_id):
+    return validate_planet(planet_id).to_dict()
+
+def validate_planet(planet_id):
+    try:
+        planet_id = int(planet_id)
+    except ValueError:
+        abort(make_response({"message": f"planet {planet_id} invalid"}, 400))
+
+    # for planet in planets:
+    #     if planet.id == planet_id:
+    #         return planet
+        
+    # abort(make_response({"message": f"planet {planet_id} not found"}, 404))
+
+    planet = db.session.get(Planet, planet_id)
+    if planet is None:
+        abort(make_response({"message": f"planet {planet_id} not found"}, 404))
+    
+    return planet
