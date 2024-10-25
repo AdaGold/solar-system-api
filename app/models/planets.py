@@ -23,5 +23,6 @@ planets = [
     Planet(5, "Jupiter", "The largest planet, famous for its Great Red Spot.", 139820, 79),
     Planet(6, "Saturn", "Known for its stunning rings.", 116460, 83),
     Planet(7, "Uranus", "An ice giant that rotates on its side.", 50724, 27),
-    Planet(8, "Neptune", "The farthest planet, known for strong winds.", 49244, 14)
+    Planet(8, "Neptune", "The farthest planet, known for strong winds.", 49244, 14),
+    Planet(9, "Pluto", "Dwarf planet known for its complex orbit and atmosphere.", 2376, 5)
 ]
