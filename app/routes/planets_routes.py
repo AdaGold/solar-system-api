@@ -5,23 +5,14 @@ planet_bp = Blueprint("planet_bp", __name__, url_prefix="/planets")
 
 @planet_bp.get("")
 def get_all_planets():
-    planets_response = []
-    for planet in planets:
-        planets_response.append(dict(
-            id=planet.id,
-            name=planet.name,
-            description=planet.description,    
-            diameter=planet.diameter,
-            number_of_moons=planet.number_of_moons
-        ))
-    
+    planets_response = [planet.to_dict() for planet in planets ]
     return planets_response
 
 @planet_bp.get("/<planet_id>")
 def get_one_planet(planet_id):
     planet = validate_planet(planet_id)
 
-    return planet.to_dict(), 200
+    return planet.to_dict()
 
 
 def validate_planet(planet_id):
