@@ -19,7 +19,7 @@ def create_planet():
     
     response = new_planet.to_dict()
     return response, 201
-    
+
     
     
     
