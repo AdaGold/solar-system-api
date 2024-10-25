@@ -1,5 +1,5 @@
 from flask import Flask
-from .routes import planets_bp
+from .routes.planet_routes import planets_bp
 
 
 def create_app(test_config=None):
