@@ -1,8 +1,28 @@
-from flask import Blueprint, abort, make_response
-# from app.models.planets import planets
+from flask import Blueprint, abort, make_response, request
+from app.models.planets import Planet
+from ..db import db
 
 planet_bp = Blueprint("planet_bp", __name__, url_prefix="/planets")
 
+@planet_bp.post("")
+def create_planet():
+    request_body = request.get_json()
+    id = request_body["id"]
+    name = request_body["name"]
+    description = request_body["description"]
+    diameter = request_body["diameter"]
+    number_of_moons = request_body["number_of_moons"]
+    
+    new_planet = Planet(id=id, name=name, description=description, diameter=diameter, number_of_moons=number_of_moons)
+    db.session.add(new_planet)
+    db.session.commit()
+    
+    response = new_planet.to_dict()
+    return response, 201
+    
+    
+    
+    
 # @planet_bp.get("")
 # def get_all_planets():
 #     planets_response = [planet.to_dict() for planet in planets ]
