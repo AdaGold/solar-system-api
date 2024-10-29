@@ -38,22 +38,6 @@ def get_one_planet(planet_id):
     return planet.to_dict(), 200
 
 
-# Helper Functions
-def validate_planet_id(planet_id):
-    try:
-        planet_id = int(planet_id)
-    except:
-        response = {"msg": f"Planet id {planet_id} is invalid."}
-        abort(make_response(response,400))
-    
-    query = db.select(Planet).where(Planet.id == planet_id)
-    planet = db.session.scalar(query)
-
-    if not planet:
-        response = {"msg": f"Planet id {planet_id} not found."}
-        abort(make_response(response,404))
-
-    return planet
 
 @planets_bp.put("/<planet_id>")
 def update_planet(planet_id):
@@ -74,3 +58,20 @@ def delete_planet(planet_id):
 
     return Response(status=204, mimetype="application/json")
 
+
+# Helper Functions
+def validate_planet_id(planet_id):
+    try:
+        planet_id = int(planet_id)
+    except:
+        response = {"msg": f"Planet id {planet_id} is invalid."}
+        abort(make_response(response,400))
+    
+    query = db.select(Planet).where(Planet.id == planet_id)
+    planet = db.session.scalar(query)
+
+    if not planet:
+        response = {"msg": f"Planet id {planet_id} not found."}
+        abort(make_response(response,404))
+
+    return planet
