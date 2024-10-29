@@ -32,7 +32,7 @@ def get_all_planets():
         planet_response.append(
             {
                 "id": planet.id,
-                "name": planet.title,
+                "name": planet.name,
                 "description": planet.description,
                 "flag": planet.flag
             }
