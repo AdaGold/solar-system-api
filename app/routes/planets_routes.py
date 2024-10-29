@@ -7,7 +7,7 @@ planet_bp = Blueprint("planet_bp", __name__, url_prefix="/planets")
 @planet_bp.post("")
 def create_planet():
     request_body = request.get_json()
-    
+   
     name = request_body["name"]
     description = request_body["description"]
     diameter = request_body["diameter"]
