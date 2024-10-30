@@ -25,9 +25,32 @@ def create_planet():
 
 @solar_system_bp.get("")
 def get_all_planets():
-    query = db.select(Planet).order_by(Planet.id)
-    planets = db.session.scalars(query)
+    query = db.select(Planet)
+    
+    description_param = request.args.get("description")
+    if description_param:
+        query = query.where(Planet.description.ilike(f"%{description_param}%"))
+    
 
+    flag_param = request.args.get("flag")
+    if flag_param is not None:
+        # Convert flag_param to a boolean
+        flag_value = flag_param.lower() == "true"
+        query = query.where(Planet.flag == flag_value)
+        
+    sort_param = request.args.get("sort")
+    if sort_param == "name":
+        query = query.order_by(Planet.name)
+    elif sort_param == "description":
+        query = query.order_by(Planet.description)
+    elif sort_param == "flag":
+        query = query.order_by(Planet.flag)
+    else:
+        # Default sorting by id
+        query = query.order_by(Planet.id)
+    
+    planets = db.session.scalars(query.order_by(Planet.id))
+    
     planet_response = []
     for planet in planets:
         planet_response.append(
