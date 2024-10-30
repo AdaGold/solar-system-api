@@ -22,39 +22,29 @@ def create_planet():
     
 @planet_bp.get("")
 def get_all_planets():
-    query = db.select(Planet).order_by(Planet.id)
+    query = db.select(Planet)
+    
+    description_param = request.args.get["description"]
+    if description_param:
+        query = query.where(Planet.description.ilike(f"%{description_param}%"))
+    
+    number_of_moons_param = request.args.get["number_of_moons"]
+    if number_of_moons_param:
+        query = query.where(Planet.number_of_moons.ilike(f"%{number_of_moons_param}%"))
+        
+    query = query.order_by(Planet.id)
+    
     planets = db.session.scalars(query)
     
     response_body = [planet.to_dict() for planet in planets]
     
-    return response_body, 200
+    return response_body 
 
 @planet_bp.get("/<planet_id>")
 def get_single_planet(planet_id):
     planet = validate_planet(planet_id)
 
     return planet.to_dict()
-
-
-def validate_planet(planet_id):
-    try:
-        planet_id = int(planet_id)
-    except:
-        response = {
-            "message": f"Planet {planet_id} invalid"
-        }
-        abort(make_response(response, 400))
-
-    query = db.select(Planet).where(Planet.id == planet_id)
-    planet = db.session.scalar(query)
-
-    if not planet:
-        response = {
-            "message": f"Planet {planet_id} not found"
-        }
-        abort(make_response(response, 404))
-
-    return planet
 
 @planet_bp.put("/<planet_id>")
 def update_single_planet(planet_id):
@@ -79,6 +69,25 @@ def delete_single_planet(planet_id):
 
     return Response(status=204, mimetype='application/json')
 
- 
+
+def validate_planet(planet_id):
+    try:
+        planet_id = int(planet_id)
+    except:
+        response = {
+            "message": f"Planet {planet_id} invalid"
+        }
+        abort(make_response(response, 400))
+
+    query = db.select(Planet).where(Planet.id == planet_id)
+    planet = db.session.scalar(query)
+
+    if not planet:
+        response = {
+            "message": f"Planet {planet_id} not found"
+        }
+        abort(make_response(response, 404))
+
+    return planet 
  
         
