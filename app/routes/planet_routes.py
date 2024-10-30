@@ -1,7 +1,7 @@
 from flask import Blueprint, abort, make_response, request, Response
 from app.models.planet import Planet
 from app.db import db
-from sqlalchemy import select
+from sqlalchemy import select, desc
 
 planets_bp = Blueprint("planets_bp", __name__, url_prefix=("/planets"))
 
@@ -22,7 +22,40 @@ def create_planet():
 
 @planets_bp.get("")
 def get_all_planets():
-    query = db.select(Planet).order_by(Planet.id)
+    all_params = request.args
+    query = db.select(Planet)
+
+    if all_params.get("name"):
+        query = query.where(Planet.name.ilike(f"%{all_params.get("name")}%"))
+    
+    if all_params.get("description"):
+        query = query.where(Planet.description.ilike(f"%{all_params.get("description")}%"))
+
+    if all_params.get("size"):
+        query = query.where(Planet.size.ilike(f"%{all_params.get("size")}%"))
+    
+    if all_params.get("moons"):
+        # query = query.where(Planet.moons == all_params.get("moons"))
+        query = query.filter(Planet.moons >= all_params.get("moons"))
+
+    if all_params.get("has_flag"):
+        query =query.where(Planet.has_flag == all_params.get("has_flag"))
+
+    if all_params.get("order"):
+        attribute = all_params.get("order")
+        if attribute == "size":
+            query = query.order_by(Planet.size)
+        if attribute == "name":
+            query = query.order_by(Planet.name)
+        if attribute == "moons":
+            query = query.order_by(Planet.moons)
+        if attribute == "has_flag":
+            query = query.order_by(Planet.has_flag)
+        if attribute == "description":
+            query = query.order_by(Planet.description)
+        else:
+            query = query.order_by(Planet.id)
+
     planets = db.session.scalars(query)
 
     response_body=[]
