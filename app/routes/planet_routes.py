@@ -20,7 +20,21 @@ def create_planet():
 
 @planets_bp.get("")
 def get_all_planets():
-    query = db.select(Planet).order_by(Planet.id)
+    description_param = request.args.get("description")
+    number_of_moons_param = request.args.get("number_of_moons")
+
+    query = db.select(Planet)
+    if description_param:
+        query = query.where(Planet.description.ilike(f"%{description_param}%"))
+    
+    if number_of_moons_param:
+        try:
+            number_of_moons_param = int(number_of_moons_param)
+            query = query.where(Planet.number_of_moons == number_of_moons_param)
+        except ValueError:
+            abort(make_response({"message": f"{number_of_moons_param} expected int type"}, 400))
+
+    query = query.order_by(Planet.id)
     planets = db.session.scalars(query)
 
     return [planet.to_dict() for planet in planets]
@@ -40,7 +54,7 @@ def update_planet(planet_id):
 
     db.session.commit()
 
-    return Response(status=204, mimetype='application/json')
+    return Response(status=204, mimetype="application/json")
 
 @planets_bp.delete("/<planet_id>")
 def delete_planet(planet_id):
@@ -49,7 +63,7 @@ def delete_planet(planet_id):
     db.session.delete(planet)
     db.session.commit()
 
-    return Response(status=204, mimetype='application/json')
+    return Response(status=204, mimetype="application/json")
 
 def validate_planet(planet_id):
     try:
