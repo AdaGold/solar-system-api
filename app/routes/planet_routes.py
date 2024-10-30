@@ -1,9 +1,20 @@
 from flask import Blueprint, abort, make_response, request, Response
 from app.models.planet import Planet
 from app.db import db
-from sqlalchemy import select, desc
+from sqlalchemy import desc
 
 planets_bp = Blueprint("planets_bp", __name__, url_prefix=("/planets"))
+
+
+ORDER_BY_MAP = {
+'id': Planet.id, 
+'name': Planet.name, 
+'description': Planet.description, 
+'moons': Planet.moons,
+"size": Planet.size,
+"has_flag": Planet.has_flag
+}
+
 
 
 @planets_bp.post("")
@@ -41,20 +52,14 @@ def get_all_planets():
     if all_params.get("has_flag"):
         query =query.where(Planet.has_flag == all_params.get("has_flag"))
 
-    if all_params.get("order"):
-        attribute = all_params.get("order")
-        if attribute == "size":
-            query = query.order_by(Planet.size)
-        if attribute == "name":
-            query = query.order_by(Planet.name)
-        if attribute == "moons":
-            query = query.order_by(Planet.moons)
-        if attribute == "has_flag":
-            query = query.order_by(Planet.has_flag)
-        if attribute == "description":
-            query = query.order_by(Planet.description)
+    if all_params.get("order_by"):
+        attribute = all_params.get("order_by")
+        if all_params.get("dir") == "desc":
+            query = query.order_by(desc(ORDER_BY_MAP[attribute]))
         else:
-            query = query.order_by(Planet.id)
+            query = query.order_by(ORDER_BY_MAP[attribute])
+    else:
+        query = query.order_by(Planet.id)
 
     planets = db.session.scalars(query)
 
@@ -63,6 +68,9 @@ def get_all_planets():
         response_body.append(planet.to_dict())
     
     return response_body, 200
+
+# all of the query param logic needs validation
+
 
 @planets_bp.get("/<planet_id>")
 def get_one_planet(planet_id):
