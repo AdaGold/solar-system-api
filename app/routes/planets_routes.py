@@ -24,11 +24,11 @@ def create_planet():
 def get_all_planets():
     query = db.select(Planet)
     
-    description_param = request.args.get["description"]
+    description_param = request.args.get("description")
     if description_param:
         query = query.where(Planet.description.ilike(f"%{description_param}%"))
     
-    number_of_moons_param = request.args.get["number_of_moons"]
+    number_of_moons_param = request.args.get("number_of_moons")
     if number_of_moons_param:
         query = query.where(Planet.number_of_moons.ilike(f"%{number_of_moons_param}%"))
         
