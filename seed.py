@@ -4,20 +4,20 @@ from app.models.planet import Planet
 
 my_app = create_app()
 with my_app.app_context():
-    db.session.add(Planet(name="Earth", description=" third planet from the sun", size = "medium", moons=1, has_flag=True))
-    db.session.add(Planet(name="Jupiter", description="the largest planet", size = "large", moons=4, has_flag=False))
-    db.session.add(Planet(name="Mars", description="Red and hot", size = "medium", moons= 2, has_flag=False))
-    db.session.add(Planet(name="Mercury", description="closet to the sun", size = "small", moons=0, has_flag=True))
+    db.session.add(Planet(name="43-HT3", description=" found in neighboring solar system", size = "medium", moons=12, has_flag=False))
+    db.session.add(Planet(name="X65", description="Bigger than Jupiter", size = "large", moons=9, has_flag=False))
+    db.session.add(Planet(name="33-UV2", description="purple with 3 rings", size = "medium", moons= 0, has_flag=False))
+    db.session.add(Planet(name="9ND-87", description="black, almost invisible", size = "small", moons=42, has_flag=False))
+    
     db.session.add(Planet(name="Venus", description="Hottest planet", size = "small", moons=0, has_flag=False))
+    db.session.add(Planet(name="Mercury", description="Closest to the Sun, very hot", size="Small", moons=0, has_flag=False))
+    db.session.add(Planet(name="Venus", description="Thick atmosphere, hottest planet", size="Small", moons=0, has_flag=False))
+    db.session.add(Planet(name="Earth", description="Home to life, oceans and land", size="Medium", moons=1, has_flag=True))
+    db.session.add(Planet(name="Mars",    description="Known as the Red Planet", size="Small", moons=2, has_flag=True))
+    db.session.add(Planet(name="Jupiter", description="Largest planet, gas giant", size="Large", moons=79, has_flag=False))
+    db.session.add(Planet(name="Saturn",  description="Known for its rings", size="Large", moons=83, has_flag=False))
+    db.session.add(Planet(name="Uranus",  description="Icy gas giant, tilted axis", size="Large", moons=27, has_flag=False))
     db.session.commit()
 
 
-# | Planet     | Description                      | Size   | Moons | Has Flag? |
-# |------------|----------------------------------|--------|-------|-----------|
-# | Mercury    | Closest to the Sun, very hot     | Small  | 0     | No        |
-# | Venus      | Thick atmosphere, hottest planet | Small  | 0     | No        |
-# | Earth      | Home to life, oceans and land    | Medium | 1     | Yes       |
-# | Mars       | Known as the Red Planet          | Small  | 2     | Yes       |
-# | Jupiter    | Largest planet, gas giant        | Large  | 79    | No        |
-# | Saturn     | Known for its rings              | Large  | 83    | No        |
-# | Uranus     | Icy gas giant, tilted axis       | Large  | 27    | No        |
+
