@@ -37,7 +37,7 @@ def get_all_planets():
         # Convert flag_param to a boolean
         flag_value = flag_param.lower() == "true"
         query = query.where(Planet.flag == flag_value)
-        
+
     sort_param = request.args.get("sort")
     if sort_param == "name":
         query = query.order_by(Planet.name)
