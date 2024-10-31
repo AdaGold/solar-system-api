@@ -31,7 +31,7 @@ def get_all_planets():
     number_of_moons_param = request.args.get("number_of_moons")
     if number_of_moons_param:
         query = query.where(Planet.number_of_moons == number_of_moons_param)
-        
+       
     query = query.order_by(Planet.id)
     
     planets = db.session.scalars(query)
