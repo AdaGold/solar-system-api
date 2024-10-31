@@ -22,8 +22,11 @@ def create_planet():
     request_body = request.get_json()
     name = request_body['name']
     description = request_body['description']
+    size = request_body['size']
+    moons = request_body['moons']
+    has_flag = request_body['has_flag']
 
-    new_planet = Planet(name=name, description=description)
+    new_planet = Planet(name=name, description=description, size = size, moons = moons, has_flag = has_flag)
     db.session.add(new_planet)
     db.session.commit()
 
