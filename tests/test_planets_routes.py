@@ -9,13 +9,13 @@ def test_get_all_planets_with_no_records(client):
     
 def test_get_one_planet(client, two_save_planets):
     #Act
-    response = client.get("/planets/1")
+    response = client.get(f"/planets/{two_save_planets[0].id}")
     response_body = response.get_json()
     
     #Assert
     assert response.status_code == 200
     assert response_body == {
-        "id": 1,
+        "id": two_save_planets[0].id,
         "name": "Pluto",
         "description": "Dwarf planet known for its complex orbit and atmosphere.",
         "diameter_in_km": 2376,
