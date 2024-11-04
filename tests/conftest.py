@@ -4,7 +4,7 @@ from app.db import db
 from flask.signals import request_finished
 from dotenv import load_dotenv
 import os
-from app.models.planets import Planet
+from app.models.planet import Planet
 
 load_dotenv()
 
@@ -38,3 +38,5 @@ def two_save_planets(app):
     
     db.session.add_all([planet_1, planet_2])
     db.session.commit()
+    
+#

@@ -1,5 +1,5 @@
 from flask import Blueprint, abort, make_response, request, Response
-from app.models.planets import Planet
+from app.models.planet import Planet
 from ..db import db
 
 planet_bp = Blueprint("planet_bp", __name__, url_prefix="/planets")
