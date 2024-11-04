@@ -33,8 +33,8 @@ def client(app):
 
 @pytest.fixture
 def two_save_planets(app):
-    planet_1 = Planet(name="Pluto", description="Dwarf planet known for its complex orbit and atmosphere.", diameter_in_km=2376, number_of_moons=5)
-    planet_2 = Planet(name="Neptune", description="The farthest planet, known for strong winds", diameter_in_km=49244, number_of_moons=14)
+    planet_1 = Planet(name="Pluto", description="Dwarf planet known for its complex orbit and atmosphere.", diameter=2376, number_of_moons=5)
+    planet_2 = Planet(name="Neptune", description="The farthest planet, known for strong winds", diameter=49244, number_of_moons=14)
     
     db.session.add_all([planet_1, planet_2])
     db.session.commit()

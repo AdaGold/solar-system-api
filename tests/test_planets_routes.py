@@ -18,7 +18,7 @@ def test_get_one_planet(client, two_save_planets):
         "id": two_save_planets[0].id,
         "name": "Pluto",
         "description": "Dwarf planet known for its complex orbit and atmosphere.",
-        "diameter_in_km": 2376,
+        "diameter": 2376,
         "number_of_moons": 5   
     }
     
@@ -27,7 +27,7 @@ def test_create_one_planet_in_empty_database(client):
     response = client.post("/planets", json={
         "name": "Pluto",
         "description": "Dwarf planet known for its complex orbit and atmosphere.",
-        "diameter_in_km": 2376,
+        "diameter": 2376,
         "number_of_moons": 5
     })
     
@@ -38,7 +38,7 @@ def test_create_one_planet_in_empty_database(client):
         "id": 1,
         "name": "Pluto",
         "description": "Dwarf planet known for its complex orbit and atmosphere.",
-        "diameter_in_km": 2376,
+        "diameter": 2376,
         "number_of_moons": 5 
     }
     
@@ -47,7 +47,7 @@ def test_create_one_planet_already_in_database(client, two_save_planets):
     response = client.post("/planets", json={
         "name": "Pluto",
         "description": "Dwarf planet known for its complex orbit and atmosphere.",
-        "diameter_in_km": 2376,
+        "diameter": 2376,
         "number_of_moons": 5
     })
     
@@ -58,6 +58,6 @@ def test_create_one_planet_already_in_database(client, two_save_planets):
         "id": 3,
         "name": "Pluto",
         "description": "Dwarf planet known for its complex orbit and atmosphere.",
-        "diameter_in_km": 2376,
+        "diameter": 2376,
         "number_of_moons": 5 
     }
