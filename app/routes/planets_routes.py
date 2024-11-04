@@ -10,10 +10,10 @@ def create_planet():
    
     name = request_body["name"]
     description = request_body["description"]
-    diameter = request_body["diameter"]
+    diameter_in_km = request_body["diameter"]
     number_of_moons = request_body["number_of_moons"]
     
-    new_planet = Planet(name=name, description=description, diameter=diameter, number_of_moons=number_of_moons)
+    new_planet = Planet(name=name, description=description, diameter_in_km=diameter_in_km, number_of_moons=number_of_moons)
     db.session.add(new_planet)
     db.session.commit()
     
@@ -53,7 +53,7 @@ def update_single_planet(planet_id):
 
     planet.name = request_body["name"]
     planet.description = request_body["description"]
-    planet.diameter = request_body["diameter"]
+    planet.diameter_in_km = request_body["diameter_in_km"]
     planet.number_of_moons = request_body["number_of_moons"]
 
     db.session.commit()
