@@ -39,4 +39,4 @@ def two_save_planets(app):
     db.session.add_all([planet_1, planet_2])
     db.session.commit()
     
-#
+    return [planet_1, planet_2]

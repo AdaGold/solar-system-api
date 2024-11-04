@@ -10,7 +10,7 @@ def create_planet():
    
     name = request_body["name"]
     description = request_body["description"]
-    diameter_in_km = request_body["diameter"]
+    diameter_in_km = request_body["diameter_in_km"]
     number_of_moons = request_body["number_of_moons"]
     
     new_planet = Planet(name=name, description=description, diameter_in_km=diameter_in_km, number_of_moons=number_of_moons)
