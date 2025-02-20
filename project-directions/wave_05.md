@@ -1,4 +1,4 @@
-# Wave 05: Review and Refactor
+# Wave 05: More Flask Queries
 
 ## Update Endpoints
 

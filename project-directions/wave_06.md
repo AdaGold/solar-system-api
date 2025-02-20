@@ -14,7 +14,7 @@ Complete the following requirements, with similar functionality to the Hello Boo
 1. Create a `tests` folder with the files:
     -  `tests/__init__.py`
     -  `tests/conftest.py`
-    -  `tests/test_routes.py`.
+    -  `tests/test_planet_routes.py`.
 1. Populate `tests/conftest.py` with the recommended configuration.
 1. Create a test to check `GET` `/planets` returns `200` and an empty array.
 1. Confirm this test runs and passes.

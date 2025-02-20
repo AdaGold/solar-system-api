@@ -15,7 +15,8 @@ We will focus on creating RESTful endpoints for CRUD operations.
 ## Tips
 
 - Don't forget to work in a virtual environment
-- Put endpoints in `app/routes.py`
+- Organize your routes so that all routes corresponding to a particular model will be written in a single file. Route files should be created in the `app/routes` directory.
+- Organize your models in the `app/models` directory.
 - Add configuration, such as registering blueprints or configuring databases, in `app/__init__.py`
 - Commit and push often
 
@@ -46,7 +47,7 @@ We will focus on creating RESTful endpoints for CRUD operations.
 ### Part 2
 2. [Wave 03: Connecting the Database, Read and Create Endpoints](./project-directions/wave_03.md)
 3. [Wave 04: Read, Update, and Delete](./project-directions/wave_04.md)
-4. [Wave 05: Review and Refactor](./project-directions/wave_05.md)
+4. [Wave 05: More Flask Queries](./project-directions/wave_05.md)
 5. [Wave 06: Writing Tests](./project-directions/wave_06.md)
 
 #### Database Setup/Update
