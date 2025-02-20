@@ -15,7 +15,8 @@ We will focus on creating RESTful endpoints for CRUD operations.
 ## Tips
 
 - Don't forget to work in a virtual environment
-- Put endpoints in `app/routes.py`
+- Organize your routes so that all routes corresponding to a particular model will be written in a single file. Route files should be created in the `app/routes` directory.
+- Organize your models in the `app/models` directory.
 - Add configuration, such as registering blueprints or configuring databases, in `app/__init__.py`
 - Commit and push often
 
